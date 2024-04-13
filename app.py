@@ -91,3 +91,52 @@ def registro_exitoso():
 
 if __name__ == '__main__':
     app.run(debug=True)
+pacientes_registrados = [
+    {
+        'id': '1',
+        'apellidos': 'García',
+        'nombres': 'Juan',
+        'fecha_nacimiento': '1990-05-15',
+        'celular': '555-1234',
+        'turno': 'matutino',
+        'genero': 'masculino',
+        'fecha_registro': '2024-04-15',
+        'registrado_por': 'Mariana'
+    },
+    {
+        'id': '2',
+        'apellidos': 'López',
+        'nombres': 'María',
+        'fecha_nacimiento': '1985-10-20',
+        'celular': '555-5678',
+        'turno': 'vespertino',
+        'genero': 'femenino',
+        'fecha_registro': '2024-04-16',
+        'registrado_por': 'Pedro'
+    }
+]
+
+@app.route('/consulta')
+def consulta_paciente():
+    return render_template('consulta_paciente.html', pacientes=pacientes_registrados)
+
+@app.route('/paciente/<id>')
+def detalle_paciente(id):
+    paciente = next((p for p in pacientes_registrados if p['id'] == id), None)
+    if paciente:
+        return render_template('detalle_paciente.html', paciente=paciente)
+    else:
+        return 'Paciente no encontrado'
+
+@app.route('/actualizar_paciente/<id>', methods=['POST'])
+def actualizar_paciente(id):
+    peso = request.form['peso']
+    masa_muscular = request.form['masa_muscular']
+    cita = request.form['cita']
+
+    # Aquí puedes agregar la lógica para actualizar los datos del paciente en la base de datos
+
+    return redirect(url_for('detalle_paciente', id=id))
+
+if __name__ == '__main__':
+    app.run(debug=True)

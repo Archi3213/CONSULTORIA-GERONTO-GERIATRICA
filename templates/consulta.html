@@ -1,0 +1,13 @@
+<html>
+<head>
+    <title>Consulta de Paciente</title>
+</head>
+<body>
+    <h1>Consulta de Paciente</h1>
+    <ul>
+        {% for paciente in pacientes %}
+        <li><a href="/paciente/{{ paciente.id }}">{{ paciente.apellidos }}, {{ paciente.nombres }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
