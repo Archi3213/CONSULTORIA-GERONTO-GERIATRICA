@@ -1,0 +1,39 @@
+<html>
+<head>
+    <title>Registro de Paciente</title>
+</head>
+<body>
+    <h1>Registro de Paciente</h1>
+    <form method="post" action="/registro">
+        <label>Apellidos:</label>
+        <input type="text" name="apellidos"><br>
+
+        <label>Nombres:</label>
+        <input type="text" name="nombres"><br>
+
+        <label>Fecha de Nacimiento:</label>
+        <input type="date" name="fecha_nacimiento"><br>
+
+        <label>Número de Celular:</label>
+        <input type="text" name="celular"><br>
+
+        <label>Turno:</label>
+        <select name="turno">
+            <option value="matutino">Matutino</option>
+            <option value="vespertino">Vespertino</option>
+        </select><br>
+
+        <label>Género:</label>
+        <input type="radio" name="genero" value="masculino">Masculino
+        <input type="radio" name="genero" value="femenino">Femenino<br>
+
+        <label>Fecha de Registro:</label>
+        <input type="date" name="fecha_registro"><br>
+
+        <label>Quién Registró:</label>
+        <input type="text" name="registrado_por"><br>
+
+        <input type="submit" value="Registrar">
+    </form>
+</body>
+</html>
