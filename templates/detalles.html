@@ -1,0 +1,29 @@
+<html>
+<head>
+    <title>Detalle de Paciente</title>
+</head>
+<body>
+    <h1>Detalle de Paciente</h1>
+    <h2>{{ paciente.apellidos }}, {{ paciente.nombres }}</h2>
+    <p>Fecha de Nacimiento: {{ paciente.fecha_nacimiento }}</p>
+    <p>Celular: {{ paciente.celular }}</p>
+    <p>Turno: {{ paciente.turno }}</p>
+    <p>Género: {{ paciente.genero }}</p>
+    <p>Fecha de Registro: {{ paciente.fecha_registro }}</p>
+    <p>Registrado por: {{ paciente.registrado_por }}</p>
+
+    <h3>Actualizar Datos</h3>
+    <form method="post" action="/actualizar_paciente/{{ paciente.id }}">
+        <label>Nuevo Peso:</label>
+        <input type="text" name="peso"><br>
+
+        <label>Nueva Masa Muscular:</label>
+        <input type="text" name="masa_muscular"><br>
+
+        <label>Nueva Cita:</label>
+        <input type="text" name="cita"><br>
+
+        <input type="submit" value="Actualizar">
+    </form>
+</body>
+</html>

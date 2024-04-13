@@ -91,7 +91,7 @@ def registro_exitoso():
 
 if __name__ == '__main__':
     app.run(debug=True)
-pacientes_registrados = [
+registrados = [
     {
         'id': '1',
         'apellidos': 'García',
@@ -118,17 +118,17 @@ pacientes_registrados = [
 
 @app.route('/consulta')
 def consulta_paciente():
-    return render_template('consulta_paciente.html', pacientes=pacientes_registrados)
+    return render_template('/consulta', pacientes=registrados)
 
 @app.route('/paciente/<id>')
 def detalle_paciente(id):
     paciente = next((p for p in pacientes_registrados if p['id'] == id), None)
     if paciente:
-        return render_template('detalle_paciente.html', paciente=paciente)
+        return render_template('detalle.html', paciente=paciente)
     else:
         return 'Paciente no encontrado'
 
-@app.route('/actualizar_paciente/<id>', methods=['POST'])
+@app.route('/actualizar/<id>', methods=['POST'])
 def actualizar_paciente(id):
     peso = request.form['peso']
     masa_muscular = request.form['masa_muscular']
@@ -136,7 +136,7 @@ def actualizar_paciente(id):
 
     # Aquí puedes agregar la lógica para actualizar los datos del paciente en la base de datos
 
-    return redirect(url_for('detalle_paciente', id=id))
+    return redirect(url_for('detalle', id=id))
 
 if __name__ == '__main__':
     app.run(debug=True)
