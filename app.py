@@ -10,10 +10,31 @@ pacientes_registrados = []
 def index():
     return render_template('index.html')
 
+from flask import Flask, render_template, request, redirect, url_for
+
+app = Flask(__name__)
+
+# Usuarios y contraseñas permitidos (puedes agregar más si lo necesitas)
+users = {'vespertino': 'vespertino', '1': '1'}
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # Tu código para el inicio de sesión aquí
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username in users and users[username] == password:
+            return redirect(url_for('options'))
+        else:
+            error = 'Usuario o contraseña incorrectos'
+            return render_template('login.html', error=error)
     return render_template('login.html')
+
+
+
 
 @app.route('/options')
 def options():
@@ -56,6 +77,7 @@ def registro_paciente():
         return redirect(url_for('registro_exitoso', id_paciente=id_paciente, nombre_paciente=f'{nombres} {apellidos}'))
 
     return render_template('registro_paciente.html')
+
 
 @app.route('/registro_exitoso')
 def registro_exitoso():
