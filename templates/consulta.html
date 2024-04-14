@@ -1,13 +1,59 @@
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
-    <title>Consulta de Paciente</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Pacientes</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        a {
+            text-decoration: none;
+            color: blue;
+        }
+    </style>
 </head>
 <body>
-    <h1>Consulta de Paciente</h1>
-    <ul>
-        {% for paciente in pacientes %}
-        <li><a href="/paciente/{{ paciente.id }}">{{ paciente.apellidos }}, {{ paciente.nombres }}</a></li>
-        {% endfor %}
-    </ul>
+    <h1>Consulta de Pacientes</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Apellidos</th>
+                <th>Nombres</th>
+                <th>Fecha de Nacimiento</th>
+                <th>Celular</th>
+                <th>Turno</th>
+                <th>Género</th>
+                <th>Registrado Por</th>
+                <th>Detalles</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for paciente in pacientes %}
+            <tr>
+                <td>{{ paciente.id }}</td>
+                <td>{{ paciente.apellidos }}</td>
+                <td>{{ paciente.nombres }}</td>
+                <td>{{ paciente.fecha_nacimiento }}</td>
+                <td>{{ paciente.celular }}</td>
+                <td>{{ paciente.turno }}</td>
+                <td>{{ paciente.genero }}</td>
+                <td>{{ paciente.registrado_por }}</td>
+                <td><a href="/paciente/{{ paciente.id }}">Ver Detalles</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>

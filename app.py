@@ -116,9 +116,9 @@ registrados = [
     }
 ]
 
-@app.route('/consulta')
+@app.route('/consultar')
 def consulta_paciente():
-    return render_template('/consulta', pacientes=registrados)
+    return render_template('/consultar', pacientes=registrados)
 
 @app.route('/paciente/<id>')
 def detalle_paciente(id):
@@ -136,7 +136,7 @@ def actualizar_paciente(id):
 
     # Aquí puedes agregar la lógica para actualizar los datos del paciente en la base de datos
 
-    return redirect(url_for('detalle', id=id))
+    return redirect(url_for('detalles', id=id))
 
 if __name__ == '__main__':
     app.run(debug=True)
