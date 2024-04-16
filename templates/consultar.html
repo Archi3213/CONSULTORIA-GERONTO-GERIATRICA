@@ -4,18 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta de Pacientes</title>
-    
-    <style>
-        body {
-                background-image: url('https://img.freepik.com/vector-gratis/fondo-frutas-verduras_23-2148485148.jpg?w=740&t=st=1713248651~exp=1713249251~hmac=30e168e9f2d449c4894d64a9e7ff69ce1449d8aca24ba3c0d846298490ca6041');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-            }
-            </style>
 </head>
 <body>
     <h1>Consulta de Pacientes</h1>
@@ -34,6 +22,7 @@
             <th>Registrado Por</th>
             <th>Porcentaje de Grasa</th>
             <th>Densidad Muscular</th>
+            <th>IMC</th>
             <th>Actualizar</th>
         </tr>
         {% for paciente in pacientes %}
@@ -45,6 +34,7 @@
             <td>{{ paciente.celular }}</td>
             <td>{{ paciente.peso }}</td>
             <td>{{ paciente.altura }}</td>
+            <td>{{(paciente.IMC)}}</td>
             <td>{{ paciente.turno }}</td>
             <td>{{ paciente.genero }}</td>
             <td>{{ paciente.fecha_registro }}</td>
@@ -55,7 +45,7 @@
                     <input type="number" name="densidad_muscular" placeholder="Densidad Muscular">
                     <input type="submit" value="Actualizar">
                 </form>
-            </td>
+          
         </tr>
         {% endfor %}
     </table>

@@ -7,8 +7,9 @@ app = Flask(__name__)
 pacientes_registrados = [
     {
         'id': '1',
-        'apellidos': 'García',
-        'nombres': 'Juan',
+        'primer_apellido': 'interian',
+        'segundo_apellido': 'correa',
+        'nombres': 'xochitl ',
         'fecha_nacimiento': '1990-05-15',
         'celular': '555-1234',
         'turno': 'matutino',
@@ -18,7 +19,8 @@ pacientes_registrados = [
     },
     {
         'id': '2',
-        'apellidos': 'López',
+        'primer_apellido': 'López',
+        'Ssegundo_apellido': 'PARRA',
         'nombres': 'María',
         'fecha_nacimiento': '1985-10-20',
         'celular': '555-5678',
@@ -59,7 +61,7 @@ def options():
 def registro_paciente():
     if request.method == 'POST':
         # Obtener los datos del formulario
-        apellidos = request.form['apellidos']
+        apellidos = request.form['primer_apellido''segundo_apellido']
         nombres = request.form['nombres']
         fecha_nacimiento = request.form['fecha_nacimiento']
         celular = request.form['celular']
@@ -76,12 +78,13 @@ def registro_paciente():
         # Crear un diccionario con los datos del paciente
         paciente = {
             'id': id_paciente,
-            'apellidos': apellidos,
+            'primer_apellido''segundo_apellido': apellidos,
             'nombres': nombres,
             'fecha_nacimiento': fecha_nacimiento,
             'celular': celular,
             'peso': peso,
             'altura': altura,
+            'imc': (peso/(altura*altura)),
             'turno': turno,
             'genero': genero,
             'fecha_registro': fecha_registro,
