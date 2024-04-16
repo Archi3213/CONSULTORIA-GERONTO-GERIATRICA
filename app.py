@@ -4,22 +4,40 @@ import uuid  # Importar el módulo uuid para generar IDs únicos
 app = Flask(__name__)
 
 # Crear una lista para almacenar los pacientes registrados (simulado)
-pacientes_registrados = []
+pacientes_registrados = [
+    {
+        'id': '1',
+        'apellidos': 'García',
+        'nombres': 'Juan',
+        'fecha_nacimiento': '1990-05-15',
+        'celular': '555-1234',
+        'turno': 'matutino',
+        'genero': 'masculino',
+        'fecha_registro': '2024-04-15',
+        'registrado_por': 'Mariana'
+    },
+    {
+        'id': '2',
+        'apellidos': 'López',
+        'nombres': 'María',
+        'fecha_nacimiento': '1985-10-20',
+        'celular': '555-5678',
+        'turno': 'vespertino',
+        'peso': '82',
+        'altura': '152',
+        'turno': 'vespertino',
+        'genero': 'femenino',
+        'fecha_registro': '2024-04-16',
+        'registrado_por': 'Pedro'
+    }
+]
 
 @app.route('/')
 def index():
     return render_template('index.html')
-
-from flask import Flask, render_template, request, redirect, url_for
-
-app = Flask(__name__)
 
 # Usuarios y contraseñas permitidos (puedes agregar más si lo necesitas)
 users = {'vespertino': 'vespertino', '1': '1'}
-
-@app.route('/')
-def index():
-    return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -33,12 +51,8 @@ def login():
             return render_template('login.html', error=error)
     return render_template('login.html')
 
-
-
-
 @app.route('/options')
 def options():
-    # Tu código para las opciones de registro y consulta aquí
     return render_template('options.html')
 
 @app.route('/registro', methods=['GET', 'POST'])
@@ -82,43 +96,15 @@ def registro_paciente():
 
     return render_template('registro.html')
 
-
 @app.route('/registro_exitoso')
 def registro_exitoso():
     id_paciente = request.args.get('id_paciente')
     nombre_paciente = request.args.get('nombre_paciente')
     return render_template('registro_exitoso.html', id_paciente=id_paciente, nombre_paciente=nombre_paciente)
 
-if __name__ == '__main__':
-    app.run(debug=True)
-registrados = [
-    {
-        'id': '1',
-        'apellidos': 'García',
-        'nombres': 'Juan',
-        'fecha_nacimiento': '1990-05-15',
-        'celular': '555-1234',
-        'turno': 'matutino',
-        'genero': 'masculino',
-        'fecha_registro': '2024-04-15',
-        'registrado_por': 'Mariana'
-    },
-    {
-        'id': '2',
-        'apellidos': 'López',
-        'nombres': 'María',
-        'fecha_nacimiento': '1985-10-20',
-        'celular': '555-5678',
-        'turno': 'vespertino',
-        'genero': 'femenino',
-        'fecha_registro': '2024-04-16',
-        'registrado_por': 'Pedro'
-    }
-]
-
 @app.route('/consultar')
 def consulta_paciente():
-    return render_template('/consultar', pacientes=registrados)
+    return render_template('consultar.html', pacientes=pacientes_registrados)
 
 @app.route('/paciente/<id>')
 def detalle_paciente(id):
@@ -136,7 +122,7 @@ def actualizar_paciente(id):
 
     # Aquí puedes agregar la lógica para actualizar los datos del paciente en la base de datos
 
-    return redirect(url_for('detalles', id=id))
+    return redirect(url_for('detalle_paciente', id=id))
 
 if __name__ == '__main__':
     app.run(debug=True)
