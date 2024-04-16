@@ -16,13 +16,14 @@
             <th>Celular</th>
             <th>Peso</th>
             <th>Altura</th>
+            <th>IMC</th>
             <th>Turno</th>
             <th>Género</th>
             <th>Fecha de Registro</th>
             <th>Registrado Por</th>
             <th>Porcentaje de Grasa</th>
             <th>Densidad Muscular</th>
-            <th>IMC</th>
+           
             <th>Actualizar</th>
         </tr>
         {% for paciente in pacientes %}
@@ -34,7 +35,7 @@
             <td>{{ paciente.celular }}</td>
             <td>{{ paciente.peso }}</td>
             <td>{{ paciente.altura }}</td>
-            <td>{{(paciente.IMC)}}</td>
+            <td>{{(paciente.imc)}}</td>
             <td>{{ paciente.turno }}</td>
             <td>{{ paciente.genero }}</td>
             <td>{{ paciente.fecha_registro }}</td>
@@ -42,9 +43,13 @@
             <td>
                 <form action="{{ url_for('actualizar_paciente', id=paciente.id) }}" method="post">
                     <input type="number" name="porcentaje_grasa" placeholder="Porcentaje de Grasa">
-                    <input type="number" name="densidad_muscular" placeholder="Densidad Muscular">
                     <input type="submit" value="Actualizar">
                 </form>
+          <td>
+                    <form action="{{ url_for('actualizar_paciente', id=paciente.id) }}" method="post">
+                        <input type="number" name="densidad_muscular" placeholder="Densidad Muscular">
+                        <input type="submit" value="Actualizar">
+                    </form>
           
         </tr>
         {% endfor %}

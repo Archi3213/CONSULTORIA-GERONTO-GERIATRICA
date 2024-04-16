@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 import uuid  # Importar el módulo uuid para generar IDs únicos
+import calendar
 
 app = Flask(__name__)
 
@@ -52,11 +53,21 @@ def login():
             error = 'Usuario o contraseña incorrectos'
             return render_template('login.html', error=error)
     return render_template('login.html')
-
+#inicia el apartado de opciones
 @app.route('/options')
 def options():
-    return render_template('options.html')
 
+    # Generar el calendario
+    year = 2024
+    month = 4
+    cal = calendar.month(year, month)
+
+    return render_template('options.html', calendar=cal)
+if __name__ == '__main__':
+    app.run(debug=True)
+
+if __name__ == '__main__':
+    app.run(debug=True)
 @app.route('/registro', methods=['GET', 'POST'])
 def registro_paciente():
     if request.method == 'POST':
@@ -69,6 +80,7 @@ def registro_paciente():
         genero = request.form['genero']
         peso = request.form['peso']
         altura = request.form['altura']
+        imc = request.form['imc']
         fecha_registro = request.form['fecha_registro']
         registrado_por = request.form['registrado_por']
 
@@ -126,6 +138,16 @@ def actualizar_paciente(id):
     # Aquí puedes agregar la lógica para actualizar los datos del paciente en la base de datos
 
     return redirect(url_for('detalle_paciente', id=id))
+
+if __name__ == '__main__':
+    app.run(debug=True)
+@app.route('/agendar_cita')
+def agendar_cita():
+    return render_template('agendar_cita.html')
+
+@app.route('/historial_citas')
+def historial_citas():
+    return render_template('historial_citas.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
