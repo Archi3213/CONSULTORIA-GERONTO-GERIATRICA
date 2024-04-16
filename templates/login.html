@@ -1,26 +1,105 @@
+</html>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión</title>
-    <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NUTRICION CONSULTAS</title>
+<<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-image: url(Imagen/_44109a07-adb5-4db9-90c0-8bac1621533a-removebg-preview.png);
+        margin: 10px;
+        padding: 10px;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        background-color: #64f352;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    input[type="submit"] {
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .form-group label,
+    .form-group input {
+        float: left;
+        width: 48%;
+    }
+
+    @media (max-width: 768px) {
+        .form-group label,
+        .form-group input {
+            width: 100%;
+        }
+    }
+</style>>
 </head>
 <body>
     <div class="container">
-        <div class="login-container">
-            <h1>CONSULTAS NUTRICION ARMONIA</h1>
-            <h1>Inicio de sesion</h1>
-            <form action="/login" method="post">
-                <label for="username">Usuario:</label>
-                <input type="text" id="username" name="username" required><br>
+        <h1>CONSULTAS NUTRICION ARMONIA</h1>
+        <h1>Inicio de sesion</h1>
+        <div class="form-group">
+        <form action="/login" method="post">
+            <h1></h1>
+            {% if error %}
+            <p style="color: red;">{{ error }}</p>
+            {% endif %}
+            <label for="username">Usuario:</label>
+            <input type="text" id="username" name="username" required><br>
 
-                <label for="password">Contraseña:</label>
-                <input type="password" id="password" name="password" required><br>
-
-                <input type="submit" value="Iniciar Sesión">
-            </form>
-        </div>
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required><br>
+  
+            <input type="submit" value="Iniciar Sesión">
+        </form>
     </div>
+</div>
+</body>
 </body>
 </html>
