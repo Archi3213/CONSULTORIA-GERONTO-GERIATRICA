@@ -1,9 +1,28 @@
 from flask import Flask, render_template, request, redirect, url_for
 import uuid  # Importar el módulo uuid para generar IDs únicos
 import calendar
+import datetime
 
 app = Flask(__name__)
+now = datetime.datetime.now()
+year = now.year
+month = now.month
 
+# Crear un calendario para el mes actual
+cal = calendar.monthcalendar(year, month)
+
+# Convertir el calendario a HTML
+html_calendar = "<tr>"
+for week in cal:
+    for day in week:
+        if day == 0:
+            html_calendar += "<td></td>"
+        else:
+            html_calendar += f"<td>{day}</td>"
+    html_calendar += "</tr><tr>"
+html_calendar = html_calendar[:-4]  # Eliminar el último <tr>
+
+print(html_calendar)
 # Crear una lista para almacenar los pacientes registrados (simulado)
 pacientes_registrados = [
     {
@@ -72,10 +91,8 @@ def login():
 @app.route('/options')
 def options():
 
-    # Generar el calendario
-    year = 2024
-    month = 4
-    cal = calendar.month(year, month)
+    # Obtener el año y mes actual
+
 
     return render_template('options.html', calendar=cal)
 
