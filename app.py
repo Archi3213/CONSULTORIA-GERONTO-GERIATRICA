@@ -142,13 +142,31 @@ def actualizar_paciente(id):
     # Aquí puedes agregar la lógica para actualizar los datos del paciente en la base de datos
     return redirect(url_for('detalle_paciente', id=id))
 
-@app.route('/agendar_cita')
+@app.route('/agendar_cita', methods=['GET', 'POST'])
 def agendar_cita():
-    return render_template('agendar_cita.html')
+    if request.method == 'POST':
+        paciente_id = request.form['paciente']
+        fecha_consulta = request.form['fecha_consulta']
+        # Aquí puedes agregar la lógica para guardar la fecha de la siguiente consulta para el paciente seleccionado
+        return redirect(url_for('historial_citas'))  # Redirigir a la página de historial de citas después de agendar la cita
+    else:
+        return render_template('agendar_cita.html', pacientes=pacientes_registrados)
 
 @app.route('/historial_citas')
 def historial_citas():
-    return render_template('historial_citas.html')
+    # Aquí puedes agregar la lógica para obtener el historial de citas de los pacientes
+    citas = [
+        {
+            'paciente': 'María López Parra',
+            'fecha_consulta': '2024-04-20'
+        },
+        {
+            'paciente': 'Xochitl Interian Correa',
+            'fecha_consulta': '2024-04-25'
+        }
+        # Puedes agregar más citas según la información que manejes en tu sistema
+    ]
+    return render_template('historial_citas.html', citas=citas)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Citas</title>
+</head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <title>Registro de Paciente</title>
     <style>
         body {
@@ -86,49 +93,23 @@
     <a href="/agendar_cita">Agendar Cita</a>
     <a href="/historial_citas">Historial de Citas</a>
 </div>
-<div class="container">
-    <h1>Registro de Paciente</h1>
-    <div class="form-group">
-        <form method="post" action="/registro">
-            <label>Primer apellido:</label>
-            <input type="text" name="primer_apellido"required>
-            <label>Segundo apellido:</label>
-            <input type="text" name="segundo_apellido"required>
-            <label>Nombres:</label>
-            <input type="text" name="nombres"required>
-
-            <label>Fecha de Nacimiento:</label>
-            <input type="date" name="fecha_nacimiento"required>
-
-            <label for="celular"> Numero de celular:</label>
-        <input type="number" id="celular" name="celular" pattern="[0-9]" +
-        title="Ingrese al menos 9 dígitos numéricos" required><br>
-            
-        <label>Turno:</label>
-            <select name="turno">
-                <option value="matutino">Matutino</option>
-                <option value="vespertino">Vespertino</option>
-            </select>
-
-            <label>Género:</label>
-            <input type="radio" name="genero" value="masculino">Masculino
-            <input type="radio" name="genero" value="femenino">Femenino
-            <br></br>
-            <label>Peso(kg):</label>
-            <input type="number" name="peso"required>
-
-            <label>Altura(cm):</label>
-            <input type="number" name="altura"required>
-
-            <label>Fecha de Registro:</label>
-            <input type="date" name="fecha_registro"required>
-
-            <label>Quién Registró:</label>
-            <input type="text" name="registrado_por"required>
-
-            <input type="submit" value="Registrar">
-        </form>
-    </div>
-</div>
+<body>
+    <h1>Historial de Citas</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Paciente</th>
+                <th>Fecha de Consulta</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cita in citas %}
+            <tr>
+                <td>{{ cita.paciente }}</td>
+                <td>{{ cita.fecha_consulta }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>
