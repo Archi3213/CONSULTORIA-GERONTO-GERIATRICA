@@ -1,110 +1,105 @@
-</html>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NUTRICION CONSULTAS</title>
-<style>
-    body {
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NUTRICION CONSULTAS</title>
+    <style>
+        body {
             background-image: url('https://img.freepik.com/vector-gratis/fondo-frutas-verduras_23-2148485148.jpg?w=740&t=st=1713248651~exp=1713249251~hmac=30e168e9f2d449c4894d64a9e7ff69ce1449d8aca24ba3c0d846298490ca6041');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
-    
-    
 
-    .container {
-        max-width: 600px;
-        margin: 50px auto;
-        background-color: #64f352;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #64f352;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Centrar contenido */
+        }
 
-    h1 {
-        text-align: center;
-        color: #333;
-    }
+        h1 {
+            color: #333;
+        }
 
-    label {
-        display: block;
-        margin-bottom: 5px;
-        color: #555;
-    }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
 
-    input[type="text"],
-    input[type="email"],
-    input[type="password"] {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
 
-    input[type="submit"] {
-        background-color: #4CAF50;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 4px;
-        cursor: pointer;
-    }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
 
-    input[type="submit"]:hover {
-        background-color: #45a049;
-    }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
 
-    .form-group {
-        margin-bottom: 20px;
-    }
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-    .form-group::after {
-        content: "";
-        display: table;
-        clear: both;
-    }
+        .form-group::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
 
-    .form-group label,
-    .form-group input {
-        float: left;
-        width: 48%;
-    }
-
-    @media (max-width: 768px) {
         .form-group label,
         .form-group input {
-            width: 100%;
+            width: 48%;
+            margin: 0 auto; /* Centrar elementos dentro de .form-group */
         }
-    }
-</style>
+
+        @media (max-width: 768px) {
+            .form-group label,
+            .form-group input {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>CONSULTAS NUTRICION ARMONIA</h1>
         <h1>Inicio de sesion</h1>
         <div class="form-group">
-        <form action="/login" method="post">
-            <h1></h1>
-            {% if error %}
-            <p style="color: red;">{{ error }}</p>
-            {% endif %}
-            <label for="username">Usuario:</label>
-            <input type="text" id="username" name="username" required><br>
+            <form action="/login" method="post">
+                {% if error %}
+                <p style="color: red;">{{ error }}</p>
+                {% endif %}
+                <label for="username">Usuario:</label>
+                <input type="text" id="username" name="username" required><br>
 
-            <label for="password">Contraseña:</label>
-            <input type="password" id="password" name="password" required><br>
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" required><br>
   
-            <input type="submit" value="Iniciar Sesión">
-        </form>
+                <input type="submit" value="Iniciar Sesión">
+            </form>
+        </div>
     </div>
-</div>
-</body>
 </body>
 </html>

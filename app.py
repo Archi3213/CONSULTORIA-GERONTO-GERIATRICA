@@ -32,6 +32,21 @@ pacientes_registrados = [
         'genero': 'femenino',
         'fecha_registro': '2024-04-16',
         'registrado_por': 'Pedro'
+    },
+        {
+        'id': '3',
+        'primer_apellido': 'López',
+        'segundo_apellido': 'PARRA',
+        'nombres': 'María',
+        'fecha_nacimiento': '1985-10-20',
+        'celular': '555-5678',
+        'turno': 'vespertino',
+        'peso': '82',
+        'altura': '152',
+        'turno': 'vespertino',
+        'genero': 'femenino',
+        'fecha_registro': '2024-04-16',
+        'registrado_por': 'Pedro'
     }
 ]
 
@@ -77,7 +92,6 @@ def registro_paciente():
         genero = request.form['genero']
         peso = request.form['peso']
         altura = request.form['altura']
-        imc = request.form['imc']
         fecha_registro = request.form['fecha_registro']
         registrado_por = request.form['registrado_por']
 
@@ -95,7 +109,6 @@ def registro_paciente():
             'celular': celular,
             'peso': peso,
             'altura': altura,
-            'imc': (peso/(altura*altura)),
             'turno': turno,
             'genero': genero,
             'fecha_registro': fecha_registro,
@@ -106,8 +119,7 @@ def registro_paciente():
         pacientes_registrados.append(paciente)
 
         # Redirigir a la página de registro exitoso y pasar los datos del paciente
-        return redirect(url_for('registro_exitoso', id_paciente=id_paciente, nombre_paciente=f'{nombres} {primer_apellido}{segundo_apellido}'))
-
+        return redirect(url_for('registro_exitoso', id_paciente=id_paciente, nombres_paciente=nombres+primer_apellido+segundo_apellido))
     return render_template('registro.html')
 
 @app.route('/registro_exitoso')
