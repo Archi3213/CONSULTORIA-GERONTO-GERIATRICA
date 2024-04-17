@@ -22,14 +22,13 @@ for week in cal:
     html_calendar += "</tr><tr>"
 html_calendar = html_calendar[:-4]  # Eliminar el último <tr>
 
-print(html_calendar)
 # Crear una lista para almacenar los pacientes registrados (simulado)
 pacientes_registrados = [
     {
         'id': '1',
-        'primer_apellido': 'interian',
-        'segundo_apellido': 'correa',
-        'nombres': 'xochitl ',
+        'primer_apellido': 'Interian',
+        'segundo_apellido': 'Correa',
+        'nombres': 'Xochitl',
         'fecha_nacimiento': '1990-05-15',
         'celular': '555-1234',
         'turno': 'matutino',
@@ -40,41 +39,25 @@ pacientes_registrados = [
     {
         'id': '2',
         'primer_apellido': 'López',
-        'segundo_apellido': 'PARRA',
+        'segundo_apellido': 'Parra',
         'nombres': 'María',
         'fecha_nacimiento': '1985-10-20',
         'celular': '555-5678',
         'turno': 'vespertino',
         'peso': '82',
         'altura': '152',
-        'turno': 'vespertino',
-        'genero': 'femenino',
-        'fecha_registro': '2024-04-16',
-        'registrado_por': 'Pedro'
-    },
-        {
-        'id': '3',
-        'primer_apellido': 'López',
-        'segundo_apellido': 'PARRA',
-        'nombres': 'María',
-        'fecha_nacimiento': '1985-10-20',
-        'celular': '555-5678',
-        'turno': 'vespertino',
-        'peso': '82',
-        'altura': '152',
-        'turno': 'vespertino',
         'genero': 'femenino',
         'fecha_registro': '2024-04-16',
         'registrado_por': 'Pedro'
     }
 ]
 
+# Usuarios y contraseñas permitidos (puedes agregar más si lo necesitas)
+users = {'vespertino': 'vespertino', '1': '1'}
+
 @app.route('/')
 def index():
     return render_template('index.html')
-
-# Usuarios y contraseñas permitidos (puedes agregar más si lo necesitas)
-users = {'vespertino': 'vespertino', '1': '1'}
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -87,56 +70,50 @@ def login():
             error = 'Usuario o contraseña incorrectos'
             return render_template('login.html', error=error)
     return render_template('login.html')
-#inicia el apartado de opciones
+
 @app.route('/options')
 def options():
-
-    # Obtener el año y mes actual
-
-
     return render_template('options.html', calendar=cal)
 
 @app.route('/registro', methods=['GET', 'POST'])
 def registro_paciente():
     if request.method == 'POST':
-        # Obtener los datos del formulario
         primer_apellido = request.form['primer_apellido']
-        segundo_apellido = request.form['segundo_apellido']                      
+        segundo_apellido = request.form['segundo_apellido']
         nombres = request.form['nombres']
         fecha_nacimiento = request.form['fecha_nacimiento']
         celular = request.form['celular']
         turno = request.form['turno']
         genero = request.form['genero']
-        peso = request.form['peso']
-        altura = request.form['altura']
+        peso = request.form.get('peso', '')  # Puede ser opcional
+        altura = request.form.get('altura', '')  # Puede ser opcional
         fecha_registro = request.form['fecha_registro']
         registrado_por = request.form['registrado_por']
 
         # Generar un ID único para el paciente
-        id_paciente = str(uuid.uuid4())[:8]  # Obtener los primeros 8 caracteres del ID
+        id_parte1 = primer_apellido[:2].upper() + segundo_apellido[:2].upper() + nombres[:2].upper()
+        fecha_nacimiento_dt = datetime.datetime.strptime(fecha_nacimiento, '%Y-%m-%d')
+        id_parte2 = f"{fecha_nacimiento_dt.day:02}{fecha_nacimiento_dt.month:02}{fecha_nacimiento_dt.year % 100:02}"
+        id_paciente = id_parte1 + id_parte2
 
-        # Crear un diccionario con los datos del paciente
         paciente = {
             'id': id_paciente,
             'primer_apellido': primer_apellido,
             'segundo_apellido': segundo_apellido,
-            'apellidos': primer_apellido + segundo_apellido,
             'nombres': nombres,
             'fecha_nacimiento': fecha_nacimiento,
             'celular': celular,
-            'peso': peso,
-            'altura': altura,
             'turno': turno,
             'genero': genero,
+            'peso': peso,
+            'altura': altura,
             'fecha_registro': fecha_registro,
             'registrado_por': registrado_por
         }
 
-        # Agregar el paciente a la lista de pacientes registrados
         pacientes_registrados.append(paciente)
 
-        # Redirigir a la página de registro exitoso y pasar los datos del paciente
-        return redirect(url_for('registro_exitoso', id_paciente=id_paciente, nombres_paciente=nombres+primer_apellido+segundo_apellido))
+        return redirect(url_for('registro_exitoso', id_paciente=id_paciente, nombre_paciente=f"{nombres} {primer_apellido} {segundo_apellido}"))
     return render_template('registro.html')
 
 @app.route('/registro_exitoso')
@@ -162,13 +139,9 @@ def actualizar_paciente(id):
     peso = request.form['peso']
     masa_muscular = request.form['masa_muscular']
     cita = request.form['cita']
-
     # Aquí puedes agregar la lógica para actualizar los datos del paciente en la base de datos
-
     return redirect(url_for('detalle_paciente', id=id))
 
-if __name__ == '__main__':
-    app.run(debug=True)
 @app.route('/agendar_cita')
 def agendar_cita():
     return render_template('agendar_cita.html')
