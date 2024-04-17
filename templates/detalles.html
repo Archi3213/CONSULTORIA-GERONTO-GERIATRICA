@@ -2,17 +2,41 @@
 <head>
     <title>Detalle de Paciente</title>
 </head>
-<style>
-    body {
-            background-image: url('https://img.freepik.com/vector-gratis/fondo-frutas-verduras_23-2148485148.jpg?w=740&t=st=1713248651~exp=1713249251~hmac=30e168e9f2d449c4894d64a9e7ff69ce1449d8aca24ba3c0d846298490ca6041');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-        }
-        </style>
+<style> body {
+    background-image: url('https://img.freepik.com/vector-gratis/fondo-frutas-verduras_23-2148485148.jpg?w=740&t=st=1713248651~exp=1713249251~hmac=30e168e9f2d449c4894d64a9e7ff69ce1449d8aca24ba3c0d846298490ca6041');
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+font-family: Arial, sans-serif;
+margin: 0;
+padding: 0;
+}  /* Estilos para la barra de navegación */
+.navbar {
+    overflow: hidden;
+    background-color: #333;
+}
+
+.navbar a {
+    display: inline-block;
+    color: #f2f2f2;
+    text-align: justify;
+    padding: 14px 16px;
+    text-decoration: rgb(red, green, blue);
+}
+
+.navbar a:hover {
+    background-color: #ddd;
+    color: black;
+}
+</style>
+</head>
+<div class="navbar">
+<a href="/">Inicio</a>         
+<a href="/registro">Registro</a>
+<a href="/consultar">Consulta</a>
+<a href="/agendar_cita">Agendar Cita</a>
+<a href="/historial_citas">Historial de Citas</a>
+</div>
 <body>
     <h1>Detalle de Paciente</h1>
     <h2>{{ paciente.apellidos }}, {{ paciente.nombres }}</h2>

@@ -21,7 +21,7 @@ pacientes_registrados = [
     {
         'id': '2',
         'primer_apellido': 'López',
-        'Ssegundo_apellido': 'PARRA',
+        'segundo_apellido': 'PARRA',
         'nombres': 'María',
         'fecha_nacimiento': '1985-10-20',
         'celular': '555-5678',
@@ -63,16 +63,13 @@ def options():
     cal = calendar.month(year, month)
 
     return render_template('options.html', calendar=cal)
-if __name__ == '__main__':
-    app.run(debug=True)
 
-if __name__ == '__main__':
-    app.run(debug=True)
 @app.route('/registro', methods=['GET', 'POST'])
 def registro_paciente():
     if request.method == 'POST':
         # Obtener los datos del formulario
-        apellidos = request.form['primer_apellido''segundo_apellido']
+        primer_apellido = request.form['primer_apellido']
+        segundo_apellido = request.form['segundo_apellido']                      
         nombres = request.form['nombres']
         fecha_nacimiento = request.form['fecha_nacimiento']
         celular = request.form['celular']
@@ -90,7 +87,9 @@ def registro_paciente():
         # Crear un diccionario con los datos del paciente
         paciente = {
             'id': id_paciente,
-            'primer_apellido''segundo_apellido': apellidos,
+            'primer_apellido': primer_apellido,
+            'segundo_apellido': segundo_apellido,
+            'apellidos': primer_apellido + segundo_apellido,
             'nombres': nombres,
             'fecha_nacimiento': fecha_nacimiento,
             'celular': celular,
@@ -107,7 +106,7 @@ def registro_paciente():
         pacientes_registrados.append(paciente)
 
         # Redirigir a la página de registro exitoso y pasar los datos del paciente
-        return redirect(url_for('registro_exitoso', id_paciente=id_paciente, nombre_paciente=f'{nombres} {apellidos}'))
+        return redirect(url_for('registro_exitoso', id_paciente=id_paciente, nombre_paciente=f'{nombres} {primer_apellido}{segundo_apellido}'))
 
     return render_template('registro.html')
 
