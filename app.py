@@ -24,32 +24,6 @@ html_calendar = html_calendar[:-4]  # Eliminar el último <tr>
 
 # Crear una lista para almacenar los pacientes registrados (simulado)
 pacientes_registrados = [
-    {
-        'id': '1',
-        'primer_apellido': 'Interian',
-        'segundo_apellido': 'Correa',
-        'nombres': 'Xochitl',
-        'fecha_nacimiento': '1990-05-15',
-        'celular': '555-1234',
-        'turno': 'matutino',
-        'genero': 'masculino',
-        'fecha_registro': '2024-04-15',
-        'registrado_por': 'Mariana'
-    },
-    {
-        'id': '2',
-        'primer_apellido': 'López',
-        'segundo_apellido': 'Parra',
-        'nombres': 'María',
-        'fecha_nacimiento': '1985-10-20',
-        'celular': '555-5678',
-        'turno': 'vespertino',
-        'peso': '82',
-        'altura': '152',
-        'genero': 'femenino',
-        'fecha_registro': '2024-04-16',
-        'registrado_por': 'Pedro'
-    }
 ]
 
 # Usuarios y contraseñas permitidos (puedes agregar más si lo necesitas)
@@ -156,15 +130,7 @@ def agendar_cita():
 def historial_citas():
     # Aquí puedes agregar la lógica para obtener el historial de citas de los pacientes
     citas = [
-        {
-            'paciente': 'María López Parra',
-            'fecha_consulta': '2024-04-20'
-        },
-        {
-            'paciente': 'Xochitl Interian Correa',
-            'fecha_consulta': '2024-04-25'
-        }
-        # Puedes agregar más citas según la información que manejes en tu sistema
+        
     ]
     return render_template('historial_citas.html', citas=citas)
 
