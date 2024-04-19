@@ -120,20 +120,40 @@ def actualizar_paciente(id):
     # Aquí puedes agregar la lógica para actualizar los datos del paciente en la base de datos
     return redirect(url_for('detalle_paciente', id=id))
 
+
 @app.route('/agendar_cita', methods=['GET', 'POST'])
 def agendar_cita():
     if request.method == 'POST':
         paciente_id = request.form['paciente']
         fecha_consulta = request.form['fecha_consulta']
-        # Aquí puedes agregar la lógica para guardar la fecha de la siguiente consulta para el paciente seleccionado
+        
+        # Aquí agregamos la lógica para guardar la fecha de la siguiente consulta para el paciente seleccionado
+        for paciente in pacientes_registrados:
+            if paciente['id'] == paciente_id:
+                if 'citas' not in paciente:
+                    paciente['citas'] = []
+                paciente['citas'].append({
+                    'fecha_consulta': fecha_consulta,
+                    'observaciones': ''  # Puedes agregar más campos según sea necesario
+                })
+                break  # Salimos del bucle una vez que encontramos al paciente
+        
         return redirect(url_for('historial_citas'))  # Redirigir a la página de historial de citas después de agendar la cita
     else:
         return render_template('agendar_cita.html', pacientes=pacientes_registrados)
 
 @app.route('/historial_citas')
 def historial_citas():
-    # Aquí puedes agregar la lógica para obtener el historial de citas de los pacientes
-    citas = [ ]
+    citas = []  # Lista para almacenar las citas
+    for paciente in pacientes_registrados:
+        if 'citas' in paciente:
+            for cita in paciente['citas']:
+                citas.append({
+                    'paciente_id': paciente['id'],
+                    'nombre_paciente': f"{paciente['nombres']} {paciente['primer_apellido']} {paciente['segundo_apellido']}",
+                    'fecha_consulta': cita['fecha_consulta'],
+                    'observaciones': cita['observaciones']
+                })
     return render_template('historial_citas.html', citas=citas)
 @app.route('/directorio_pacientes')
 def directorio_pacientes():

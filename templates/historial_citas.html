@@ -4,11 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historial de Citas</title>
-</head>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Registro de Paciente</title>
     <style>
         body {
             background-image: url('https://img.freepik.com/vector-gratis/fondo-frutas-verduras_23-2148485148.jpg?w=740&t=st=1713248651~exp=1713249251~hmac=30e168e9f2d449c4894d64a9e7ff69ce1449d8aca24ba3c0d846298490ca6041');
@@ -20,98 +15,92 @@
             padding: 0;
         }
 
-        /* Estilos para la barra de navegación */
         .navbar {
             overflow: hidden;
             background-color: #333;
-            margin-bottom: 20px; /* Agregamos margen inferior para separar del contenido */
+            margin-bottom: 20px;
         }
 
         .navbar a {
             display: inline-block;
             color: #f2f2f2;
-            text-align: center; /* Alineamos el texto al centro */
+            text-align: center;
             padding: 14px 16px;
-            text-decoration: none; /* Quitamos el subrayado de los enlaces */
-            transition: background-color 0.3s; /* Agregamos transición al cambio de color */
+            text-decoration: none;
+            transition: background-color 0.3s;
         }
 
         .navbar a:hover {
-            background-color: #555; /* Color de fondo al pasar el mouse */
+            background-color: #555;
         }
 
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 50px auto;
-            background-color: #fff; /* Cambiamos el color de fondo */
+            background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .container h1 {
-            color: #333; /* Color del título */
-            text-align: center; /* Alineamos al centro */
-            margin-bottom: 20px; /* Agregamos margen inferior */
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
-        .form-group label {
-            display: block; /* Mostramos las etiquetas en bloque para separar verticalmente */
-            margin-bottom: 5px; /* Agregamos margen inferior a las etiquetas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        .form-group input[type="text"],
-        .form-group input[type="number"],
-        .form-group select,
-        .form-group input[type="date"] {
-            width: 100%; /* Ancho completo para los campos de entrada */
-            padding: 8px; /* Aumentamos el padding para mejorar la apariencia */
-            margin-bottom: 10px; /* Agregamos margen inferior a los campos */
-            border-radius: 4px; /* Borde redondeado */
-            border: 1px solid #ccc; /* Borde con color gris */
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
         }
 
-        .form-group input[type="submit"] {
-            background-color: #4CAF50; /* Color de fondo del botón */
-            color: white; /* Color del texto del botón */
-            border: none; /* Quitamos el borde */
-            padding: 10px 20px; /* Ajustamos el padding del botón */
-            border-radius: 4px; /* Borde redondeado */
-            cursor: pointer; /* Cambiamos el cursor al pasar sobre el botón */
+        th {
+            background-color: #f2f2f2;
         }
 
-        .form-group input[type="submit"]:hover {
-            background-color: #45a049; /* Cambio de color al pasar el mouse */
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
 <body>
-<div class="navbar">
-    <a href="/">Inicio</a>
-    <a href="/options">Calendario</a>
-    <a href="/consultar">Consulta</a>
-    <a href="/agendar_cita">Agendar Cita</a>
-    <a href="/historial_citas">Historial de Citas</a>
-    <a href="/directorio_pacientes">Directorio Pacientes</a>
+    <div class="navbar">
+        <a href="/">Inicio</a>
+        <a href="/options">Calendario</a>
+        <a href="/consultar">Consulta</a>
+        <a href="/agendar_cita">Agendar Cita</a>
+        <a href="/historial_citas">Historial de Citas</a>
+        <a href="/directorio_pacientes">Directorio Pacientes</a>
+    </div>
 
-</div>
-<body>
-    <h1>Historial de Citas</h1>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Paciente</th>
-                <th>Fecha de Consulta</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for cita in citas %}
-            <tr>
-                <td>{{ cita.paciente }}</td>
-                <td>{{ cita.fecha_consulta }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="container">
+        <h1>Historial de Citas</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Paciente</th>
+                    <th>Nombre Paciente</th>
+                    <th>Fecha Consulta</th>
+                    <th>Observaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cita in citas %}
+                <tr>
+                    <td>{{ cita.paciente_id }}</td>
+                    <td>{{ cita.nombre_paciente }}</td>
+                    <td>{{ cita.fecha_consulta }}</td>
+                    <td>{{ cita.observaciones }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
