@@ -4,84 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agendar Cita</title>
-</head>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Registro de Paciente</title>
     <style>
         body {
             background-image: url('https://img.freepik.com/vector-gratis/fondo-frutas-verduras_23-2148485148.jpg?w=740&t=st=1713248651~exp=1713249251~hmac=30e168e9f2d449c4894d64a9e7ff69ce1449d8aca24ba3c0d846298490ca6041');
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f4f4f4;
         }
 
-        /* Estilos para la barra de navegación */
         .navbar {
             overflow: hidden;
             background-color: #333;
-            margin-bottom: 20px; /* Agregamos margen inferior para separar del contenido */
+            margin-bottom: 20px;
         }
 
         .navbar a {
             display: inline-block;
             color: #f2f2f2;
-            text-align: center; /* Alineamos el texto al centro */
+            text-align: center;
             padding: 14px 16px;
-            text-decoration: none; /* Quitamos el subrayado de los enlaces */
-            transition: background-color 0.3s; /* Agregamos transición al cambio de color */
+            text-decoration: none;
+            transition: background-color 0.3s;
         }
 
         .navbar a:hover {
-            background-color: #555; /* Color de fondo al pasar el mouse */
+            background-color: #555;
         }
 
         .container {
             max-width: 600px;
             margin: 50px auto;
-            background-color: #fff; /* Cambiamos el color de fondo */
+            background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .container h1 {
-            color: #333; /* Color del título */
-            text-align: center; /* Alineamos al centro */
-            margin-bottom: 20px; /* Agregamos margen inferior */
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         .form-group label {
-            display: block; /* Mostramos las etiquetas en bloque para separar verticalmente */
-            margin-bottom: 5px; /* Agregamos margen inferior a las etiquetas */
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
         }
 
-        .form-group input[type="text"],
-        .form-group input[type="number"],
-        .form-group select,
-        .form-group input[type="date"] {
-            width: 100%; /* Ancho completo para los campos de entrada */
-            padding: 8px; /* Aumentamos el padding para mejorar la apariencia */
-            margin-bottom: 10px; /* Agregamos margen inferior a los campos */
-            border-radius: 4px; /* Borde redondeado */
-            border: 1px solid #ccc; /* Borde con color gris */
+        .form-group input[type="date"],
+        .form-group input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-sizing: border-box; /* Incluir el padding y el borde en el ancho total */
         }
 
         .form-group input[type="submit"] {
-            background-color: #4CAF50; /* Color de fondo del botón */
-            color: white; /* Color del texto del botón */
-            border: none; /* Quitamos el borde */
-            padding: 10px 20px; /* Ajustamos el padding del botón */
-            border-radius: 4px; /* Borde redondeado */
-            cursor: pointer; /* Cambiamos el cursor al pasar sobre el botón */
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
         }
 
         .form-group input[type="submit"]:hover {
-            background-color: #45a049; /* Cambio de color al pasar el mouse */
+            background-color: #45a049;
         }
     </style>
 </head>
@@ -92,19 +84,30 @@
     <a href="/consultar">Consulta</a>
     <a href="/agendar_cita">Agendar Cita</a>
     <a href="/historial_citas">Historial de Citas</a>
+    <a href="/directorio_pacientes">Directorio Pacientes</a>
 </div>
-<body>
+
+<div class="container">
     <h1>Agendar Cita</h1>
     <form action="/agendar_cita" method="POST">
-        <label for="paciente">Seleccionar Paciente:</label>
-        <select name="paciente" id="paciente">
-            {% for paciente in pacientes %}
-            <option value="{{ paciente.id }}">{{ paciente.nombres }} {{ paciente.primer_apellido }} {{ paciente.segundo_apellido }}</option>
-            {% endfor %}
-        </select><br><br>
-        <label for="fecha_consulta">Fecha de la Siguiente Consulta:</label>
-        <input type="date" id="fecha_consulta" name="fecha_consulta" required><br><br>
-        <input type="submit" value="Agendar Cita">
+        <div class="form-group">
+            <label for="paciente">Seleccionar Paciente:</label>
+            <select name="paciente" id="paciente" required>
+                {% for paciente in pacientes %}
+                <option value="{{ paciente.id }}">{{ paciente.nombres }} {{ paciente.primer_apellido }} {{ paciente.segundo_apellido }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="fecha_consulta">Fecha de la Siguiente Consulta:</label>
+            <input type="date" id="fecha_consulta" name="fecha_consulta" required>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Agendar Cita">
+        </div>
     </form>
+</div>
 </body>
 </html>

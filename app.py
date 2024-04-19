@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for
-import uuid  # Importar el módulo uuid para generar IDs únicos
 import calendar
 import datetime
 
@@ -23,34 +22,7 @@ for week in cal:
 html_calendar = html_calendar[:-4]  # Eliminar el último <tr>
 
 # Crear una lista para almacenar los pacientes registrados (simulado)
-pacientes_registrados = [
-    {
-        'id': '1',
-        'primer_apellido': 'Interian',
-        'segundo_apellido': 'Correa',
-        'nombres': 'Xochitl',
-        'fecha_nacimiento': '1990-05-15',
-        'celular': '555-1234',
-        'turno': 'matutino',
-        'genero': 'masculino',
-        'fecha_registro': '2024-04-15',
-        'registrado_por': 'Mariana'
-    },
-    {
-        'id': '2',
-        'primer_apellido': 'López',
-        'segundo_apellido': 'Parra',
-        'nombres': 'María',
-        'fecha_nacimiento': '1985-10-20',
-        'celular': '555-5678',
-        'turno': 'vespertino',
-        'peso': '82',
-        'altura': '152',
-        'genero': 'femenino',
-        'fecha_registro': '2024-04-16',
-        'registrado_por': 'Pedro'
-    }
-]
+pacientes_registrados = []
 
 # Usuarios y contraseñas permitidos (puedes agregar más si lo necesitas)
 users = {'vespertino': 'vespertino', '1': '1'}
@@ -75,26 +47,32 @@ def login():
 def options():
     return render_template('options.html', calendar=cal)
 
+from flask import request, redirect, url_for, render_template
+import datetime
+
 @app.route('/registro', methods=['GET', 'POST'])
 def registro_paciente():
     if request.method == 'POST':
-        primer_apellido = request.form['primer_apellido']
-        segundo_apellido = request.form['segundo_apellido']
-        nombres = request.form['nombres']
+        primer_apellido = request.form['primer_apellido'].upper()
+        segundo_apellido = request.form['segundo_apellido'].upper()
+        nombres = request.form['nombres'].upper()
         fecha_nacimiento = request.form['fecha_nacimiento']
         celular = request.form['celular']
-        turno = request.form['turno']
-        genero = request.form['genero']
-        peso = request.form.get('peso', '')  # Puede ser opcional
-        altura = request.form.get('altura', '')  # Puede ser opcional
+        turno = request.form['turno'].upper()
+        genero = request.form['genero'].upper()
+        peso = float(request.form.get('peso', ''))  # Convertir a float
+        altura = float(request.form.get('altura', ''))  # Convertir a float
         fecha_registro = request.form['fecha_registro']
-        registrado_por = request.form['registrado_por']
+        registrado_por = request.form['registrado_por'].upper()
 
         # Generar un ID único para el paciente
         id_parte1 = primer_apellido[:2].upper() + segundo_apellido[:2].upper() + nombres[:2].upper()
         fecha_nacimiento_dt = datetime.datetime.strptime(fecha_nacimiento, '%Y-%m-%d')
         id_parte2 = f"{fecha_nacimiento_dt.day:02}{fecha_nacimiento_dt.month:02}{fecha_nacimiento_dt.year % 100:02}"
         id_paciente = id_parte1 + id_parte2
+        altura1 =altura/100
+        altura2 = altura1 * altura1
+        imc = peso / altura2
 
         paciente = {
             'id': id_paciente,
@@ -107,6 +85,7 @@ def registro_paciente():
             'genero': genero,
             'peso': peso,
             'altura': altura,
+            'imc': imc,
             'fecha_registro': fecha_registro,
             'registrado_por': registrado_por
         }
@@ -115,6 +94,7 @@ def registro_paciente():
 
         return redirect(url_for('registro_exitoso', id_paciente=id_paciente, nombre_paciente=f"{nombres} {primer_apellido} {segundo_apellido}"))
     return render_template('registro.html')
+
 
 @app.route('/registro_exitoso')
 def registro_exitoso():
@@ -155,18 +135,11 @@ def agendar_cita():
 @app.route('/historial_citas')
 def historial_citas():
     # Aquí puedes agregar la lógica para obtener el historial de citas de los pacientes
-    citas = [
-        {
-            'paciente': 'María López Parra',
-            'fecha_consulta': '2024-04-20'
-        },
-        {
-            'paciente': 'Xochitl Interian Correa',
-            'fecha_consulta': '2024-04-25'
-        }
-        # Puedes agregar más citas según la información que manejes en tu sistema
-    ]
+    citas = []
     return render_template('historial_citas.html', citas=citas)
+@app.route('/directorio_pacientes')
+def directorio_pacientes():
 
+    return render_template('directorio_pacientes.html', pacientes=pacientes_registrados)
 if __name__ == '__main__':
     app.run(debug=True)
