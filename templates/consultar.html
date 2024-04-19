@@ -92,6 +92,17 @@
 
 </div>
 <h1>Consulta de Pacientes</h1>
+<form action="{{ url_for('consulta_paciente') }}" method="post">
+    <label for="filtro_nombre">Filtrar por Nombre:</label>
+    <input type="text" id="filtro_nombre" name="filtro_nombre">
+    <input type="submit" value="Buscar">
+</form>
+
+<form action="{{ url_for('consulta_paciente') }}" method="post">
+    <label for="filtro_id">Filtrar por ID:</label>
+    <input type="number" id="filtro_id" name="filtro_id">
+    <input type="submit" value="Buscar">
+</form>
 <table border="1">
     <tr>
         <th>ID</th>

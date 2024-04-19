@@ -7,10 +7,10 @@ now = datetime.datetime.now()
 year = now.year
 month = now.month
 
-# Crear un calendario para el mes actual
+# Create a calendar for the current month
 cal = calendar.monthcalendar(year, month)
 
-# Convertir el calendario a HTML
+# Convert the calendar to HTML
 html_calendar = "<tr>"
 for week in cal:
     for day in week:
@@ -19,10 +19,10 @@ for week in cal:
         else:
             html_calendar += f"<td>{day}</td>"
     html_calendar += "</tr><tr>"
-html_calendar = html_calendar[:-4]  # Eliminar el último <tr>
+html_calendar = html_calendar[:-4]  # Remove the last <tr>
 pacientes_registrados = []
 
-# Usuarios y contraseñas permitidos (puedes agregar más si lo necesitas)
+# Users and passwords allowed (you can add more if needed)
 users = {'vespertino': 'vespertino', '1': '1'}
 
 @app.route('/')
@@ -45,9 +45,6 @@ def login():
 def options():
     return render_template('options.html', calendar=cal)
 
-from flask import request, redirect, url_for, render_template
-import datetime
-
 @app.route('/registro', methods=['GET', 'POST'])
 def registro_paciente():
     if request.method == 'POST':
@@ -58,17 +55,17 @@ def registro_paciente():
         celular = request.form['celular']
         turno = request.form['turno'].upper()
         genero = request.form['genero'].upper()
-        peso = float(request.form.get('peso', ''))  # Convertir a float
-        altura = float(request.form.get('altura', ''))  # Convertir a float
+        peso = float(request.form.get('peso', ''))  # Convert to float
+        altura = float(request.form.get('altura', ''))  # Convert to float
         fecha_registro = request.form['fecha_registro']
         registrado_por = request.form['registrado_por'].upper()
 
-        # Generar un ID único para el paciente
+        # Generate a unique ID for the patient
         id_parte1 = primer_apellido[:2].upper() + segundo_apellido[:2].upper() + nombres[:2].upper()
         fecha_nacimiento_dt = datetime.datetime.strptime(fecha_nacimiento, '%Y-%m-%d')
         id_parte2 = f"{fecha_nacimiento_dt.day:02}{fecha_nacimiento_dt.month:02}{fecha_nacimiento_dt.year % 100:02}"
         id_paciente = id_parte1 + id_parte2
-        altura1 =altura/100
+        altura1 = altura / 100
         altura2 = altura1 * altura1
         imc = peso / altura2
 
@@ -100,8 +97,12 @@ def registro_exitoso():
     nombre_paciente = request.args.get('nombre_paciente')
     return render_template('registro_exitoso.html', id_paciente=id_paciente, nombre_paciente=nombre_paciente)
 
-@app.route('/consultar')
+@app.route('/consultar', methods=['GET', 'POST'])
 def consulta_paciente():
+    if request.method == 'POST':
+        filter_text = request.form['filter_text']
+        filtered_pacientes = [p for p in pacientes_registrados if filter_text.lower() in p['nombres'].lower() or filter_text.lower() in p['id'].lower()]
+        return render_template('consultar.html', pacientes=filtered_pacientes, filter_text=filter_text)
     return render_template('consultar.html', pacientes=pacientes_registrados)
 
 @app.route('/paciente/<id>')
@@ -117,7 +118,7 @@ def actualizar_paciente(id):
     peso = request.form['peso']
     masa_muscular = request.form['masa_muscular']
     cita = request.form['cita']
-    # Aquí puedes agregar la lógica para actualizar los datos del paciente en la base de datos
+    # Here you can add logic to update patient data in the database
     return redirect(url_for('detalle_paciente', id=id))
 
 
@@ -127,24 +128,24 @@ def agendar_cita():
         paciente_id = request.form['paciente']
         fecha_consulta = request.form['fecha_consulta']
         
-        # Aquí agregamos la lógica para guardar la fecha de la siguiente consulta para el paciente seleccionado
+        # Here we add logic to save the next appointment date for the selected patient
         for paciente in pacientes_registrados:
             if paciente['id'] == paciente_id:
                 if 'citas' not in paciente:
                     paciente['citas'] = []
                 paciente['citas'].append({
                     'fecha_consulta': fecha_consulta,
-                    'observaciones': ''  # Puedes agregar más campos según sea necesario
+                    'observaciones': ''  # You can add more fields as needed
                 })
-                break  # Salimos del bucle una vez que encontramos al paciente
+                break  # Exit the loop once we find the patient
         
-        return redirect(url_for('historial_citas'))  # Redirigir a la página de historial de citas después de agendar la cita
+        return redirect(url_for('historial_citas'))  # Redirect to the appointment history page after scheduling the appointment
     else:
         return render_template('agendar_cita.html', pacientes=pacientes_registrados)
 
 @app.route('/historial_citas')
 def historial_citas():
-    citas = []  # Lista para almacenar las citas
+    citas = []  # List to store appointments
     for paciente in pacientes_registrados:
         if 'citas' in paciente:
             for cita in paciente['citas']:
@@ -155,9 +156,10 @@ def historial_citas():
                     'observaciones': cita['observaciones']
                 })
     return render_template('historial_citas.html', citas=citas)
+
 @app.route('/directorio_pacientes')
 def directorio_pacientes():
-
     return render_template('directorio_pacientes.html', pacientes=pacientes_registrados)
+
 if __name__ == '__main__':
     app.run(debug=True)
