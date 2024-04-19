@@ -98,7 +98,6 @@
         <th>Apellidos</th>
         <th>Nombres</th>
         <th>Fecha de Nacimiento</th>
-        <th>Celular</th>
         <th>Peso (kg)</th>
         <th>Altura (cm)</th>
         <th>IMC</th>
@@ -108,7 +107,6 @@
         <th>Registrado Por</th>
         <th>Porcentaje de Grasa</th>
         <th>Densidad Muscular</th>
-        <th>Actualizar</th>
     </tr>
     {% for paciente in pacientes %}
     <tr>
@@ -117,7 +115,6 @@
             {{ paciente.segundo_apellido }}</td>
         <td>{{ paciente.nombres }}</td>
         <td>{{ paciente.fecha_nacimiento }}</td>
-        <td>{{ paciente.celular }}</td>
         <td>{{ paciente.peso }}</td>
         <td>{{ paciente.altura }}</td>
         <td>{{ paciente.imc }}</td>
