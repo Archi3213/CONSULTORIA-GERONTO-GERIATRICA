@@ -56,16 +56,42 @@
 
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 12px;
             text-align: left;
+            font-size: 14px;
         }
 
         th {
             background-color: #f2f2f2;
+            font-weight: bold;
+            text-transform: uppercase;
         }
 
         tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background-color: #f9f9f9;
+        }
+
+        td select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        td input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        td input[type="submit"]:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
@@ -88,6 +114,7 @@
                     <th>Nombre Paciente</th>
                     <th>Fecha Consulta</th>
                     <th>Observaciones</th>
+                    <th>Estado</th> <!-- Nuevo encabezado para el estado -->
                 </tr>
             </thead>
             <tbody>
@@ -97,6 +124,17 @@
                     <td>{{ cita.nombre_paciente }}</td>
                     <td>{{ cita.fecha_consulta }}</td>
                     <td>{{ cita.observaciones }}</td>
+                    <td>
+                        <form action="/actualizar_estado" method="POST"> <!-- Formulario para actualizar el estado -->
+                            <select name="estado">
+                                <option value="ASISTIO" {% if cita.estado == 'ASISTIO' %}selected{% endif %}>ASISTIO</option>
+                                <option value="NO ASISTIO" {% if cita.estado == 'NO ASISTIO' %}selected{% endif %}>NO ASISTIO</option>
+                                <option value="REAGENDO" {% if cita.estado == 'REAGENDO' %}selected{% endif %}>REAGENDO</option>
+                            </select>
+                            <input type="hidden" name="cita_id" value="{{ cita.id }}"> <!-- Campo oculto para el ID de la cita -->
+                            <input type="submit" value="Guardar"> <!-- Botón para guardar el estado -->
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

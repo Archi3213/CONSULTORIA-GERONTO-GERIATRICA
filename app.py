@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import calendar
 import datetime
+import uuid  # Para generar identificadores únicos
 
 app = Flask(__name__)
 now = datetime.datetime.now()
@@ -118,7 +119,7 @@ def actualizar_paciente(id):
     peso = request.form['peso']
     masa_muscular = request.form['masa_muscular']
     cita = request.form['cita']
-    # Here you can add logic to update patient data in the database
+    # Aquí puedes agregar la lógica para actualizar los datos del paciente en la base de datos
     return redirect(url_for('detalle_paciente', id=id))
 
 
@@ -128,34 +129,53 @@ def agendar_cita():
         paciente_id = request.form['paciente']
         fecha_consulta = request.form['fecha_consulta']
         
-        # Here we add logic to save the next appointment date for the selected patient
+        # Generar un identificador único para la cita
+        cita_id = str(uuid.uuid4())
+
         for paciente in pacientes_registrados:
             if paciente['id'] == paciente_id:
                 if 'citas' not in paciente:
                     paciente['citas'] = []
                 paciente['citas'].append({
+                    'id': cita_id,  # Agregar el identificador único
                     'fecha_consulta': fecha_consulta,
-                    'observaciones': ''  # You can add more fields as needed
+                    'observaciones': ''  # Puedes agregar más campos según sea necesario
                 })
-                break  # Exit the loop once we find the patient
+                break
         
-        return redirect(url_for('historial_citas'))  # Redirect to the appointment history page after scheduling the appointment
+        return redirect(url_for('historial_citas'))
     else:
         return render_template('agendar_cita.html', pacientes=pacientes_registrados)
 
 @app.route('/historial_citas')
 def historial_citas():
-    citas = []  # List to store appointments
+    citas = []
     for paciente in pacientes_registrados:
         if 'citas' in paciente:
             for cita in paciente['citas']:
+                estado = cita.get('estado', 'Pendiente')
                 citas.append({
+                    'id': cita['id'],  
                     'paciente_id': paciente['id'],
                     'nombre_paciente': f"{paciente['nombres']} {paciente['primer_apellido']} {paciente['segundo_apellido']}",
                     'fecha_consulta': cita['fecha_consulta'],
-                    'observaciones': cita['observaciones']
+                    'observaciones': cita['observaciones'],
+                    'estado': estado  
                 })
     return render_template('historial_citas.html', citas=citas)
+
+@app.route('/actualizar_estado', methods=['POST'])
+def actualizar_estado():
+    cita_id = request.form.get('cita_id')
+    nuevo_estado = request.form.get('estado')
+
+    for paciente in pacientes_registrados:
+        if 'citas' in paciente:
+            for cita in paciente['citas']:
+                if cita['id'] == cita_id:
+                    cita['estado'] = nuevo_estado
+
+    return redirect(url_for('historial_citas'))
 
 @app.route('/directorio_pacientes')
 def directorio_pacientes():
