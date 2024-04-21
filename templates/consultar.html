@@ -15,36 +15,36 @@
             padding: 0;
         }
 
-        /* Estilos para la barra de navegación */
         .navbar {
             overflow: hidden;
             background-color: #333;
-            margin-bottom: 20px; /* Agregamos margen inferior para separar del contenido */
+            margin-bottom: 20px;
         }
 
         .navbar a {
             display: inline-block;
             color: #f2f2f2;
-            text-align: center; /* Alineamos el texto al centro */
+            text-align: center;
             padding: 14px 16px;
-            text-decoration: none; /* Quitamos el subrayado de los enlaces */
-            transition: background-color 0.3s; /* Agregamos transición al cambio de color */
+            text-decoration: none;
+            transition: background-color 0.3s;
         }
 
         .navbar a:hover {
-            background-color: #555; /* Color de fondo al pasar el mouse */
+            background-color: #555;
         }
 
         h1 {
-            color: #333; /* Color del título */
-            text-align: center; /* Alineamos al centro */
-            margin-bottom: 20px; /* Agregamos margen inferior */
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px; /* Agregamos margen inferior a la tabla */
+            margin-bottom: 20px;
+            border: 2px solid #333; /* Borde alrededor de la tabla */
         }
 
         th, td {
@@ -53,31 +53,34 @@
         }
 
         th {
-            background-color: #333; /* Color de fondo para las celdas de encabezado */
-            color: #fff; /* Color del texto en las celdas de encabezado */
+            background-color: #333;
+            color: #fff;
         }
 
         tr:nth-child(even) {
-            background-color: #f2f2f2; /* Color de fondo para filas pares */
+            background-color: #f2f2f2;
         }
 
+        input[type="text"],
         input[type="number"] {
-            width: 80px; /* Ancho ajustado para los campos numéricos */
-            padding: 4px;
-            margin-right: 5px; /* Separación entre los campos numéricos y el botón */
+            width: 150px;
+            padding: 6px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
         }
 
         input[type="submit"] {
-            background-color: #4CAF50; /* Color de fondo del botón */
-            color: white; /* Color del texto del botón */
-            border: none; /* Quitamos el borde */
-            padding: 6px 12px; /* Ajustamos el padding del botón */
-            border-radius: 4px; /* Borde redondeado */
-            cursor: pointer; /* Cambiamos el cursor al pasar sobre el botón */
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
         }
 
         input[type="submit"]:hover {
-            background-color: #45a049; /* Cambio de color al pasar el mouse */
+            background-color: #45a049;
         }
     </style>
 </head>
@@ -89,18 +92,18 @@
     <a href="/agendar_cita">Agendar Cita</a>
     <a href="/historial_citas">Historial de Citas</a>
     <a href="/directorio_pacientes">Directorio Pacientes</a>
-
 </div>
 <h1>Consulta de Pacientes</h1>
 <form action="{{ url_for('consulta_paciente') }}" method="post">
-    <label for="filtro_nombre">Filtrar por Nombre:</label>
-    <input type="text" id="filtro_nombre" name="filtro_nombre">
+    <label for="filtro_apellidos">Filtrar por Apellidos:</label>
+    <input type="text" id="filtro_apellidos" name="filter_text" placeholder="Ingrese apellidos...">
+    <input type="hidden" name="filter_by" value="apellidos">
     <input type="submit" value="Buscar">
 </form>
-
 <form action="{{ url_for('consulta_paciente') }}" method="post">
     <label for="filtro_id">Filtrar por ID:</label>
-    <input type="number" id="filtro_id" name="filtro_id">
+    <input type="text" id="filtro_id" name="filter_text" placeholder="Ingrese ID...">
+    <input type="hidden" name="filter_by" value="id">
     <input type="submit" value="Buscar">
 </form>
 <table border="1">
@@ -121,26 +124,25 @@
     </tr>
     {% for paciente in pacientes %}
     <tr>
-        <td>{{ paciente.id }}</td>
-        <td>{{ paciente.primer_apellido }}
-            {{ paciente.segundo_apellido }}</td>
-        <td>{{ paciente.nombres }}</td>
-        <td>{{ paciente.fecha_nacimiento }}</td>
-        <td>{{ paciente.peso }}</td>
-        <td>{{ paciente.altura }}</td>
-        <td>{{ paciente.imc }}</td>
-        <td>{{ paciente.turno }}</td>
-        <td>{{ paciente.genero }}</td>
-        <td>{{ paciente.fecha_registro }}</td>
-        <td>{{ paciente.registrado_por }}</td>
+        <td>{{ paciente[0] }}</td>
+        <td>{{ paciente[1] }} {{ paciente[2] }}</td>
+        <td>{{ paciente[3] }}</td>
+        <td>{{ paciente[4] }}</td>
+        <td>{{ paciente[8] }}</td>
+        <td>{{ paciente[9] }}</td>
+        <td>{{ paciente[10] }}</td>
+        <td>{{ paciente[6] }}</td>
+        <td>{{ paciente[7] }}</td>
+        <td>{{ paciente[11] }}</td>
+        <td>{{ paciente[12] }}</td>
         <td>
-            <form action="{{ url_for('actualizar_paciente', id=paciente.id) }}" method="post">
+            <form action="{{ url_for('actualizar_paciente', id=paciente[0]) }}" method="post">
                 <input type="number" name="porcentaje_grasa" placeholder="Porcentaje de Grasa">
                 <input type="submit" value="Actualizar">
             </form>
         </td>
         <td>
-            <form action="{{ url_for('actualizar_paciente', id=paciente.id) }}" method="post">
+            <form action="{{ url_for('actualizar_paciente', id=paciente[0]) }}" method="post">
                 <input type="number" name="densidad_muscular" placeholder="Densidad Muscular">
                 <input type="submit" value="Actualizar">
             </form>
