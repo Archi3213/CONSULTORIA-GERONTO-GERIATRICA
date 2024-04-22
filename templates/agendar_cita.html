@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +12,6 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
         }
 
         .navbar {
@@ -55,14 +54,14 @@
             font-weight: bold;
         }
 
-        .form-group input[type="date"],
-        .form-group input[type="submit"] {
-            width: 100%;
+        .form-group input,
+        .form-group select {
+            width: calc(100% - 20px);
             padding: 10px;
             margin-bottom: 20px;
             border-radius: 4px;
             border: 1px solid #ccc;
-            box-sizing: border-box; /* Incluir el padding y el borde en el ancho total */
+            box-sizing: border-box;
         }
 
         .form-group input[type="submit"] {
@@ -86,27 +85,23 @@
     <a href="/historial_citas">Historial de Citas</a>
     <a href="/directorio_pacientes">Directorio Pacientes</a>
 </div>
-
 <div class="container">
     <h1>Agendar Cita</h1>
-    <form action="/agendar_cita" method="POST">
-        <div class="form-group">
-            <label for="paciente">Seleccionar Paciente:</label>
-            <select name="paciente" id="paciente" required>
-                {% for paciente in pacientes %}
-                <option value="{{ paciente.id }}">{{ paciente.nombres }} {{ paciente.primer_apellido }} {{ paciente.segundo_apellido }}</option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="fecha_consulta">Fecha de la Siguiente Consulta:</label>
-            <input type="date" id="fecha_consulta" name="fecha_consulta" required>
-        </div>
-
-        <div class="form-group">
-            <input type="submit" value="Agendar Cita">
-        </div>
+    {% if error_message %}
+        <p style="color: red;">{{ error_message }}</p>
+    {% endif %}
+    <form method="POST" action="/agendar_cita" class="form-group">
+        <label for="paciente_id">ID del paciente:</label>
+        <select name="paciente_id" id="paciente_id">
+            {% for paciente in pacientes %}
+                <option value="{{ paciente[0] }}">{{ paciente[1] }}</option>
+            {% endfor %}
+        </select><br><br>
+        <label for="fecha_consulta">Fecha de consulta:</label>
+        <input type="date" name="fecha_consulta" id="fecha_consulta"><br><br>
+        <label for="hora_consulta">Hora de consulta:</label>
+        <input type="time" name="hora_consulta" id="hora_consulta"><br><br>
+        <input type="submit" value="Agendar Cita">
     </form>
 </div>
 </body>

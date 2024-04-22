@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,6 @@
             background-image: url('https://img.freepik.com/vector-gratis/fondo-frutas-verduras_23-2148485148.jpg?w=740&t=st=1713248651~exp=1713249251~hmac=30e168e9f2d449c4894d64a9e7ff69ce1449d8aca24ba3c0d846298490ca6041');
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -22,9 +21,7 @@
         }
 
         .navbar a {
-            display: inline-block;
             color: #f2f2f2;
-            text-align: center;
             padding: 14px 16px;
             text-decoration: none;
             transition: background-color 0.3s;
@@ -35,7 +32,7 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 50px auto;
             background-color: #fff;
             padding: 20px;
@@ -52,6 +49,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
         }
 
         th, td {
@@ -71,7 +69,7 @@
             background-color: #f9f9f9;
         }
 
-        td select {
+        select {
             width: 100%;
             padding: 8px;
             border-radius: 4px;
@@ -79,7 +77,7 @@
             font-size: 14px;
         }
 
-        td input[type="submit"] {
+        input[type="submit"] {
             background-color: #4CAF50;
             color: #fff;
             border: none;
@@ -90,7 +88,7 @@
             transition: background-color 0.3s;
         }
 
-        td input[type="submit"]:hover {
+        input[type="submit"]:hover {
             background-color: #45a049;
         }
     </style>
@@ -108,37 +106,41 @@
     <div class="container">
         <h1>Historial de Citas</h1>
         <table>
-            <thead>
-                <tr>
-                    <th>ID Paciente</th>
-                    <th>Nombre Paciente</th>
-                    <th>Fecha Consulta</th>
-                    <th>Observaciones</th>
-                    <th>Estado</th> <!-- Nuevo encabezado para el estado -->
-                </tr>
-            </thead>
-            <tbody>
-                {% for cita in citas %}
-                <tr>
-                    <td>{{ cita.paciente_id }}</td>
-                    <td>{{ cita.nombre_paciente }}</td>
-                    <td>{{ cita.fecha_consulta }}</td>
-                    <td>{{ cita.observaciones }}</td>
-                    <td>
-                        <form action="/actualizar_estado" method="POST"> <!-- Formulario para actualizar el estado -->
-                            <select name="estado">
-                                <option value="ASISTIO" {% if cita.estado == 'ASISTIO' %}selected{% endif %}>ASISTIO</option>
-                                <option value="NO ASISTIO" {% if cita.estado == 'NO ASISTIO' %}selected{% endif %}>NO ASISTIO</option>
-                                <option value="REAGENDO" {% if cita.estado == 'REAGENDO' %}selected{% endif %}>REAGENDO</option>
-                            </select>
-                            <input type="hidden" name="cita_id" value="{{ cita.id }}"> <!-- Campo oculto para el ID de la cita -->
-                            <input type="submit" value="Guardar"> <!-- Botón para guardar el estado -->
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
+            <tr>
+                <th>ID Cita</th>
+                <th>ID Paciente</th>
+                <th>Nombre Completo</th>
+                <th>Fecha Consulta</th>
+                <th>Hora Consulta</th>
+                <th>Observaciones</th>
+                <th>Estado</th>
+                <th>Cambio de estado</th>
+            </tr>
+            {% for cita in citas %}
+            <tr>
+                <td>{{ cita[0] }}</td>
+                <td>{{ cita[1] }}</td>
+                <td>{{ cita[2] }}</td>
+                <td>{{ cita[4] }}</td> 
+                <td>{{ cita[5] }}</td>
+                <td>{{ cita[8] }}</td>
+                <td>{{ cita[7] }}</td>
+                <td>
+                    <form action="/historial_citas" method="POST" class="update-form">
+                        <input type="hidden" name="id_cita" value="{{ cita[0] }}">
+                        <label for="nuevo_estado">Nuevo Estado:</label>
+                        <select id="nuevo_estado" name="nuevo_estado">
+                            <option value="Pendiente" {% if cita[8] == 'Pendiente' %} selected {% endif %}>Pendiente</option>
+                            <option value="Realizada" {% if cita[8] == 'Realizada' %} selected {% endif %}>Realizada</option>
+                            <option value="Cancelada" {% if cita[8] == 'Cancelada' %} selected {% endif %}>Cancelada</option>
+                        </select>
+                        <input type="submit" value="Actualizar">
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
         </table>
     </div>
+    
 </body>
 </html>

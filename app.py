@@ -4,7 +4,6 @@ import calendar
 import datetime
 import hashlib  # Para generar hashes de contraseñas
 import sqlite3
-import uuid  # Para generar identificadores únicos
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -39,26 +38,28 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS pacientes (
                     altura REAL NOT NULL,
                     imc REAL NOT NULL,
                     fecha_registro TEXT NOT NULL,
-                    registrado_por TEXT NOT NULL
-                )''')
+                    registrado_por TEXT NOT NULL)''')
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS usuarios (
                     username TEXT PRIMARY KEY,
-                    password TEXT NOT NULL
-                )''')
-
+                    password TEXT NOT NULL )''')
 hashed_password_matutino = hashlib.sha256(b'MATUTINO').hexdigest()
 hashed_password_vespertino = hashlib.sha256(b'VESPERTINO').hexdigest()
-
 cursor.execute("INSERT OR IGNORE INTO usuarios (username, password) VALUES (?, ?)", ('MATUTINO', hashed_password_matutino))
 cursor.execute("INSERT OR IGNORE INTO usuarios (username, password) VALUES (?, ?)", ('VESPERTINO', hashed_password_vespertino))
 
+cursor.execute('''CREATE TABLE IF NOT EXISTS citas (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    paciente_id TEXT,
+                    fecha_consulta TEXT NOT NULL,
+                    hora_consulta TEXT NOT NULL, 
+                    observaciones TEXT,
+                    estado TEXT DEFAULT 'Pendiente',
+                    FOREIGN KEY (paciente_id) REFERENCES pacientes(id)
+                )''')
 conexion.commit()
 cursor.close()
 
-pacientes_registrados = []
-
-# Función para verificar la sesión antes de acceder a las rutas protegidas
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -77,19 +78,16 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        # Crear una nueva conexión y cursor aquí dentro de la función login
         conexion = sqlite3.connect('nutricion_consulta.db')
         cursor = conexion.cursor()
 
         cursor.execute("SELECT * FROM usuarios WHERE username = ?", (username,))
         user = cursor.fetchone()
 
-        # Cerrar la conexión y el cursor después de usarlos
         cursor.close()
         conexion.close()
 
-        # Verificar credenciales y gestionar la sesión
-        if (user and hashlib.sha256(password.encode()).hexdigest() == user[1]) or (username == 'MATUTINO' and password == 'MATUTINO'):
+        if user and hashlib.sha256(password.encode()).hexdigest() == user[1]:
             session['username'] = username
             return redirect(url_for('options'))
         else:
@@ -118,7 +116,6 @@ def registro_paciente():
         fecha_registro = request.form['fecha_registro']
         registrado_por = request.form['registrado_por'].upper()
 
-        # Generar un ID único para el paciente
         id_parte1 = primer_apellido[:2].upper() + segundo_apellido[:2].upper() + nombres[:2].upper()
         fecha_nacimiento_dt = datetime.datetime.strptime(fecha_nacimiento, '%Y-%m-%d')
         id_parte2 = f"{fecha_nacimiento_dt.day:02}{fecha_nacimiento_dt.month:02}{fecha_nacimiento_dt.year % 100:02}"
@@ -127,11 +124,9 @@ def registro_paciente():
         altura2 = altura1 * altura1
         imc = peso / altura2
 
-        # Crear una nueva conexión y cursor aquí dentro de la función registro_paciente
         conexion_registro = sqlite3.connect('nutricion_consulta.db')
         cursor_registro = conexion_registro.cursor()
 
-        # Insertar los datos en la tabla de pacientes
         cursor_registro.execute('''INSERT INTO pacientes (id, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, celular, turno, genero, peso, altura, imc, fecha_registro, registrado_por) 
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
                         (id_paciente, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, celular, turno, genero, peso, altura, imc, fecha_registro, registrado_por))
@@ -139,28 +134,8 @@ def registro_paciente():
         cursor_registro.close()
         conexion_registro.close()
 
-        paciente = {
-            'id': id_paciente,
-            'primer_apellido': primer_apellido,
-            'segundo_apellido': segundo_apellido,
-            'nombres': nombres,
-            'fecha_nacimiento': fecha_nacimiento,
-            'celular': celular,
-            'turno': turno,
-            'genero': genero,
-            'peso': peso,
-            'altura': altura,
-            'imc': imc,
-            'fecha_registro': fecha_registro,
-            'registrado_por': registrado_por
-        }
-
-        pacientes_registrados.append(paciente)
-
         return redirect(url_for('registro_exitoso', id_paciente=id_paciente, nombre_paciente=f"{nombres} {primer_apellido} {segundo_apellido}"))
     return render_template('registro.html')
-
-
 
 @app.route('/registro_exitoso')
 def registro_exitoso():
@@ -173,13 +148,11 @@ def registro_exitoso():
 def consulta_paciente():
     if request.method == 'POST':
         filter_text = request.form['filter_text']
-        filter_by = request.form['filter_by']  # Nuevo campo para determinar el filtro por apellidos o por ID
+        filter_by = request.form['filter_by']
 
-        # Conectarse a la base de datos y ejecutar la consulta
         conexion_consulta = sqlite3.connect('nutricion_consulta.db')
         cursor_consulta = conexion_consulta.cursor()
 
-        # Ejecutar la consulta según el filtro seleccionado
         if filter_by == 'apellidos':
             cursor_consulta.execute("SELECT * FROM pacientes WHERE primer_apellido || ' ' || segundo_apellido LIKE ?", ('%' + filter_text + '%',))
         elif filter_by == 'id':
@@ -187,16 +160,13 @@ def consulta_paciente():
         else:
             cursor_consulta.execute("SELECT * FROM pacientes")
 
-        # Obtener los resultados de la consulta
         pacientes = cursor_consulta.fetchall()
 
-        # Cerrar la conexión y el cursor
         cursor_consulta.close()
         conexion_consulta.close()
 
         return render_template('consultar.html', pacientes=pacientes, filter_text=filter_text, filter_by=filter_by)
     
-    # Si es una solicitud GET, mostrar todos los pacientes
     conexion_consulta = sqlite3.connect('nutricion_consulta.db')
     cursor_consulta = conexion_consulta.cursor()
     cursor_consulta.execute("SELECT * FROM pacientes")
@@ -205,9 +175,18 @@ def consulta_paciente():
     conexion_consulta.close()
 
     return render_template('consultar.html', pacientes=pacientes)
+
 @app.route('/paciente/<id>')
 def detalle_paciente(id):
-    paciente = next((p for p in pacientes_registrados if p['id'] == id), None)
+    conexion = sqlite3.connect('nutricion_consulta.db')
+    cursor = conexion.cursor()
+
+    cursor.execute("SELECT * FROM pacientes WHERE id=?", (id,))
+    paciente = cursor.fetchone()
+
+    cursor.close()
+    conexion.close()
+
     if paciente:
         return render_template('detalle.html', paciente=paciente)
     else:
@@ -221,64 +200,113 @@ def actualizar_paciente(id):
     # Aquí puedes agregar la lógica para actualizar los datos del paciente en la base de datos
     return redirect(url_for('detalle_paciente', id=id))
 
-
 @app.route('/agendar_cita', methods=['GET', 'POST'])
+@login_required
 def agendar_cita():
     if request.method == 'POST':
-        paciente_id = request.form['paciente']
-        fecha_consulta = request.form['fecha_consulta']
-        
-        # Generar un identificador único para la cita
-        cita_id = str(uuid.uuid4())
+        if 'paciente_id' in request.form:
+            paciente_id = request.form['paciente_id']
+            fecha_consulta = request.form['fecha_consulta']
+            hora_cita = request.form['hora_consulta']
 
-        for paciente in pacientes_registrados:
-            if paciente['id'] == paciente_id:
-                if 'citas' not in paciente:
-                    paciente['citas'] = []
-                paciente['citas'].append({
-                    'id': cita_id,  # Agregar el identificador único
-                    'fecha_consulta': fecha_consulta,
-                    'observaciones': ''  # Puedes agregar más campos según sea necesario
-                })
-                break
-        
-        return redirect(url_for('historial_citas'))
+            conexion = sqlite3.connect('nutricion_consulta.db')
+            cursor = conexion.cursor()
+
+            cursor.execute('''INSERT INTO citas (paciente_id, fecha_consulta, hora_consulta) 
+                            VALUES (?, ?, ?)''', 
+                            (paciente_id, fecha_consulta, hora_cita))
+            conexion.commit()
+            cursor.close()
+            conexion.close()
+
+            return redirect(url_for('historial_citas'))
+        else:
+            error_message = "Error: No se ha proporcionado el ID del paciente."
+            return render_template('agendar_cita.html', error_message=error_message)
     else:
-        return render_template('agendar_cita.html', pacientes=pacientes_registrados)
+        conexion_pacientes = sqlite3.connect('nutricion_consulta.db')
+        cursor_pacientes = conexion_pacientes.cursor()
+        cursor_pacientes.execute("SELECT id, nombres FROM pacientes")
+        pacientes = cursor_pacientes.fetchall()
+        cursor_pacientes.close()
+        conexion_pacientes.close()
 
-@app.route('/historial_citas')
+        return render_template('agendar_cita.html', pacientes=pacientes)
+app.route('/historial_citas', methods=['GET', 'POST'])
 def historial_citas():
-    citas = []
-    for paciente in pacientes_registrados:
-        if 'citas' in paciente:
-            for cita in paciente['citas']:
-                estado = cita.get('estado', 'Pendiente')
-                citas.append({
-                    'id': cita['id'],  
-                    'paciente_id': paciente['id'],
-                    'nombre_paciente': f"{paciente['nombres']} {paciente['primer_apellido']} {paciente['segundo_apellido']}",
-                    'fecha_consulta': cita['fecha_consulta'],
-                    'observaciones': cita['observaciones'],
-                    'estado': estado  
-                })
+    conexion = sqlite3.connect('nutricion_consulta.db')
+    cursor = conexion.cursor()
+
+    cursor.execute('''SELECT citas.id, pacientes.id, pacientes.nombres, 
+                      pacientes.primer_apellido, pacientes.segundo_apellido,
+                      citas.fecha_consulta, citas.hora_consulta, citas.observaciones, citas.estado
+                      FROM citas JOIN pacientes ON citas.paciente_id = pacientes.id''')
+    
+    citas = cursor.fetchall()
+
+    # Si se envía el formulario para cambiar el estado
+    if request.method == 'POST':
+        id_cita = request.form['id_cita']
+        nuevo_estado = request.form['nuevo_estado']
+        cursor.execute('''UPDATE citas SET estado = ? WHERE id = ?''', (nuevo_estado, id_cita))
+        conexion.commit()
+
+    cursor.close()
+    conexion.close()
+
     return render_template('historial_citas.html', citas=citas)
 
-@app.route('/actualizar_estado', methods=['POST'])
-def actualizar_estado():
-    cita_id = request.form.get('cita_id')
-    nuevo_estado = request.form.get('estado')
+@app.route('/historial_citas', methods=['GET', 'POST'])
+def historial_citas():
+    if request.method == 'POST':
+        id_cita = request.form.get('id_cita')
+        nuevo_estado = request.form.get('nuevo_estado')
+        if id_cita and nuevo_estado:
+            with sqlite3.connect('nutricion_consulta.db') as conexion:
+                cursor = conexion.cursor()
+                cursor.execute('''UPDATE citas SET estado = ? WHERE id = ?''', (nuevo_estado, id_cita))
+                conexion.commit()
 
-    for paciente in pacientes_registrados:
-        if 'citas' in paciente:
-            for cita in paciente['citas']:
-                if cita['id'] == cita_id:
-                    cita['estado'] = nuevo_estado
+    with sqlite3.connect('nutricion_consulta.db') as conexion:
+        cursor = conexion.cursor()
+        cursor.execute('''SELECT citas.id, pacientes.id, pacientes.primer_apellido || ' ' || pacientes.segundo_apellido || ', ' || pacientes.nombres as nombre_completo, 
+                          pacientes.fecha_nacimiento, citas.fecha_consulta, citas.hora_consulta, citas.observaciones, citas.estado
+                          FROM citas JOIN pacientes ON citas.paciente_id = pacientes.id''')
+        citas = cursor.fetchall()
 
-    return redirect(url_for('historial_citas'))
+    return render_template('historial_citas.html', citas=citas)
 
-@app.route('/directorio_pacientes')
+@app.route('/directorio_pacientes', methods=['GET', 'POST'])
 def directorio_pacientes():
-    return render_template('directorio_pacientes.html', pacientes=pacientes_registrados)
+    if request.method == 'POST':
+        filter_text = request.form['filter_text']
+        filter_by = request.form['filter_by']
+
+        conexion = sqlite3.connect('nutricion_consulta.db')
+        cursor = conexion.cursor()
+
+        if filter_by == 'apellidos':
+            cursor.execute("SELECT * FROM pacientes WHERE primer_apellido || ' ' || segundo_apellido LIKE ?", ('%' + filter_text + '%',))
+        elif filter_by == 'id':
+            cursor.execute("SELECT * FROM pacientes WHERE id LIKE ?", ('%' + filter_text + '%',))
+        else:
+            cursor.execute("SELECT * FROM pacientes")
+
+        pacientes = cursor.fetchall()
+
+        cursor.close()
+        conexion.close()
+
+        return render_template('directorio_pacientes.html', pacientes=pacientes)
+    
+    conexion = sqlite3.connect('nutricion_consulta.db')
+    cursor = conexion.cursor()
+    cursor.execute("SELECT * FROM pacientes")
+    pacientes = cursor.fetchall()
+    cursor.close()
+    conexion.close()
+
+    return render_template('directorio_pacientes.html', pacientes=pacientes)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -17,7 +17,7 @@ body {
 .navbar {
     overflow: hidden;
     background-color: #333;
-    margin-bottom: 20px; /* Agregamos margen inferior para separar del contenido */
+    margin-bottom: 20px;
 }
 
 .navbar a {
@@ -33,11 +33,6 @@ body {
     background-color: #555;
 }
 
-h1 {
-    color: #333;
-    text-align: center;
-    margin-bottom: 20px;
-}
 h2 {
     color: #333;
     text-align: center;
@@ -64,25 +59,6 @@ th {
 tr:nth-child(even) {
     background-color: #f9f9f9;
 }
-
-input[type="number"] {
-    width: 80px;
-    padding: 4px;
-    margin-right: 5px;
-}
-
-input[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-input[type="submit"]:hover {
-    background-color: #45a049;
-}
 </style>
 </head>
 <body>
@@ -96,19 +72,28 @@ input[type="submit"]:hover {
 </div>
 
 <h2>Directorio de Pacientes</h2>
+<form action="/filtro_pacientes" method="POST">
+    <label for="filter_text">Filtrar por:</label>
+    <input type="text" id="filter_text" name="filter_text" required>
+    <select name="filter_by" id="filter_by" required>
+        <option value="apellidos">Apellidos</option>
+        <option value="id">ID</option>
+    </select>
+    <input type="submit" value="Filtrar">
+</form>
 <table>
-  <tr>
-    <th>ID</th>
-    <th>Nombre</th>
-    <th>Número de Teléfono</th>
-  </tr>
-  {% for paciente in pacientes %}
-  <tr>
-    <td>{{ paciente.id }}</td>
-    <td>{{ paciente.nombres }} {{ paciente.primer_apellido }} {{ paciente.segundo_apellido }}</td>
-    <td>{{ paciente.celular }}</td>
-  </tr>
-  {% endfor %}
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Número de Teléfono</th>
+    </tr>
+    {% for paciente in pacientes %}
+    <tr>
+        <td>{{ paciente[0] }}</td>
+        <td>{{ paciente[3] }} {{ paciente[1] }} {{ paciente[2] }}</td>
+        <td>{{ paciente[5] }}</td>
+    </tr>
+    {% endfor %}
 </table>
 </body>
 </html>
