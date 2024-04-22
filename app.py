@@ -201,7 +201,8 @@ def actualizar_paciente(id):
     return redirect(url_for('detalle_paciente', id=id))
 
 @app.route('/agendar_cita', methods=['GET', 'POST'])
-@login_required
+@login_required #cambiar por una automplete de los nombres con id
+#hacerlo por id unicamente
 def agendar_cita():
     if request.method == 'POST':
         if 'paciente_id' in request.form:

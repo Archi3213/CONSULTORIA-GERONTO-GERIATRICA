@@ -54,12 +54,18 @@
 
         th {
             background-color: #333;
-            color: #fff;
+            color: #ffffff;
         }
 
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
+/* Color para renglones pares */
+tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+/* Color para renglones impares */
+tr:nth-child(odd) {
+    background-color: #e6e6e6;
+}
 
         input[type="text"],
         input[type="number"] {
@@ -119,8 +125,6 @@
         <th>Género</th>
         <th>Fecha de Registro</th>
         <th>Registrado Por</th>
-        <th>Porcentaje de Grasa</th>
-        <th>Densidad Muscular</th>
     </tr>
     {% for paciente in pacientes %}
     <tr>
@@ -135,18 +139,6 @@
         <td>{{ paciente[7] }}</td>
         <td>{{ paciente[11] }}</td>
         <td>{{ paciente[12] }}</td>
-        <td>
-            <form action="{{ url_for('actualizar_paciente', id=paciente[0]) }}" method="post">
-                <input type="number" name="porcentaje_grasa" placeholder="Porcentaje de Grasa">
-                <input type="submit" value="Actualizar">
-            </form>
-        </td>
-        <td>
-            <form action="{{ url_for('actualizar_paciente', id=paciente[0]) }}" method="post">
-                <input type="number" name="densidad_muscular" placeholder="Densidad Muscular">
-                <input type="submit" value="Actualizar">
-            </form>
-        </td>
     </tr>
     {% endfor %}
 </table>
