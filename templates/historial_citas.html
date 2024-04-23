@@ -50,23 +50,46 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         th, td {
             border: 1px solid #ddd;
             padding: 12px;
-            text-align: left;
+            text-align: center;
             font-size: 14px;
+            transition: background-color 0.3s;
         }
 
         th {
-            background-color: #f2f2f2;
+            background-color: #333;
+            color: #ffffff;
             font-weight: bold;
             text-transform: uppercase;
         }
 
         tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #e0e0e0;
+            transform: scale(1.02);
+            transition: transform 0.3s;
+        }
+
+        .select-pendiente {
+            background-color: #ffcc80;
+        }
+
+        .select-realizada {
+            background-color: #a5d6a7;
+        }
+
+        .select-cancelada {
+            background-color: #ef9a9a;
         }
 
         select {
@@ -90,6 +113,49 @@
 
         input[type="submit"]:hover {
             background-color: #45a049;
+        }
+
+        .estado-label {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .estado-pendiente {
+            background-color: #ffcc80;
+            color: #333;
+        }
+
+        .estado-realizada {
+            background-color: #a5d6a7;
+            color: #333;
+        }
+
+        .estado-cancelada {
+            background-color: #ef9a9a;
+            color: #333;
+        }
+
+        /* Efecto visual al pasar el mouse sobre las filas */
+        tr:hover td {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+
+        /* Resaltar filas según el estado de la cita */
+        .select-pendiente tr.select-pendiente td {
+            background-color: #ffcc80;
+        }
+
+        .select-realizada tr.select-realizada td {
+            background-color: #a5d6a7;
+        }
+
+        .select-cancelada tr.select-cancelada td {
+            background-color: #ef9a9a;
         }
     </style>
 </head>
@@ -117,7 +183,7 @@
                 <th>Cambio de estado</th>
             </tr>
             {% for cita in citas %}
-            <tr>
+            <tr class="{% if cita[8] == 'Pendiente' %}select-pendiente{% elif cita[8] == 'Realizada' %}select-realizada{% elif cita[8] == 'Cancelada' %}select-cancelada{% endif %}">
                 <td>{{ cita[0] }}</td>
                 <td>{{ cita[1] }}</td>
                 <td>{{ cita[2] }}</td>

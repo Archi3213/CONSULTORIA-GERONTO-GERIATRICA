@@ -1,96 +1,113 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NUTRICION CONSULTAS</title>
     <style>
         body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
             background-image: url('https://img.freepik.com/vector-gratis/fondo-frutas-verduras_23-2148485148.jpg?w=740&t=st=1713248651~exp=1713249251~hmac=30e168e9f2d449c4894d64a9e7ff69ce1449d8aca24ba3c0d846298490ca6041');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
         }
 
         .container {
-            max-width: 600px;
+            max-width: 500px;
             margin: 50px auto;
-            background-color: #64f352;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            text-align: center; /* Centrar contenido */
+            background-color: rgba(100, 243, 82, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
         }
 
         h1 {
             color: #333;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra de texto para efecto visual */
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             color: #555;
+            font-weight: bold;
         }
 
         input[type="text"],
         input[type="email"],
         input[type="password"] {
             width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
+            padding: 12px;
+            margin-bottom: 20px;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 6px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #4CAF50;
         }
 
         input[type="submit"] {
             background-color: #4CAF50;
             color: #fff;
             border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
+            padding: 12px 24px;
+            border-radius: 6px;
             cursor: pointer;
+            font-size: 1em;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra para botón */
         }
 
         input[type="submit"]:hover {
             background-color: #45a049;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group::after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-
-        .form-group label,
-        .form-group input {
-            width: 48%;
-            margin: 0 auto; /* Centrar elementos dentro de .form-group */
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            font-style: italic; /* Estilo de fuente para mensaje de error */
         }
 
         @media (max-width: 768px) {
-            .form-group label,
-            .form-group input {
-                width: 100%;
+            .container {
+                max-width: 90%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            input[type="submit"] {
+                padding: 10px 20px;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>CONSULTAS NUTRICION ARMONIA</h1>
-        <h1>Inicio de sesión</h1>
+        <h2>Inicio de sesión</h2>
         <div class="form-group">
             <form action="/login" method="post">
-                {% if error %}
-                <p style="color: red;">{{ error }}</p>
-                {% endif %}
                 <label for="username">Usuario:</label>
                 <input type="text" id="username" name="username" required><br>
 
@@ -99,7 +116,11 @@
   
                 <input type="submit" value="Iniciar Sesión">
             </form>
+            {% if error %}
+            <p style="color: red;">{{ error }}</p>
+            {% endif %}
         </div>
     </div>
 </body>
+
 </html>

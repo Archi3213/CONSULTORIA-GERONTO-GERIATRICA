@@ -1,32 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta de Pacientes</title>
     <style>
         body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
             background-image: url('https://img.freepik.com/vector-gratis/fondo-frutas-verduras_23-2148485148.jpg?w=740&t=st=1713248651~exp=1713249251~hmac=30e168e9f2d449c4894d64a9e7ff69ce1449d8aca24ba3c0d846298490ca6041');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
         }
 
         .navbar {
-            overflow: hidden;
             background-color: #333;
+            overflow: hidden;
             margin-bottom: 20px;
         }
 
         .navbar a {
-            display: inline-block;
             color: #f2f2f2;
             text-align: center;
-            padding: 14px 16px;
             text-decoration: none;
+            display: inline-block;
+            padding: 14px 16px;
             transition: background-color 0.3s;
         }
 
@@ -35,21 +36,34 @@
         }
 
         h1 {
-            color: #333;
             text-align: center;
+            color: #333;
             margin-bottom: 20px;
+        }
+
+        .filter-form {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .filter-form label {
+            margin-right: 10px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
-            border: 2px solid #333; /* Borde alrededor de la tabla */
+            background-color: #fff; /* Cambio de color de fondo */
+            border-radius: 8px; /* Borde redondeado */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         th, td {
-            padding: 8px;
+            padding: 10px;
             text-align: center;
+            border-bottom: 1px solid #ddd;
+            transition: background-color 0.3s; /* Transición de color */
         }
 
         th {
@@ -57,23 +71,23 @@
             color: #ffffff;
         }
 
-/* Color para renglones pares */
-tr:nth-child(even) {
-    background-color: #ffffff;
-}
+        /* Color para renglones pares */
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
 
-/* Color para renglones impares */
-tr:nth-child(odd) {
-    background-color: #e6e6e6;
-}
+        /* Color para renglones impares */
+        tr:nth-child(odd) {
+            background-color: #e6e6e6;
+        }
 
         input[type="text"],
         input[type="number"] {
             width: 150px;
             padding: 6px;
+            margin-right: 10px;
             border-radius: 4px;
             border: 1px solid #ccc;
-            margin-right: 10px;
         }
 
         input[type="submit"] {
@@ -88,59 +102,107 @@ tr:nth-child(odd) {
         input[type="submit"]:hover {
             background-color: #45a049;
         }
+
+        .add-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .add-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Estilo para el IMC */
+        .imc {
+            color: #ffffff;
+            background-color: #ff5722;
+            border-radius: 4px;
+            padding: 4px 8px;
+            transition: background-color 0.3s; /* Transición de color al pasar el ratón */
+        }
+
+        .imc:hover {
+            background-color: #ff8a65; /* Cambio de color al pasar el ratón */
+        }
+
+        /* Resaltar fila al pasar el mouse */
+        tr:hover {
+            background-color: #f0f0f0;
+        }
     </style>
 </head>
+
 <body>
-<div class="navbar">
-    <a href="/">Inicio</a>
-    <a href="/registro">Registro</a>
-    <a href="/options">Agenda</a>
-    <a href="/agendar_cita">Agendar Cita</a>
-    <a href="/historial_citas">Historial de Citas</a>
-    <a href="/directorio_pacientes">Directorio Pacientes</a>
-</div>
-<h1>Consulta de Pacientes</h1>
-<form action="{{ url_for('consulta_paciente') }}" method="post">
-    <label for="filtro_apellidos">Filtrar por Apellidos:</label>
-    <input type="text" id="filtro_apellidos" name="filter_text" placeholder="Ingrese apellidos...">
-    <input type="hidden" name="filter_by" value="apellidos">
-    <input type="submit" value="Buscar">
-</form>
-<form action="{{ url_for('consulta_paciente') }}" method="post">
-    <label for="filtro_id">Filtrar por ID:</label>
-    <input type="text" id="filtro_id" name="filter_text" placeholder="Ingrese ID...">
-    <input type="hidden" name="filter_by" value="id">
-    <input type="submit" value="Buscar">
-</form>
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Apellidos</th>
-        <th>Nombres</th>
-        <th>Fecha de Nacimiento</th>
-        <th>Peso (kg)</th>
-        <th>Altura (cm)</th>
-        <th>IMC</th>
-        <th>Turno</th>
-        <th>Género</th>
-        <th>Fecha de Registro</th>
-        <th>Registrado Por</th>
-    </tr>
-    {% for paciente in pacientes %}
-    <tr>
-        <td>{{ paciente[0] }}</td>
-        <td>{{ paciente[1] }} {{ paciente[2] }}</td>
-        <td>{{ paciente[3] }}</td>
-        <td>{{ paciente[4] }}</td>
-        <td>{{ paciente[8] }}</td>
-        <td>{{ paciente[9] }}</td>
-        <td>{{ paciente[10] }}</td>
-        <td>{{ paciente[6] }}</td>
-        <td>{{ paciente[7] }}</td>
-        <td>{{ paciente[11] }}</td>
-        <td>{{ paciente[12] }}</td>
-    </tr>
-    {% endfor %}
-</table>
+    <div class="navbar">
+        <a href="/">Inicio</a>
+        <a href="/registro">Registro</a>
+        <a href="/options">Agenda</a>
+        <a href="/agendar_cita">Agendar Cita</a>
+        <a href="/historial_citas">Historial de Citas</a>
+        <a href="/directorio_pacientes">Directorio Pacientes</a>
+    </div>
+    <h1>Consulta de Pacientes</h1>
+    <!-- Formulario de filtrado por apellidos -->
+    <form action="{{ url_for('consulta_paciente') }}" method="post" class="filter-form">
+        <label for="filtro_apellidos">Filtrar por Apellidos:</label>
+        <input type="text" id="filtro_apellidos" name="filter_text" placeholder="Ingrese apellidos...">
+        <input type="hidden" name="filter_by" value="apellidos">
+        <input type="submit" value="Buscar">
+    </form>
+    <!-- Formulario de filtrado por ID -->
+    <form action="{{ url_for('consulta_paciente') }}" method="post" class="filter-form">
+        <label for="filtro_id">Filtrar por ID:</label>
+        <input type="text" id="filtro_id" name="filter_text" placeholder="Ingrese ID...">
+        <input type="hidden" name="filter_by" value="id">
+        <input type="submit" value="Buscar">
+    </form>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Apellidos</th>
+            <th>Nombres</th>
+            <th>Fecha de Nacimiento</th>
+            <th>Peso (kg)</th>
+            <th>Altura (cm)</th>
+            <th>IMC</th>
+            <th>Turno</th>
+            <th>Género</th>
+            <th>Fecha de Registro</th>
+            <th>Registrado Por</th>
+        </tr>
+        {% for paciente in pacientes %}
+        <tr>
+            <td>{{ paciente[0] }}</td>
+            <td>{{ paciente[1] }} {{ paciente[2] }}</td>
+            <td>{{ paciente[3] }}</td>
+            <td>{{ paciente[4] }}</td>
+            <td>{{ paciente[8] }}</td>
+            <td>{{ paciente[9] }}</td>
+            <td class="imc">{{ '%.2f' % paciente[10] }}</td> <!-- Limitar a 2 decimales -->
+            <td>{{ paciente[6] }}</td>
+            <td>{{ paciente[7] }}</td>
+            <td>{{ paciente[11] }}</td>
+            <td>{{ paciente[12] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <!-- Efecto visual para el IMC -->
+    <script>
+        const imcElements = document.querySelectorAll('.imc');
+        imcElements.forEach(element => {
+            element.addEventListener('mouseover', () => {
+                element.style.backgroundColor = '#ff8a65';
+            });
+            element.addEventListener('mouseout', () => {
+                element.style.backgroundColor = '#ff5722';
+            });
+        });
+    </script>
 </body>
+
 </html>

@@ -270,7 +270,7 @@ def historial_citas():
 
     with sqlite3.connect('nutricion_consulta.db') as conexion:
         cursor = conexion.cursor()
-        cursor.execute('''SELECT citas.id, pacientes.id, pacientes.primer_apellido || ' ' || pacientes.segundo_apellido || ', ' || pacientes.nombres as nombre_completo, 
+        cursor.execute('''SELECT citas.id, pacientes.id, pacientes.primer_apellido || ' ' || pacientes.segundo_apellido || ' ' || pacientes.nombres as nombre_completo, 
                           pacientes.fecha_nacimiento, citas.fecha_consulta, citas.hora_consulta, citas.observaciones, citas.estado
                           FROM citas JOIN pacientes ON citas.paciente_id = pacientes.id''')
         citas = cursor.fetchall()

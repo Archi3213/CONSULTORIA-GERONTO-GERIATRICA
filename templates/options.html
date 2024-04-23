@@ -1,107 +1,164 @@
 <!DOCTYPE html>
-<html lang="en"><html>
+<html lang="es">
+
 <head>
-    <!-- Agrega esto en tu archivo HTML donde quieras mostrar el calendario -->
-    <title>Opciones</title>
-</head>
-<style>
-    body {
-        background-image: url('https://img.freepik.com/vector-gratis/fondo-frutas-verduras_23-2148485148.jpg?w=740&t=st=1713248651~exp=1713249251~hmac=30e168e9f2d449c4894d64a9e7ff69ce1449d8aca24ba3c0d846298490ca6041');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-    }
-        /* Estilos para la barra de navegación */
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://img.freepik.com/vector-gratis/fondo-frutas-verduras_23-2148485148.jpg?w=740&t=st=1713248651~exp=1713249251~hmac=30e168e9f2d449c4894d64a9e7ff69ce1449d8aca24ba3c0d846298490ca6041');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
         .navbar {
             overflow: hidden;
             background-color: #333;
-            margin-bottom: 20px; /* Agregamos margen inferior para separar del contenido */
+            margin-bottom: 20px;
         }
 
         .navbar a {
             display: inline-block;
             color: #f2f2f2;
-            text-align: center; /* Alineamos el texto al centro */
+            text-align: center;
             padding: 14px 16px;
-            text-decoration: none; /* Quitamos el subrayado de los enlaces */
-            transition: background-color 0.3s; /* Agregamos transición al cambio de color */
+            text-decoration: none;
+            transition: background-color 0.3s;
         }
 
         .navbar a:hover {
-            background-color: #555; /* Color de fondo al pasar el mouse */
+            background-color: #555;
         }
-    .calendar-container {
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        max-width: 600px;
-        width: 100%;
-        margin: auto;
-    }
 
-    .calendar-header {
-        text-align: center;
-        margin-bottom: 20px;
-        font-size: 24px;
-        color: #333;
-    }
+        .calendar-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
 
-    .calendar-table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 10px;
-    }
+        .calendar-header {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
 
-    .calendar-table th,
-    .calendar-table td {
-        padding: 10px;
-        border: 2px solid #ccc;
-        text-align: center;
-        font-size: 18px;
-        color: #333;
-    }
+        .calendar-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-    .calendar-table th {
-        background-color: #f0f0f0;
-        font-weight: bold;
-    }
-</style>
+        .calendar-table th,
+        .calendar-table td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+            width: 14%;
+        }
 
-    </head>
+        .calendar-table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .day-number {
+            font-weight: bold;
+        }
+
+        .today {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+
+        .weekend {
+            color: #f00;
+        }
+    </style>
+</head>
+
+<body>
     <div class="navbar">
-        <a href="/">Inicio</a>         
+        <a href="/">Inicio</a>
         <a href="/registro">Registro</a>
         <a href="/consultar">Consulta</a>
         <a href="/agendar_cita">Agendar Cita</a>
         <a href="/historial_citas">Historial de Citas</a>
         <a href="/directorio_pacientes">Directorio Pacientes</a>
     </div>
-    
-{% block content %}{% endblock %}
 
-<body>
     <div class="calendar-container">
         <h1 class="calendar-header">Calendario del Mes</h1>
         <table class="calendar-table">
             <thead>
                 <tr>
-                    <th>Lunes</th>
-                    <th>Martes</th>
-                    <th>Miércoles</th>
-                    <th>Jueves</th>
-                    <th>Viernes</th>
-                    <th>Sábado</th>
-                    <th>Domingo</th>
+                    <th>Lun</th>
+                    <th>Mar</th>
+                    <th>Mié</th>
+                    <th>Jue</th>
+                    <th>Vie</th>
+                    <th>Sáb</th>
+                    <th>Dom</th>
                 </tr>
             </thead>
             <tbody>
-                {{ html_calendar | safe }}<!-- Aquí irían los datos del calendario generados por Python -->
+                <tr>
+                    <td class="weekend"><span class="day-number">1</span></td>
+                    <td class="weekend"><span class="day-number">2</span></td>
+                    <td><span class="day-number">3</span></td>
+                    <td><span class="day-number">4</span></td>
+                    <td><span class="day-number">5</span></td>
+                    <td><span class="day-number">6</span></td>
+                    <td class="weekend"><span class="day-number">7</span></td>
+                </tr>
+                <tr>
+                    <td><span class="day-number">8</span></td>
+                    <td><span class="day-number">9</span></td>
+                    <td><span class="day-number">10</span></td>
+                    <td><span class="day-number">11</span></td>
+                    <td><span class="day-number">12</span></td>
+                    <td><span class="day-number">13</span></td>
+                    <td class="weekend"><span class="day-number">14</span></td>
+                </tr>
+                <tr>
+                    <td><span class="day-number">15</span></td>
+                    <td><span class="day-number">16</span></td>
+                    <td><span class="day-number">17</span></td>
+                    <td><span class="day-number">18</span></td>
+                    <td><span class="day-number">19</span></td>
+                    <td><span class="day-number">20</span></td>
+                    <td class="weekend"><span class="day-number">21</span></td>
+                </tr>
+                <tr>
+                    <td><span class="day-number">22</span></td>
+                    <td><span class="day-number">23</span></td>
+                    <td><span class="day-number">24</span></td>
+                    <td><span class="day-number">25</span></td>
+                    <td><span class="day-number">26</span></td>
+                    <td><span class="day-number">27</span></td>
+                    <td class="weekend"><span class="day-number">28</span></td>
+                </tr>
+                <tr>
+                    <td><span class="day-number">29</span></td>
+                    <td><span class="day-number">30</span></td>
+                    <td><span class="day-number">31</span></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
     </div>
 </body>
+
 </html>
