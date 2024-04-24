@@ -37,34 +37,6 @@
             color: black;
         }
 
-        .content {
-            text-align: center;
-            margin-top: 50px;
-            color: #0a2400;
-        }
-
-        h1 {
-            margin-bottom: 10px;
-        }
-
-        p {
-            margin-bottom: 20px;
-        }
-
-        strong {
-            color: #000000;
-        }
-
-        @media screen and (max-width: 768px) {
-            .navbar {
-                flex-wrap: wrap;
-            }
-
-            .navbar a {
-                flex: 1 0 50%;
-                margin: 5px;
-            }
-        }
         .container {
             max-width: 600px;
             margin: 50px auto;
@@ -119,26 +91,27 @@
         <a href="/directorio_pacientes">Directorio Pacientes</a>
         <a href="/crear_expediente">Expediente</a>
     </div>
-<div class="container">
-    <h1>Agendar Cita</h1>
-    {% if error_message %}
-    <p style="color: red;">{{ error_message }}</p>
-    {% endif %}
-    <form method="POST" action="/agendar_cita" class="form-group">
-        <label for="paciente_id">Nombre del paciente:</label>
-        <select id="paciente_id" name="paciente_id" required>
-            {% for paciente in pacientes %}
-                <option value="{{ paciente.id }}">{{ paciente.id }}</option>
-            {% endfor %}
-        </select><br><br>
-        
-        <br><br>
-        <label for="fecha_consulta">Fecha de consulta:</label>
-        <input type="date" name="fecha_consulta" id="fecha_consulta"><br><br>
-        <label for="hora_consulta">Hora de consulta:</label>
-        <input type="time" name="hora_consulta" id="hora_consulta"><br><br>
-        <input type="submit" value="Agendar Cita">
-    </form>
-</div>
+    <div class="container">
+        <h1>Agendar Cita</h1>
+        {% if error_message %}
+            <p style="color: red;">{{ error_message }}</p>
+        {% endif %}
+        <form method="POST" action="/agendar_cita" class="form-group">
+            <label for="paciente_id">Nombre del paciente:</label>
+            <select id="paciente_id" name="paciente_id" required>
+                {% for paciente in pacientes %}
+                    <option value="{{ paciente.id }}">{{ paciente.primer_apellido }} {{ paciente.segundo_apellido }} {{ paciente.nombres }}</option>
+                {% endfor %}
+            </select><br><br>
+            <label for="fecha_consulta">Fecha de consulta:</label>
+            <input type="date" id="fecha_consulta" name="fecha_consulta" required><br><br>
+            <label for="hora_consulta">Hora de la cita:</label>
+            <input type="time" id="hora_consulta" name="hora_consulta" required><br><br>
+            <button type="submit">Agendar Cita</button>
+        </form>
+    </div>
+    
+        </form>
+    </div>
 </body>
 </html>

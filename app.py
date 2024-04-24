@@ -1,8 +1,10 @@
 from functools import wraps
+from flask import request, redirect, url_for, render_template
 from flask import Flask, render_template, request, redirect, url_for, session
 import datetime
 import hashlib
 import sqlite3
+
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
@@ -26,112 +28,6 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-conexion = sqlite3.connect('nutricion_consulta.db')
-cursor = conexion.cursor()
-
-cursor.execute('''CREATE TABLE IF NOT EXISTS pacientes (
-                    id TEXT PRIMARY KEY,
-                    primer_apellido TEXT NOT NULL,
-                    segundo_apellido TEXT NOT NULL,
-                    nombres TEXT NOT NULL,
-                    fecha_nacimiento TEXT NOT NULL,
-                    celular TEXT NOT NULL,
-                    religion TEXT,
-                    ocupacion TEXT,
-                    escolaridad TEXT,
-                    estado_civil TEXT,
-                    servicio_salud TEXT,
-                    turno TEXT NOT NULL,
-                    genero TEXT NOT NULL,
-                    peso REAL NOT NULL,
-                    altura REAL NOT NULL,
-                    imc REAL NOT NULL,
-                    fecha_registro TEXT NOT NULL,
-                    registrado_por TEXT NOT NULL
-                )''')
-
-cursor.execute('''CREATE TABLE IF NOT EXISTS usuarios (
-                    username TEXT PRIMARY KEY,
-                    password TEXT NOT NULL 
-                )''')
-hashed_password_matutino = hashlib.sha256(b'MATUTINO').hexdigest()
-hashed_password_vespertino = hashlib.sha256(b'VESPERTINO').hexdigest()
-cursor.execute("INSERT OR IGNORE INTO usuarios (username, password) VALUES (?, ?)", ('MATUTINO', hashed_password_matutino))
-cursor.execute("INSERT OR IGNORE INTO usuarios (username, password) VALUES (?, ?)", ('VESPERTINO', hashed_password_vespertino))
-
-cursor.execute('''CREATE TABLE IF NOT EXISTS expedientes (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    paciente_id TEXT,
-                    motivo_consulta TEXT,
-                    quien_remitio TEXT,
-                    patologias TEXT,
-                    antecedentes_patologicos TEXT,
-                    tiempo_diagnostico TEXT,
-                    medicamentos TEXT,
-                    discapacidad TEXT,
-                    cirugias TEXT,
-                    alergia TEXT,
-                    factor_digestivo TEXT,
-                    consume_alcohol TEXT,
-                    consume_tabaco TEXT,
-                    consume_suplementos TEXT,
-                    consume_cafeina TEXT,
-                    observaciones_no_patologicas TEXT,
-                    horas_sueno TEXT,
-                    hora_sueno TEXT,
-                    toma_siestas TEXT,
-                    tiempo_siestas TEXT,
-                    duracion_actividad_fisica TEXT,
-                    tipo_actividad_fisica TEXT,
-                    frecuencia_actividad_fisica TEXT,
-                    estado_piel TEXT,
-                    estado_ojos TEXT,
-                    estado_unas TEXT,
-                    estado_cabello TEXT,
-                    estado_boca TEXT,
-                    estado_dientes TEXT,
-                    hb TEXT,
-                    hto TEXT,
-                    colesterol TEXT,
-                    trigliceridos TEXT,
-                    glucosa TEXT,
-                    urea TEXT,
-                    creatinina TEXT,
-                    ac_urico TEXT,
-                    otros_bioquimica TEXT,
-                    orientacion_alimentaria TEXT,
-                    intolerancia TEXT,
-                    alergia_alimentaria TEXT,
-                    consumo_agua TEXT,
-                    dinero_alimentacion TEXT,
-                    personas_alimentacion TEXT,
-                    quien_prepara TEXT,
-                    FOREIGN KEY (paciente_id) REFERENCES pacientes(id)
-                )''')
-
-conexion.commit()
-
-cursor.execute('''CREATE TABLE IF NOT EXISTS citas (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    paciente_id TEXT,
-                    fecha_consulta TEXT NOT NULL,
-                    hora_consulta TEXT NOT NULL, 
-                    observaciones TEXT,
-                    estado TEXT DEFAULT 'Pendiente',
-                    FOREIGN KEY (paciente_id) REFERENCES pacientes(id)
-                )''')
-
-conexion.commit()
-cursor.close()
-
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'username' not in session:
-            return redirect(url_for('login'))
-        return f(*args, **kwargs)
-    return decorated_function
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -142,20 +38,22 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        conexion = sqlite3.connect('nutricion_consulta.db')
-        cursor = conexion.cursor()
+        try:
+            conexion = get_db_connection()
+            cursor = conexion.cursor()
+            cursor.execute("SELECT * FROM usuarios WHERE username = ?", (username,))
+            user = cursor.fetchone()
+            cursor.close()
+            conexion.close()
 
-        cursor.execute("SELECT * FROM usuarios WHERE username = ?", (username,))
-        user = cursor.fetchone()
-
-        cursor.close()
-        conexion.close()
-
-        if user and hashlib.sha256(password.encode()).hexdigest() == user[1]:
-            session['username'] = username
-            return redirect(url_for('options'))
-        else:
-            error = 'Usuario o contraseña incorrectos'
+            if user and hashlib.sha256(password.encode()).hexdigest() == user[1]:
+                session['username'] = username
+                return redirect(url_for('options'))
+            else:
+                error = 'Usuario o contraseña incorrectos'
+                return render_template('login.html', error=error)
+        except Exception as e:
+            error = 'Error en la autenticación'
             return render_template('login.html', error=error)
     return render_template('login.html')
 
@@ -168,6 +66,9 @@ def options():
 @login_required
 def registro_paciente():
     if request.method == 'POST':
+        conexion = get_db_connection()
+        cursor = conexion.cursor()
+
         primer_apellido = request.form['primer_apellido'].upper()
         segundo_apellido = request.form['segundo_apellido'].upper()
         nombres = request.form['nombres'].upper()
@@ -193,24 +94,21 @@ def registro_paciente():
         altura2 = altura1 * altura1
         imc = peso / altura2
 
-        conexion_registro = sqlite3.connect('nutricion_consulta.db')
-        cursor_registro = conexion_registro.cursor()
-
-        cursor_registro.execute('''INSERT INTO pacientes (id, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, celular, religion, ocupacion, escolaridad, estado_civil, servicio_salud, turno, genero, peso, altura, imc, fecha_registro, registrado_por) 
+        cursor.execute('''INSERT INTO pacientes (id, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, celular, religion, ocupacion, escolaridad, estado_civil, servicio_salud, turno, genero, peso, altura, imc, fecha_registro, registrado_por) 
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
                         (id_paciente, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, celular, religion, ocupacion, escolaridad, estado_civil, servicio_salud, turno, genero, peso, altura, imc, fecha_registro, registrado_por))
-        conexion_registro.commit()
-        cursor_registro.close()
-        conexion_registro.close()
+        conexion.commit()
+        cursor.close()
+        conexion.close()
 
-        return redirect(url_for('pagina_registro_exitoso'))
+        return redirect(url_for('registro_exitoso', id_paciente=id_paciente))
 
     return render_template('registro.html')
+
 @app.route('/registro_exitoso')
 def registro_exitoso():
     id_paciente = request.args.get('id_paciente')
-    nombre_paciente = request.args.get('nombre_paciente')
-    return render_template('registro_exitoso.html', id_paciente=id_paciente, nombre_paciente=nombre_paciente)
+    return render_template('registro_exitoso.html', id_paciente=id_paciente)
 
 @app.route('/consultar', methods=['GET', 'POST'])
 @login_required
@@ -219,7 +117,7 @@ def consulta_paciente():
         filter_text = request.form['filter_text']
         filter_by = request.form['filter_by']
 
-        conexion_consulta = sqlite3.connect('nutricion_consulta.db')
+        conexion_consulta = get_db_connection()
         cursor_consulta = conexion_consulta.cursor()
 
         if filter_by == 'apellidos':
@@ -236,7 +134,7 @@ def consulta_paciente():
 
         return render_template('consultar.html', pacientes=pacientes, filter_text=filter_text, filter_by=filter_by)
     
-    conexion_consulta = sqlite3.connect('nutricion_consulta.db')
+    conexion_consulta = get_db_connection()
     cursor_consulta = conexion_consulta.cursor()
     cursor_consulta.execute("SELECT * FROM pacientes")
     pacientes = cursor_consulta.fetchall()
@@ -244,9 +142,10 @@ def consulta_paciente():
     conexion_consulta.close()
 
     return render_template('consultar.html', pacientes=pacientes)
+
 @app.route('/paciente/<id>')
 def detalle_paciente(id):
-    conexion = sqlite3.connect('nutricion_consulta.db')
+    conexion = get_db_connection()
     cursor = conexion.cursor()
 
     cursor.execute("SELECT * FROM pacientes WHERE id=?", (id,))
@@ -261,61 +160,26 @@ def detalle_paciente(id):
         return 'Paciente no encontrado'
 
 @app.route('/agendar_cita', methods=['GET', 'POST'])
-@login_required #cambiar por una automplete de los nombres con id
-#hacerlo por id unicamente
+@login_required
 def agendar_cita():
-    if request.method == 'POST':
-        if 'paciente_id' in request.form:
-            paciente_id = request.form['paciente_id']
-            fecha_consulta = request.form['fecha_consulta']
-            hora_cita = request.form['hora_consulta']
+    if request.method == 'POST' and 'paciente_id' in request.form:
+        paciente_id = request.form['paciente_id']
+        fecha_consulta = request.form['fecha_consulta']
+        hora_cita = request.form['hora_consulta']
 
-            conexion = sqlite3.connect('nutricion_consulta.db')
-            cursor = conexion.cursor()
+        conexion = get_db_connection()
+        cursor = conexion.cursor()
 
-            cursor.execute('''INSERT INTO citas (paciente_id, fecha_consulta, hora_consulta) 
-                            VALUES (?, ?, ?)''', 
-                            (paciente_id, fecha_consulta, hora_cita))
-            conexion.commit()
-            cursor.close()
-            conexion.close()
-
-            return redirect(url_for('historial_citas'))
-        else:
-            error_message = "Error: No se ha proporcionado el ID del paciente."
-            return render_template('agendar_cita.html', error_message=error_message)
-    else:
-        conexion_pacientes = sqlite3.connect('nutricion_consulta.db')
-        cursor_pacientes = conexion_pacientes.cursor()
-        cursor_pacientes.execute("SELECT id, nombres FROM pacientes")
-        pacientes = cursor_pacientes.fetchall()
-        cursor_pacientes.close()
-        conexion_pacientes.close()
-
-        return render_template('agendar_cita.html', pacientes=pacientes)
-app.route('/historial_citas', methods=['GET', 'POST'])
-def historial_citas():
-    conexion = sqlite3.connect('nutricion_consulta.db')
-    cursor = conexion.cursor()
-
-    cursor.execute('''SELECT citas.id, pacientes.id, pacientes.nombres, 
-                      pacientes.primer_apellido, pacientes.segundo_apellido,
-                      citas.fecha_consulta, citas.hora_consulta, citas.observaciones, citas.estado
-                      FROM citas JOIN pacientes ON citas.paciente_id = pacientes.id''')
-    
-    citas = cursor.fetchall()
-
-    # Si se envía el formulario para cambiar el estado
-    if request.method == 'POST':
-        id_cita = request.form['id_cita']
-        nuevo_estado = request.form['nuevo_estado']
-        cursor.execute('''UPDATE citas SET estado = ? WHERE id = ?''', (nuevo_estado, id_cita))
+        cursor.execute('''INSERT INTO citas (paciente_id, fecha_consulta, hora_cita) 
+                        VALUES (?, ?, ?)''', 
+                        (paciente_id, fecha_consulta, hora_cita))
         conexion.commit()
+        cursor.close()
+        conexion.close()
 
-    cursor.close()
-    conexion.close()
+        return redirect(url_for('historial_citas'))
 
-    return render_template('historial_citas.html', citas=citas)
+    return render_template('agendar_cita.html')
 
 @app.route('/historial_citas', methods=['GET', 'POST'])
 def historial_citas():
