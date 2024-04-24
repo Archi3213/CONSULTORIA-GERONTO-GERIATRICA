@@ -47,30 +47,8 @@
 
         h1 {
             margin-bottom: 10px;
-        }
-
-        p {
-            margin-bottom: 20px;
-        }
-
-        strong {
-            color: #000000;
-        }
-
-        @media screen and (max-width: 768px) {
-            .navbar {
-                flex-wrap: wrap;
-            }
-
-            .navbar a {
-                flex: 1 0 50%;
-                margin: 5px;
-            }
-        }
-        h1 {
             text-align: center;
             color: #333;
-            margin-bottom: 20px;
         }
 
         .filter-form {
@@ -86,16 +64,17 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
-            background-color: #fff; /* Cambio de color de fondo */
-            border-radius: 8px; /* Borde redondeado */
+            background-color: #fff;
+            border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        th, td {
+        th,
+        td {
             padding: 10px;
             text-align: center;
             border-bottom: 1px solid #ddd;
-            transition: background-color 0.3s; /* Transición de color */
+            transition: background-color 0.3s;
         }
 
         th {
@@ -103,12 +82,10 @@
             color: #ffffff;
         }
 
-        /* Color para renglones pares */
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
 
-        /* Color para renglones impares */
         tr:nth-child(odd) {
             background-color: #e6e6e6;
         }
@@ -135,34 +112,18 @@
             background-color: #45a049;
         }
 
-        .add-button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-
-        .add-button:hover {
-            background-color: #45a049;
-        }
-
-        /* Estilo para el IMC */
         .imc {
             color: #ffffff;
             background-color: #ff5722;
             border-radius: 4px;
             padding: 4px 8px;
-            transition: background-color 0.3s; /* Transición de color al pasar el ratón */
+            transition: background-color 0.3s;
         }
 
         .imc:hover {
-            background-color: #ff8a65; /* Cambio de color al pasar el ratón */
+            background-color: #ff8a65;
         }
 
-        /* Resaltar fila al pasar el mouse */
         tr:hover {
             background-color: #f0f0f0;
         }
@@ -204,6 +165,11 @@
             <th>Peso (kg)</th>
             <th>Altura (cm)</th>
             <th>IMC</th>
+            <th>Religión</th>
+            <th>Ocupación</th>
+            <th>Escolaridad</th>
+            <th>Estado Civil</th>
+            <th>Servicio de Salud</th>
             <th>Turno</th>
             <th>Género</th>
             <th>Fecha de Registro</th>
@@ -217,15 +183,19 @@
             <td>{{ paciente[4] }}</td>
             <td>{{ paciente[8] }}</td>
             <td>{{ paciente[9] }}</td>
-            <td class="imc">{{ '%.2f' % paciente[10] }}</td> <!-- Limitar a 2 decimales -->
             <td>{{ paciente[6] }}</td>
+            <td>{{ paciente[10] }} </td>
             <td>{{ paciente[7] }}</td>
             <td>{{ paciente[11] }}</td>
             <td>{{ paciente[12] }}</td>
+            <td>{{ paciente[13] }}</td>
+            <td>{{ paciente[14] }}</td>
+            <td>{{ '%.2f' %  paciente[15] }}</td>
+            <td>{{ paciente[16] }}</td>
+            <td>{{ paciente[17] }}</td>
         </tr>
         {% endfor %}
     </table>
-    <!-- Efecto visual para el IMC -->
     <script>
         const imcElements = document.querySelectorAll('.imc');
         imcElements.forEach(element => {

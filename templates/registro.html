@@ -140,8 +140,56 @@
             <label for="celular"> Numero de celular:</label>
         <input type="number" id="celular" name="celular" pattern="[0-9]" +
         title="Ingrese al menos 9 dígitos numéricos" required><br>
-            
-        <label>Turno:</label>
+         
+        <label>Escolaridad:</label>
+        <select name="escolaridad">
+            <option value="ninguna"required>Ninguna</option>
+            <option value="Primaria"required>Primaria</option>
+            <option value="Secundaria"required>Secundaria</option>
+            <option value="Bachillerato"required>Bachillerato</option>
+            <option value="Carrera Tecnica"required>Carrera Tecnica</option>
+            <option value="Carrera Comercial"required>Carrera Comercial</option>
+            <option value="Licenciatura"required>Licenciatura</option>
+            <option value="Ingenieria"required>Ingenieria</option>
+            <option value="Doctorado"required>Doctorado</option>
+            <option value="Posdoctorado"required>Posdoctorado</option>
+            <option value="Master"required>Master</option>
+            <option value="Posgrado"required>Posgrado</option>
+            <option value="Maestria"required>Maestria</option>
+        </select>
+
+        <label>Religion:</label>
+        <select name="religion">
+            <option value="catolico"required>Catolico</option>
+            <option value="evangelico"required>Evangelico</option>
+            <option value="protestante"required>Protestante</option>
+            <option value="judio"required>Judio</option>
+            <option value="budista"required>Budista</option>
+            <option value="islamico"required>Islamico</option>
+            <option value="otro"required>Otro</option>
+        </select>
+
+        <label>Ocupación:</label>
+        <input type="text" name="ocupacion"required>
+
+         <select name="estado_civil">
+            <option value="soltero"required>Soltero</option>
+            <option value="casado"required>Casado</option>
+            <option value="divorciado"required>Divorciado</option>
+            <option value="viudo"required>Viudo</option>
+            <option value="union_libre"required>Union Libre</option>
+            <option value="otro"required>Otro</option>
+        </select>
+
+        <select name="servicio_salud">
+            <option value="imss"required>IMSS</option>
+            <option value="issste"required>ISSSTE</option>
+            <option value="otro"required>Otro</option>
+            <option value="sedena"required>SEDENA</option>
+            <option value="independiente"required>Independiente</option>
+            <option value="ninungo"required>Ninguno</option>
+        </select>
+            <label>Turno:</label>
             <select name="turno">
                 <option value="matutino"required>Matutino</option>
                 <option value="vespertino"required>Vespertino</option>
