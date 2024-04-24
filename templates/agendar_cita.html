@@ -17,22 +17,54 @@
         .navbar {
             overflow: hidden;
             background-color: #333;
-            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
         }
 
         .navbar a {
-            display: inline-block;
             color: #f2f2f2;
             text-align: center;
             padding: 14px 16px;
             text-decoration: none;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s ease;
+            border-radius: 5px;
+            margin: 0 5px;
         }
 
         .navbar a:hover {
-            background-color: #555;
+            background-color: #ddd;
+            color: black;
         }
 
+        .content {
+            text-align: center;
+            margin-top: 50px;
+            color: #0a2400;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        strong {
+            color: #000000;
+        }
+
+        @media screen and (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+            }
+
+            .navbar a {
+                flex: 1 0 50%;
+                margin: 5px;
+            }
+        }
         .container {
             max-width: 600px;
             margin: 50px auto;
@@ -77,14 +109,16 @@
     </style>
 </head>
 <body>
-<div class="navbar">
-    <a href="/">Inicio</a>
-    <a href="/options">Calendario</a>
-    <a href="/consultar">Consulta</a>
-    <a href="/agendar_cita">Agendar Cita</a>
-    <a href="/historial_citas">Historial de Citas</a>
-    <a href="/directorio_pacientes">Directorio Pacientes</a>
-</div>
+    <div class="navbar">
+        <a href="/">Inicio</a>
+        <a href="/registro">Registro</a>
+        <a href="/consultar">Registro de consultas</a>
+        <a href="/options">Calendario</a>
+        <a href="/agendar_cita">Agendar Cita</a>
+        <a href="/historial_citas">Historial de Citas</a>
+        <a href="/directorio_pacientes">Directorio Pacientes</a>
+        <a href="/crear_expediente">Expediente</a>
+    </div>
 <div class="container">
     <h1>Agendar Cita</h1>
     {% if error_message %}
