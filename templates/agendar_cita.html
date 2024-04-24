@@ -122,15 +122,17 @@
 <div class="container">
     <h1>Agendar Cita</h1>
     {% if error_message %}
-        <p style="color: red;">{{ error_message }}</p>
+    <p style="color: red;">{{ error_message }}</p>
     {% endif %}
     <form method="POST" action="/agendar_cita" class="form-group">
-        <label for="paciente_id">ID del paciente:</label>
-        <select name="paciente_id" id="paciente_id">
+        <label for="paciente_id">Nombre del paciente:</label>
+        <select id="paciente_id" name="paciente_id" required>
             {% for paciente in pacientes %}
-                <option value="{{ paciente[0] }}">{{ paciente[1] }}</option>
+                <option value="{{ paciente.id }}">{{ paciente.id }}</option>
             {% endfor %}
         </select><br><br>
+        
+        <br><br>
         <label for="fecha_consulta">Fecha de consulta:</label>
         <input type="date" name="fecha_consulta" id="fecha_consulta"><br><br>
         <label for="hora_consulta">Hora de consulta:</label>
