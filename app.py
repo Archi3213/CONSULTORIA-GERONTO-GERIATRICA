@@ -270,8 +270,8 @@ def actualizar_paciente(id):
 def agendar_cita():
     if request.method == 'POST':
         primer_apellido = request.form['primer_apellido']
-        segundo_apellido = request.form.get('segundo_apellido', '')  # Usar get() para evitar KeyError si no está presente
-        nombres = request.form.get('nombres', '')  # Usar get() para evitar KeyError si no está presente
+        segundo_apellido = request.form.get('segundo_apellido', '')
+        nombres = request.form.get('nombres', '')
         fecha_consulta = request.form['fecha_consulta']
         hora_consulta = request.form['hora_consulta']
 
@@ -279,15 +279,14 @@ def agendar_cita():
         conexion = sqlite3.connect('nutricion_consulta.db')
         cursor = conexion.cursor()
         cursor.execute("SELECT id FROM pacientes WHERE primer_apellido = ? AND segundo_apellido = ? AND nombres = ?", (primer_apellido, segundo_apellido, nombres))
-        paciente_id = cursor.fetchone()[0]  # Suponiendo que la consulta devuelve un único resultado
-        cursor.close()
-
-        # Insertar la cita en la base de datos
-        cursor = conexion.cursor()
-        cursor.execute('''INSERT INTO citas (paciente_id, fecha_consulta, hora_consulta) 
-                        VALUES (?, ?, ?)''', 
-                        (paciente_id, fecha_consulta, hora_consulta))
-        conexion.commit()
+        result = cursor.fetchone()
+        if result:
+            paciente_id = result[0]
+            # Insertar la cita en la base de datos
+            cursor.execute('''INSERT INTO citas (paciente_id, fecha_consulta, hora_consulta) 
+                            VALUES (?, ?, ?)''', 
+                            (paciente_id, fecha_consulta, hora_consulta))
+            conexion.commit()
         cursor.close()
         conexion.close()
 
