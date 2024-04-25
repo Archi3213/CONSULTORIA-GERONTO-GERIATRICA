@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,34 +38,6 @@
             color: black;
         }
 
-        .content {
-            text-align: center;
-            margin-top: 50px;
-            color: #0a2400;
-        }
-
-        h1 {
-            margin-bottom: 10px;
-        }
-
-        p {
-            margin-bottom: 20px;
-        }
-
-        strong {
-            color: #000000;
-        }
-
-        @media screen and (max-width: 768px) {
-            .navbar {
-                flex-wrap: wrap;
-            }
-
-            .navbar a {
-                flex: 1 0 50%;
-                margin: 5px;
-            }
-        }
         .container {
             max-width: 600px;
             margin: 50px auto;
@@ -74,7 +47,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .container h1 {
+        h1 {
             color: #333;
             text-align: center;
             margin-bottom: 20px;
@@ -108,6 +81,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="navbar">
         <a href="/">Inicio</a>
@@ -119,24 +93,32 @@
         <a href="/directorio_pacientes">Directorio Pacientes</a>
         <a href="/crear_expediente">Expediente</a>
     </div>
-<div class="container">
-    <h1>Agendar Cita</h1>
-    {% if error_message %}
+    <div class="container">
+        <h1>Agendar Cita</h1>
+        {% if error_message %}
         <p style="color: red;">{{ error_message }}</p>
-    {% endif %}
-    <form method="POST">
-        <label > Primer Apellido:</label>
-        <input type="text" id="primer_apellido" name="primer_apellido" list="lista_pacientes" autocomplete="off">
-        <datalist id="lista_pacientes">
-            {% for nombre in nombres_pacientes %}
-                <option value="{{ nombre }}">
-            {% endfor %}
-        </datalist>
-        <label for="fecha_consulta">Fecha de consulta:</label>
-        <input type="date" name="fecha_consulta" id="fecha_consulta"><br><br>
-        <label for="hora_consulta">Hora de consulta:</label>
-        <input type="time" name="hora_consulta" id="hora_consulta"><br><br>
-        <input type="submit" value="Agendar Cita">
-    </form>
+        {% endif %}
+        <form method="POST">
+            <div class="form-group">
+                <label for="primer_apellido">Primer Apellido:</label>
+                <input type="text" id="primer_apellido" name="primer_apellido" list="lista_pacientes" autocomplete="off">
+                <datalist id="lista_pacientes">
+                    {% for nombres in nombres_pacientes %}
+                    <option value="{{ nombres }}">
+                        {% endfor %}
+                </datalist>
+            </div>
+            <div class="form-group">
+                <label for="fecha_consulta">Fecha de consulta:</label>
+                <input type="date" name="fecha_consulta" id="fecha_consulta">
+            </div>
+            <div class="form-group">
+                <label for="hora_consulta">Hora de consulta:</label>
+                <input type="time" name="hora_consulta" id="hora_consulta">
+            </div>
+            <input type="submit" value="Agendar Cita">
+        </form>
+    </div>
 </body>
+
 </html>

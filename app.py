@@ -36,11 +36,6 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS pacientes (
                     nombres TEXT NOT NULL,
                     fecha_nacimiento TEXT NOT NULL,
                     celular TEXT NOT NULL,
-                    religion TEXT,
-                    ocupacion TEXT,
-                    escolaridad TEXT,
-                    estado_civil TEXT,
-                    servicio_salud TEXT,
                     turno TEXT NOT NULL,
                     genero TEXT NOT NULL,
                     peso REAL NOT NULL,
@@ -62,8 +57,13 @@ cursor.execute("INSERT OR IGNORE INTO usuarios (username, password) VALUES (?, ?
 cursor.execute('''CREATE TABLE IF NOT EXISTS expedientes (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     paciente_id TEXT,
+                    religion TEXT,
+                    ocupacion TEXT,
+                    escolaridad TEXT,
+                    estado_civil TEXT,
                     motivo_consulta TEXT,
                     quien_remitio TEXT,
+                    servicio_salud TEXT,
                     patologias TEXT,
                     antecedentes_patologicos TEXT,
                     tiempo_diagnostico TEXT,
@@ -173,11 +173,6 @@ def registro_paciente():
         nombres = request.form['nombres'].upper()
         fecha_nacimiento = request.form['fecha_nacimiento']
         celular = request.form['celular']
-        religion = request.form['religion'].upper()
-        ocupacion = request.form['ocupacion'].upper()
-        escolaridad = request.form['escolaridad'].upper() 
-        estado_civil = request.form['estado_civil'].upper() 
-        servicio_salud = request.form['servicio_salud'].upper()
         turno = request.form['turno'].upper()
         genero = request.form['genero'].upper()
         peso = float(request.form.get('peso', ''))  # Convertir a float
@@ -193,20 +188,19 @@ def registro_paciente():
         altura2 = altura1 * altura1
         imc = peso / altura2
 
-        
         conexion_registro = sqlite3.connect('nutricion_consulta.db')
         cursor_registro = conexion_registro.cursor()
 
-        cursor_registro.execute('''INSERT INTO pacientes (id, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, celular, religion, ocupacion, escolaridad, estado_civil, servicio_salud, turno, genero, peso, altura, imc, fecha_registro, registrado_por) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
-                        (id_paciente, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, celular, religion, ocupacion, escolaridad, estado_civil, servicio_salud, turno, genero, peso, altura, imc, fecha_registro, registrado_por))
+        cursor_registro.execute('''INSERT INTO pacientes (id, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, celular, turno, genero, peso, altura, imc, fecha_registro, registrado_por) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
+                        (id_paciente, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, celular, turno, genero, peso, altura, imc, fecha_registro, registrado_por))
         conexion_registro.commit()
         cursor_registro.close()
         conexion_registro.close()
 
-        return redirect(url_for('pagina_registro_exitoso'))
-
+        return redirect(url_for('registro_exitoso', id_paciente=id_paciente, nombre_paciente=f"{nombres} {primer_apellido} {segundo_apellido}"))
     return render_template('registro.html')
+
 @app.route('/registro_exitoso')
 def registro_exitoso():
     id_paciente = request.args.get('id_paciente')
@@ -245,6 +239,7 @@ def consulta_paciente():
     conexion_consulta.close()
 
     return render_template('consultar.html', pacientes=pacientes)
+
 @app.route('/paciente/<id>')
 def detalle_paciente(id):
     conexion = sqlite3.connect('nutricion_consulta.db')
@@ -260,20 +255,30 @@ def detalle_paciente(id):
         return render_template('detalle.html', paciente=paciente)
     else:
         return 'Paciente no encontrado'
+
+@app.route('/actualizar/<id>', methods=['POST'])
+def actualizar_paciente(id):
+    peso = request.form['peso']
+    masa_muscular = request.form['masa_muscular']
+    cita = request.form['cita']
+    # Aquí puedes agregar la lógica para actualizar los datos del paciente en la base de datos
+    return redirect(url_for('detalle_paciente', id=id))
+
+
 @app.route('/agendar_cita', methods=['GET', 'POST'])
 @login_required
 def agendar_cita():
     if request.method == 'POST':
         primer_apellido = request.form['primer_apellido']
-        segundo_apellido = request.form['segundo_apellido']
-        nombres_pacientes = request.form['nombres']
+        segundo_apellido = request.form.get('segundo_apellido', '')  # Usar get() para evitar KeyError si no está presente
+        nombres = request.form.get('nombres', '')  # Usar get() para evitar KeyError si no está presente
         fecha_consulta = request.form['fecha_consulta']
-        hora_cita = request.form['hora_consulta']
+        hora_consulta = request.form['hora_consulta']
 
         # Obtener el ID del paciente
         conexion = sqlite3.connect('nutricion_consulta.db')
         cursor = conexion.cursor()
-        cursor.execute("SELECT paciente_id FROM pacientes WHERE primer_apellido = ? AND segundo_apellido = ? AND nombres = ?", (primer_apellido, segundo_apellido, nombre))
+        cursor.execute("SELECT id FROM pacientes WHERE primer_apellido = ? AND segundo_apellido = ? AND nombres = ?", (primer_apellido, segundo_apellido, nombres))
         paciente_id = cursor.fetchone()[0]  # Suponiendo que la consulta devuelve un único resultado
         cursor.close()
 
@@ -281,7 +286,7 @@ def agendar_cita():
         cursor = conexion.cursor()
         cursor.execute('''INSERT INTO citas (paciente_id, fecha_consulta, hora_consulta) 
                         VALUES (?, ?, ?)''', 
-                        (paciente_id, fecha_consulta, hora_cita))
+                        (paciente_id, fecha_consulta, hora_consulta))
         conexion.commit()
         cursor.close()
         conexion.close()
@@ -296,8 +301,6 @@ def agendar_cita():
 
     return render_template('agendar_cita.html', nombres_pacientes=nombres_pacientes)
 
-if __name__ == '__main__':
-    app.run(debug=True)
 app.route('/historial_citas', methods=['GET', 'POST'])
 def historial_citas():
     conexion = sqlite3.connect('nutricion_consulta.db')
