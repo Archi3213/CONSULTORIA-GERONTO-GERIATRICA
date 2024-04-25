@@ -119,15 +119,14 @@
     <div class="container">
         <form method="POST">
             <div class="form-group">
+                <label for="nombre_completo">Nombre Completo del Paciente:</label>
+                <input type="text" id="nombre_completo" name="nombre_completo" required><br><br>
+
                 <label for="paciente_id">ID del Paciente:</label>
                 <input type="text" id="paciente_id" name="paciente_id" required><br><br>
-            </div>
 
-            <label for="nombre_completo">Nombre Completo del Paciente:</label>
-            <input type="text" id="nombre_completo" name="nombre_completo" required><br><br>
-
-            <label for="religion">Religión:</label>
-            <input type="text" id="religion" name="religion" required><br><br>
+                <label for="religion">Religión:</label>
+                <input type="text" id="religion" name="religion" required><br><br>
 
             <label for="ocupacion">Ocupación:</label>
             <input type="text" id="ocupacion" name="ocupacion" required><br><br>
@@ -287,6 +286,7 @@
 
             <input type="submit" value="Crear Expediente">
         </form>
+    </div>
     </div>
 </body>
 </html>
