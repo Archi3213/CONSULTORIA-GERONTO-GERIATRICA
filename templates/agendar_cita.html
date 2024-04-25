@@ -124,19 +124,19 @@
     {% if error_message %}
         <p style="color: red;">{{ error_message }}</p>
     {% endif %}
-    <form method="POST" action="/agendar_cita" class="form-group">
-        <label for="paciente_id">ID del paciente:</label>
-        <select name="paciente_id" id="paciente_id">
-            {% for paciente in pacientes %}
-                <option value="{{ paciente[0] }}">{{ paciente[1] }}</option>
+    <form method="POST">
+        <label > Primer Apellido:</label>
+        <input type="text" id="primer_apellido" name="primer_apellido" list="lista_pacientes" autocomplete="off">
+        <datalist id="lista_pacientes">
+            {% for nombre in nombres_pacientes %}
+                <option value="{{ nombre }}">
             {% endfor %}
-        </select><br><br>
+        </datalist>
         <label for="fecha_consulta">Fecha de consulta:</label>
         <input type="date" name="fecha_consulta" id="fecha_consulta"><br><br>
         <label for="hora_consulta">Hora de consulta:</label>
         <input type="time" name="hora_consulta" id="hora_consulta"><br><br>
         <input type="submit" value="Agendar Cita">
     </form>
-</div>
 </body>
 </html>

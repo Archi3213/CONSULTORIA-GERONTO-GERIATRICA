@@ -193,6 +193,7 @@ def registro_paciente():
         altura2 = altura1 * altura1
         imc = peso / altura2
 
+        
         conexion_registro = sqlite3.connect('nutricion_consulta.db')
         cursor_registro = conexion_registro.cursor()
 
@@ -259,40 +260,44 @@ def detalle_paciente(id):
         return render_template('detalle.html', paciente=paciente)
     else:
         return 'Paciente no encontrado'
-
 @app.route('/agendar_cita', methods=['GET', 'POST'])
-@login_required #cambiar por una automplete de los nombres con id
-#hacerlo por id unicamente
+@login_required
 def agendar_cita():
     if request.method == 'POST':
-        if 'paciente_id' in request.form:
-            paciente_id = request.form['paciente_id']
-            fecha_consulta = request.form['fecha_consulta']
-            hora_cita = request.form['hora_consulta']
+        primer_apellido = request.form['primer_apellido']
+        segundo_apellido = request.form['segundo_apellido']
+        nombres_pacientes = request.form['nombres']
+        fecha_consulta = request.form['fecha_consulta']
+        hora_cita = request.form['hora_consulta']
 
-            conexion = sqlite3.connect('nutricion_consulta.db')
-            cursor = conexion.cursor()
+        # Obtener el ID del paciente
+        conexion = sqlite3.connect('nutricion_consulta.db')
+        cursor = conexion.cursor()
+        cursor.execute("SELECT paciente_id FROM pacientes WHERE primer_apellido = ? AND segundo_apellido = ? AND nombres = ?", (primer_apellido, segundo_apellido, nombre))
+        paciente_id = cursor.fetchone()[0]  # Suponiendo que la consulta devuelve un único resultado
+        cursor.close()
 
-            cursor.execute('''INSERT INTO citas (paciente_id, fecha_consulta, hora_consulta) 
-                            VALUES (?, ?, ?)''', 
-                            (paciente_id, fecha_consulta, hora_cita))
-            conexion.commit()
-            cursor.close()
-            conexion.close()
+        # Insertar la cita en la base de datos
+        cursor = conexion.cursor()
+        cursor.execute('''INSERT INTO citas (paciente_id, fecha_consulta, hora_consulta) 
+                        VALUES (?, ?, ?)''', 
+                        (paciente_id, fecha_consulta, hora_cita))
+        conexion.commit()
+        cursor.close()
+        conexion.close()
 
-            return redirect(url_for('historial_citas'))
-        else:
-            error_message = "Error: No se ha proporcionado el ID del paciente."
-            return render_template('agendar_cita.html', error_message=error_message)
-    else:
-        conexion_pacientes = sqlite3.connect('nutricion_consulta.db')
-        cursor_pacientes = conexion_pacientes.cursor()
-        cursor_pacientes.execute("SELECT id, nombres FROM pacientes")
-        pacientes = cursor_pacientes.fetchall()
-        cursor_pacientes.close()
-        conexion_pacientes.close()
+    # Obtener la lista de nombres de pacientes
+    conexion = sqlite3.connect('nutricion_consulta.db')
+    cursor = conexion.cursor()
+    cursor.execute("SELECT primer_apellido, segundo_apellido, nombres FROM pacientes")
+    nombres_pacientes = [f"{row[0]} {row[1]} {row[2]}" for row in cursor.fetchall()]
+    cursor.close()
+    conexion.close()
 
-        return render_template('agendar_cita.html', pacientes=pacientes)
+    return render_template('agendar_cita.html', nombres_pacientes=nombres_pacientes)
+
+if __name__ == '__main__':
+    app.run(debug=True)
 app.route('/historial_citas', methods=['GET', 'POST'])
 def historial_citas():
     conexion = sqlite3.connect('nutricion_consulta.db')
