@@ -174,14 +174,18 @@
         <a href="/crear_expediente">Expediente</a>
     </div>
 <h2>Directorio de Pacientes</h2>
-<form action="/filtro_pacientes" method="POST">
-    <label for="filter_text">Filtrar por:</label>
-    <input type="text" id="filter_text" name="filter_text" required>
-    <select name="filter_by" id="filter_by" required>
-        <option value="apellidos">Apellidos</option>
-        <option value="id">ID</option>
-    </select>
-    <input type="submit" value="Filtrar">
+<form action="{{ url_for('directorio_pacientes') }}" method="post" class="filter-form">
+    <label for="filtro_apellidos">Filtrar por Apellidos:</label>
+    <input type="text" id_paciente="filtro_apellidos" name="filter_text" placeholder="Ingrese apellidos...">
+    <input type="hidden" name="filter_by" value="apellidos">
+    <input type="submit" value="Buscar">
+</form>
+<!-- Formulario de filtrado por ID -->
+<form action="{{ url_for('directorio_pacientes') }}" method="post" class="filter-form">
+    <label for="filtro_id">Filtrar por ID:</label>
+    <input type="text" id_paciente="filtro_id" name="filter_text" placeholder="Ingrese ID...">
+    <input type="hidden" name="filter_by" value="id_paciente">
+    <input type="submit" value="Buscar">
 </form>
 <table>
     <tr>
