@@ -145,8 +145,8 @@
     <h1>Consulta de Pacientes</h1>
     <!-- Formulario de filtrado por apellidos -->
     <form action="{{ url_for('consulta_paciente') }}" method="post" class="filter-form">
-        <label for="filtro_apellidos">Filtrar por Apellidos:</label>
-        <input type="text" id_paciente="filtro_apellidos" name="filter_text" placeholder="Ingrese apellidos...">
+        <label for="filtro_apellidos">Filtrar por Nombre o Apellidos:</label>
+        <input type="text" id_paciente="filtro_apellidos" name="filter_text" placeholder="Ingrese nombre/apellidos..">
         <input type="hidden" name="filter_by" value="apellidos">
         <input type="submit" value="Buscar">
     </form>
@@ -162,11 +162,13 @@
             <th>ID</th>
             <th>Nombre completo</th>
             <th>Fecha de Nacimiento</th>
-            <th>Escolaridad</th>
-            <th>Estado Civil</th>
             <th>Religión</th>
-            <th>Servicio de Salud</th>
+            <th>Escolaridad</th>
             <th>Ocupación</th>
+            <th>Estado Civil</th>
+        
+            <th>Servicio de Salud</th>
+           
             <th>Turno</th>
             <th>Género</th>
             <th>Peso (kg)</th>
@@ -184,7 +186,6 @@
             <td>{{ paciente[6] }}</td>
             <td>{{ paciente[7] }}</td>
             <td>{{ paciente[8] }}</td>
-            <td>{{ paciente[9] }}</td>
             <td>{{ paciente[10] }}</td>
             <td>{{ paciente[11] }}</td>
             <td>{{ paciente[12] }}</td>
