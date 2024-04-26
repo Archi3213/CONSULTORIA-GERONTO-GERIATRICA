@@ -176,32 +176,29 @@
     </div>
     <div class="container">
         <h1>Historial de Citas</h1>
-        <table>
+        <table border="1">
             <tr>
-                <th>ID Cita</th>
+                <th>ID</th>
                 <th>ID Paciente</th>
-                <th>Nombre Completo</th>
                 <th>Fecha Consulta</th>
                 <th>Hora Consulta</th>
+                <th>Observaciones</th>
                 <th>Estado</th>
-                <th>Cambio de estado</th>
             </tr>
             {% for cita in citas %}
-            <tr class="{% if cita[8] == 'Pendiente' %}select-pendiente{% elif cita[8] == 'Realizada' %}select-realizada{% elif cita[8] == 'Cancelada' %}select-cancelada{% endif %}">
+            <tr>
                 <td>{{ cita[0] }}</td>
                 <td>{{ cita[1] }}</td>
                 <td>{{ cita[2] }}</td>
-                <td>{{ cita[4] }}</td> 
-                <td>{{ cita[5] }}</td>
-                <td>{{ cita[7] }}</td>
+                <td>{{ cita[3] }}</td>
+                <td>{{ cita[4] }}</td>
                 <td>
-                    <form action="/historial_citas" method="POST" class="update-form">
-                        <input type="hidden" name="id_cita" value="{{ cita[0] }}">
-                        <label for="nuevo_estado"></label>
-                        <select id="nuevo_estado" name="nuevo_estado">
-                            <option value="Pendiente" {% if cita[8] == 'Pendiente' %} selected {% endif %}>Pendiente</option>
-                            <option value="Realizada" {% if cita[8] == 'Realizada' %} selected {% endif %}>Realizada</option>
-                            <option value="Cancelada" {% if cita[8] == 'Cancelada' %} selected {% endif %}>Cancelada</option>
+                    <form action="/actualizar_estado" method="POST">
+                        <input type="hidden" name="cita_id" value="{{ cita[0] }}">
+                        <select name="estado">
+                            <option value="Pendiente" {% if cita[5] == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                            <option value="Confirmada" {% if cita[5] == 'Confirmada' %}selected{% endif %}>Confirmada</option>
+                            <option value="Cancelada" {% if cita[5] == 'Cancelada' %}selected{% endif %}>Cancelada</option>
                         </select>
                         <input type="submit" value="Actualizar">
                     </form>
@@ -209,7 +206,5 @@
             </tr>
             {% endfor %}
         </table>
-    </div>
-    
-</body>
-</html>
+    </body>
+    </html>

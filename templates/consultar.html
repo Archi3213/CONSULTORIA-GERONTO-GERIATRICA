@@ -61,7 +61,7 @@
         }
 
         table {
-            width: 50%;
+            width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
             background-color: #fff;
@@ -118,6 +118,7 @@
             border-radius: 4px;
             padding: 4px 8px;
             transition: background-color 0.3s;
+            cursor: pointer; /* Agregado */
         }
 
         .imc:hover {
@@ -145,22 +146,21 @@
     <!-- Formulario de filtrado por apellidos -->
     <form action="{{ url_for('consulta_paciente') }}" method="post" class="filter-form">
         <label for="filtro_apellidos">Filtrar por Apellidos:</label>
-        <input type="text" id="filtro_apellidos" name="filter_text" placeholder="Ingrese apellidos...">
+        <input type="text" id_paciente="filtro_apellidos" name="filter_text" placeholder="Ingrese apellidos...">
         <input type="hidden" name="filter_by" value="apellidos">
         <input type="submit" value="Buscar">
     </form>
     <!-- Formulario de filtrado por ID -->
     <form action="{{ url_for('consulta_paciente') }}" method="post" class="filter-form">
         <label for="filtro_id">Filtrar por ID:</label>
-        <input type="text" id="filtro_id" name="filter_text" placeholder="Ingrese ID...">
-        <input type="hidden" name="filter_by" value="id">
+        <input type="text" id_paciente="filtro_id" name="filter_text" placeholder="Ingrese ID...">
+        <input type="hidden" name="filter_by" value="id_paciente">
         <input type="submit" value="Buscar">
     </form>
     <table>
         <tr>
             <th>ID</th>
-            <th>Apellidos</th>
-            <th>Nombres</th>
+            <th>Nombre completo</th>
             <th>Fecha de Nacimiento</th>
             <th>Escolaridad</th>
             <th>Estado Civil</th>
@@ -178,21 +178,25 @@
         {% for paciente in pacientes %}
         <tr>
             <td>{{ paciente[0] }}</td>
-            <td>{{ paciente[1] }} {{ paciente[2] }}</td>
-            <td>{{ paciente[3] }}</td>
+            <td>{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</td>
             <td>{{ paciente[4] }}</td>
+            <td>{{ paciente[5] }}</td>
+            <td>{{ paciente[6] }}</td>
+            <td>{{ paciente[7] }}</td>
             <td>{{ paciente[8] }}</td>
             <td>{{ paciente[9] }}</td>
-            <td>{{ paciente[6] }}</td>
-            <td>{{ paciente[10] }} </td>
-            <td>{{ paciente[7] }}</td>
+            <td>{{ paciente[10] }}</td>
             <td>{{ paciente[11] }}</td>
             <td>{{ paciente[12] }}</td>
             <td>{{ paciente[13] }}</td>
             <td>{{ paciente[14] }}</td>
-            <td>{{ '%.2f' %  paciente[15] }}</td>
+            <td>{{ paciente[15] }}</td>
             <td>{{ paciente[16] }}</td>
             <td>{{ paciente[17] }}</td>
+            <td>{{ paciente[18] }}</td>
+
+  
+
         </tr>
         {% endfor %}
     </table>

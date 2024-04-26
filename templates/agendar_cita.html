@@ -1,124 +1,27 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agendar Cita</title>
-    <style>
-        body {
-            background-image: url('https://img.freepik.com/vector-gratis/fondo-frutas-verduras_23-2148485148.jpg?w=740&t=st=1713248651~exp=1713249251~hmac=30e168e9f2d449c4894d64a9e7ff69ce1449d8aca24ba3c0d846298490ca6041');
-            background-size: cover;
-            background-position: center;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        .navbar {
-            overflow: hidden;
-            background-color: #333;
-            display: flex;
-            justify-content: center;
-            padding: 10px 0;
-        }
-
-        .navbar a {
-            color: #f2f2f2;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-            border-radius: 5px;
-            margin: 0 5px;
-        }
-
-        .navbar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-
-        .form-group input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        .form-group input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-    </style>
 </head>
-
 <body>
-    <div class="navbar">
-        <a href="/">Inicio</a>
-        <a href="/registro">Registro</a>
-        <a href="/consultar">Registro de consultas</a>
-        <a href="/options">Calendario</a>
-        <a href="/agendar_cita">Agendar Cita</a>
-        <a href="/historial_citas">Historial de Citas</a>
-        <a href="/directorio_pacientes">Directorio Pacientes</a>
-        <a href="/crear_expediente">Expediente</a>
-    </div>
-    <div class="container">
-        <h1>Agendar Cita</h1>
-        {% if error_message %}
-        <p style="color: red;">{{ error_message }}</p>
-        {% endif %}
-        <form method="POST">
-            <div class="form-group">
-                <label for="primer_apellido">Primer Apellido:</label>
-                <input type="text" id="primer_apellido" name="primer_apellido" list="lista_pacientes" autocomplete="off">
-                <datalist id="lista_pacientes">
-                    {% for nombres in nombres_pacientes %}
-                    <option value="{{ nombres }}">
-                        {% endfor %}
-                </datalist>
-            </div>
-            <div class="form-group">
-                <label for="fecha_consulta">Fecha de consulta:</label>
-                <input type="date" name="fecha_consulta" id="fecha_consulta">
-            </div>
-            <div class="form-group">
-                <label for="hora_consulta">Hora de consulta:</label>
-                <input type="time" name="hora_consulta" id="hora_consulta">
-            </div>
-            <input type="submit" value="Agendar Cita">
-        </form>
-    </div>
+    <h1>Agendar Cita</h1>
+    <form method="POST" action="/agendar_cita">
+        <label for="id_paciente">Selecciona un paciente:</label>
+        <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
+        <datalist id="pacientes_list">
+            {% for paciente in pacientes %}
+            <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
+            {% endfor %}
+        </datalist><br><br>
+        <label for="fecha_consulta">Fecha de consulta:</label>
+        <input type="date" id="fecha_consulta" name="fecha_consulta" required><br><br>
+        <label for="hora_consulta">Hora de consulta:</label>
+        <input type="time" id="hora_consulta" name="hora_consulta" required><br><br>
+        <label for="observaciones">Observaciones:</label><br>
+        <textarea id="observaciones" name="observaciones" rows="4" cols="50"></textarea><br><br>
+        <input type="submit" value="Agendar Cita">
+    </form>
 </body>
-
 </html>
