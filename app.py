@@ -172,17 +172,6 @@ def consulta_paciente():
 
     return render_template('consultar.html', pacientes=pacientes)
 
-@app.route('/paciente/<id>')
-def detalle_paciente(id_paciente):
-    with get_db_connection() as connection:
-        cursor = connection.cursor()
-        cursor.execute("SELECT * FROM pacientes WHERE id_paciente=?", (id_paciente,))
-        paciente = cursor.fetchone()
-
-    if paciente:
-        return render_template('detalle.html', paciente=paciente)
-    else:
-        return 'Paciente no encontrado'
 
 @app.route('/agendar_cita', methods=['GET', 'POST'])
 @login_required
