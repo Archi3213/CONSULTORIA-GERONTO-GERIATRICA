@@ -15,13 +15,20 @@
             background-position: center;
             background-repeat: no-repeat;
         }
-
+        .table-container {
+        overflow-x: auto;
+    }
         .navbar {
             overflow: hidden;
             background-color: #333;
             display: flex;
             justify-content: center;
             padding: 10px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: background-color 0.3s ease;
         }
 
         .navbar a {
@@ -29,7 +36,6 @@
             text-align: center;
             padding: 14px 16px;
             text-decoration: none;
-            transition: background-color 0.3s ease;
             border-radius: 5px;
             margin: 0 5px;
         }
@@ -41,7 +47,7 @@
 
         .content {
             text-align: center;
-            margin-top: 50px;
+            margin-top: 70px;
             color: #0a2400;
         }
 
@@ -61,15 +67,15 @@
         }
 
         table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        th,
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+            th,
         td {
             padding: 10px;
             text-align: center;
@@ -128,11 +134,29 @@
         tr:hover {
             background-color: #f0f0f0;
         }
+
+        /* Agregamos estilos para el botón de ir al inicio */
+        .top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .top-btn:hover {
+            background-color: #555;
+        }
     </style>
 </head>
 
 <body>
-    <div class="navbar">
+    <div class="navbar" id="navbar">
         <a href="/">Inicio</a>
         <a href="/registro">Registro</a>
         <a href="/consultar">Registro de consultas</a>
@@ -147,17 +171,20 @@
     <form action="{{ url_for('consulta_paciente') }}" method="post" class="filter-form">
         <label for="filtro_apellidos">Filtrar por Nombre o Apellidos:</label>
         <input type="text" id_paciente="filtro_apellidos" name="filter_text" placeholder="Ingrese nombre/apellidos..">
-        <input type="hidden" name="filter_by" value="apellidos">
+        <input type="hidden" name="filter_by" value="apellidos" >
         <input type="submit" value="Buscar">
     </form>
     <!-- Formulario de filtrado por ID -->
     <form action="{{ url_for('consulta_paciente') }}" method="post" class="filter-form">
         <label for="filtro_id">Filtrar por ID:</label>
-        <input type="text" id_paciente="filtro_id" name="filter_text" placeholder="Ingrese ID...">
+        <input type="text" id="filtro_id" name="filter_text" placeholder="Ingrese ID...">
         <input type="hidden" name="filter_by" value="id_paciente">
         <input type="submit" value="Buscar">
     </form>
+    <div class="table-container"> 
+          
     <table>
+
         <tr>
             <th>ID</th>
             <th>Nombre completo</th>
@@ -191,16 +218,14 @@
             <td>{{ paciente[12] }}</td>
             <td>{{ paciente[13] }}</td>
             <td>{{ paciente[14] }}</td>
-            <td>{{ paciente[15] }}</td>
+            <td>{{ '%.2f' % paciente[15] }}</td>
             <td>{{ paciente[16] }}</td>
             <td>{{ paciente[17] }}</td>
-            <td>{{ paciente[18] }}</td>
-
-  
 
         </tr>
         {% endfor %}
     </table>
+    </div>
     <script>
         const imcElements = document.querySelectorAll('.imc');
         imcElements.forEach(element => {

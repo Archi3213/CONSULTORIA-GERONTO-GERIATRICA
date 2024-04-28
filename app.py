@@ -167,7 +167,7 @@ def consulta_paciente():
 
         if filter_by == 'apellidos':
             pacientes = [paciente for paciente in pacientes if filter_text.lower() in f"{paciente[1]} {paciente[2]} {paciente[3]} ".lower()]
-        elif filter_by == 'id':
+        elif filter_by == 'id_paciente':
             pacientes = [paciente for paciente in pacientes if filter_text.lower() in paciente[0].lower()]
 
     return render_template('consultar.html', pacientes=pacientes)
@@ -199,7 +199,7 @@ def agendar_cita():
                             VALUES (?, ?, ?, ?)''', 
                             (id_paciente, fecha_consulta, hora_consulta, observaciones))
 
-        return redirect(url_for('index'))
+        return redirect(url_for('historial_citas'))
     
     with get_db_connection() as connection:
         cursor = connection.cursor()
@@ -229,8 +229,8 @@ def directorio_pacientes():
         filter_by = request.form['filter_by']
 
         if filter_by == 'apellidos':
-            pacientes = [paciente for paciente in pacientes if filter_text.lower() in f"{paciente[1]} {paciente[2]}".lower()]
-        elif filter_by == 'id':
+            pacientes = [paciente for paciente in pacientes if filter_text.lower() in f"{paciente[1]} {paciente[2]} {paciente[3]} ".lower()]
+        elif filter_by == 'id_paciente':
             pacientes = [paciente for paciente in pacientes if filter_text.lower() in paciente[0].lower()]
 
     return render_template('directorio_pacientes.html', pacientes=pacientes)
