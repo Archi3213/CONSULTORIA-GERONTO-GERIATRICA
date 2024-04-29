@@ -38,6 +38,7 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS pacientes (
                     escolaridad TEXT NOT NULL,
                     ocupacion TEXT NOT NULL,
                     estado_civil TEXT NOT NULL,
+                    servicio_salud TEXT NOT NULL,
                     celular TEXT NOT NULL,
                     turno TEXT NOT NULL,
                     genero TEXT NOT NULL,
@@ -122,6 +123,7 @@ def registro_paciente():
         escolaridad = request.form['escolaridad'].upper()
         ocupacion = request.form['ocupacion'].upper()
         estado_civil = request.form['estado_civil'].upper()
+        servicio_salud = request.form['servicio_salud'].upper()
         celular = request.form['celular']
         turno = request.form['turno'].upper()
         genero = request.form['genero'].upper()
@@ -138,9 +140,9 @@ def registro_paciente():
         # Insertar datos en la base de datos
         with get_db_connection() as connection:
             cursor = connection.cursor()
-            cursor.execute('''INSERT INTO pacientes (id_paciente, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, religion, escolaridad, ocupacion, estado_civil, celular, turno, genero, peso, altura, imc, fecha_registro, registrado_por) 
-                            VALUES (?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?)''', 
-                            (id_paciente, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, religion, escolaridad, ocupacion, estado_civil,  celular, turno, genero, peso, altura, imc, fecha_registro, registrado_por))
+            cursor.execute('''INSERT INTO pacientes (id_paciente, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, religion, escolaridad, ocupacion, estado_civil, servicio_salud, celular, turno, genero, peso, altura, imc, fecha_registro, registrado_por) 
+                            VALUES (?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?, ?)''', 
+                            (id_paciente, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, religion, escolaridad, ocupacion, estado_civil,  servicio_salud,  celular, turno, genero, peso, altura, imc, fecha_registro, registrado_por))
 
         return redirect(url_for('registro_exitoso', id_paciente=id_paciente, nombre_paciente=f"{nombres} {primer_apellido} {segundo_apellido}"))
     return render_template('registro.html')

@@ -143,7 +143,7 @@
          
         <label>Escolaridad:</label>
         <select name="escolaridad">
-            <option value="ninguna"required>Ninguna</option>
+            <option value="Ninguna"required>Ninguna</option>
             <option value="Primaria"required>Primaria</option>
             <option value="Secundaria"required>Secundaria</option>
             <option value="Bachillerato"required>Bachillerato</option>
@@ -155,7 +155,8 @@
             <option value="Posdoctorado"required>Posdoctorado</option>
             <option value="Master"required>Master</option>
             <option value="Posgrado"required>Posgrado</option>
-            <option value="Maestria"required>Maestria</option>
+            <option value="Maestria"required>Maestria </option>
+           
         </select>
 
         <label>Religion:</label>
@@ -166,12 +167,14 @@
             <option value="judio"required>Judio</option>
             <option value="budista"required>Budista</option>
             <option value="islamico"required>Islamico</option>
+            <option value="ninguno"required>Ninguna</option>
             <option value="otro"required>Otro</option>
         </select>
 
         <label>Ocupación:</label>
         <input type="text" name="ocupacion"required>
 
+        <label>Estado civil:</label>
          <select name="estado_civil">
             <option value="soltero"required>Soltero</option>
             <option value="casado"required>Casado</option>
@@ -181,6 +184,7 @@
             <option value="otro"required>Otro</option>
         </select>
 
+        <label>Servicio de salud con el que cuenta:</label>
         <select name="servicio_salud">
             <option value="imss"required>IMSS</option>
             <option value="issste"required>ISSSTE</option>
@@ -189,6 +193,7 @@
             <option value="independiente"required>Independiente</option>
             <option value="ninguno"required>Ninguno</option>
         </select>
+        
             <label>Turno:</label>
             <select name="turno">
                 <option value="matutino"required>Matutino</option>
@@ -198,6 +203,7 @@
             <label>Género:</label>
             <input type="radio" name="genero" value="masculino"required>Masculino
             <input type="radio" name="genero" value="femenino"required>Femenino
+            <input type="radio" name="genero" value="no_binario"required>No Binario
             <br></br>
             <label>Peso(kg):</label>
             <input type="number,2" name="peso"required>

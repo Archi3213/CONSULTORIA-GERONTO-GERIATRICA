@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<title>Directorio de Pacientes</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directorio de Pacientes</title>
     <style>
+        /* Estilos CSS */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -20,6 +23,11 @@
             display: flex;
             justify-content: center;
             padding: 10px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: background-color 0.3s ease;
         }
 
         .navbar a {
@@ -27,7 +35,6 @@
             text-align: center;
             padding: 14px 16px;
             text-decoration: none;
-            transition: background-color 0.3s ease;
             border-radius: 5px;
             margin: 0 5px;
         }
@@ -39,31 +46,14 @@
 
         .content {
             text-align: center;
-            margin-top: 50px;
+            margin-top: 70px;
             color: #0a2400;
         }
 
         h1 {
             margin-bottom: 10px;
-        }
-
-        p {
-            margin-bottom: 20px;
-        }
-
-        strong {
-            color: #000000;
-        }
-
-        @media screen and (max-width: 768px) {
-            .navbar {
-                flex-wrap: wrap;
-            }
-
-            .navbar a {
-                flex: 1 0 50%;
-                margin: 5px;
-            }
+            text-align: center;
+            color: #333;
         }
 
         .filter-form {
@@ -71,24 +61,21 @@
             text-align: center;
         }
 
-        .filter-form label {
-            margin-right: 10px;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
-            background-color: #fff; /* Cambio de color de fondo */
-            border-radius: 8px; /* Borde redondeado */
+            background-color: #fff;
+            border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        th, td {
+        th,
+        td {
             padding: 10px;
             text-align: center;
             border-bottom: 1px solid #ddd;
-            transition: background-color 0.3s; /* Transición de color */
+            transition: background-color 0.3s;
         }
 
         th {
@@ -96,12 +83,10 @@
             color: #ffffff;
         }
 
-        /* Color para renglones pares */
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
 
-        /* Color para renglones impares */
         tr:nth-child(odd) {
             background-color: #e6e6e6;
         }
@@ -128,42 +113,34 @@
             background-color: #45a049;
         }
 
-        .add-button {
-            background-color: #4CAF50;
+        /* Estilos adicionales para los botones */
+        .filter-form input[type="submit"] {
+            margin-left: 10px;
+        }
+
+        /* Estilos para el botón de ir al inicio */
+        .top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #333;
             color: white;
             border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
+            padding: 10px;
+            border-radius: 5px;
             cursor: pointer;
-            margin-bottom: 10px;
+            display: none;
         }
 
-        .add-button:hover {
-            background-color: #45a049;
-        }
-
-        /* Estilo para el IMC */
-        .imc {
-            color: #ffffff;
-            background-color: #ff5722;
-            border-radius: 4px;
-            padding: 4px 8px;
-            transition: background-color 0.3s; /* Transición de color al pasar el ratón */
-        }
-
-        .imc:hover {
-            background-color: #ff8a65; /* Cambio de color al pasar el ratón */
-        }
-
-        /* Resaltar fila al pasar el mouse */
-        tr:hover {
-            background-color: #f0f0f0;
+        .top-btn:hover {
+            background-color: #555;
         }
     </style>
 </head>
 
 <body>
-    <div class="navbar">
+    <!-- Barra de navegación -->
+    <div class="navbar" id="navbar">
         <a href="/">Inicio</a>
         <a href="/registro">Registro</a>
         <a href="/consultar">Registro de consultas</a>
@@ -173,33 +150,63 @@
         <a href="/directorio_pacientes">Directorio Pacientes</a>
         <a href="/crear_expediente">Expediente</a>
     </div>
-<h2>Directorio de Pacientes</h2>
-<form action="{{ url_for('directorio_pacientes') }}" method="post" class="filter-form">
-    <label for="filtro_apellidos">Filtrar por Apellidos:</label>
-    <input type="text" id_paciente="filtro_apellidos" name="filter_text" placeholder="Ingrese apellidos...">
-    <input type="hidden" name="filter_by" value="apellidos">
-    <input type="submit" value="Buscar">
-</form>
-<!-- Formulario de filtrado por ID -->
-<form action="{{ url_for('directorio_pacientes') }}" method="post" class="filter-form">
-    <label for="filtro_id">Filtrar por ID:</label>
-    <input type="text" id_paciente="filtro_id" name="filter_text" placeholder="Ingrese ID...">
-    <input type="hidden" name="filter_by" value="id_paciente">
-    <input type="submit" value="Buscar">
-</form>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Número de Teléfono</th>
-    </tr>
-    {% for paciente in pacientes %}
-    <tr>
-        <td>{{ paciente[0] }}</td>
-        <td>{{ paciente[3] }} {{ paciente[1] }} {{ paciente[2] }}</td>
-        <td>{{ paciente[5] }}</td>
-    </tr>
-    {% endfor %}
-</table>
+
+    <!-- Contenido principal -->
+    <h1>Directorio de Pacientes</h1>
+
+    <!-- Formulario de filtrado por nombre o apellidos -->
+    <form action="{{ url_for('directorio_pacientes') }}" method="post" class="filter-form">
+        <label for="filtro_apellidos">Filtrar por Nombre o Apellidos:</label>
+        <input type="text" id="filtro_apellidos" name="filter_text" placeholder="Ingrese nombre/apellidos..">
+        <input type="hidden" name="filter_by" value="apellidos">
+        <input type="submit" value="Buscar">
+    </form>
+
+    <!-- Formulario de filtrado por ID -->
+    <form action="{{ url_for('directorio_pacientes') }}" method="post" class="filter-form">
+        <label for="filtro_id">Filtrar por ID:</label>
+        <input type="text" id="filtro_id" name="filter_text" placeholder="Ingrese ID...">
+        <input type="hidden" name="filter_by" value="id_paciente">
+        <input type="submit" value="Buscar">
+    </form>
+
+    <!-- Tabla de pacientes -->
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Número de Teléfono</th>
+        </tr>
+        {% for paciente in pacientes %}
+        <tr>
+            <td>{{ paciente[0] }}</td>
+            <td>{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</td>
+            <td>{{ paciente[10] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Botón de ir al inicio -->
+    <button onclick="topFunction()" class="top-btn" id="myBtn" title="Go to top">Top</button>
+
+    <!-- Script para mostrar/ocultar el botón de ir al inicio -->
+    <script>
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("myBtn").style.display = "block";
+            } else {
+                document.getElementById("myBtn").style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        }
+    </script>
 </body>
 </html>
