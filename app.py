@@ -67,6 +67,34 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS citas (
                     FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
                 )''')
 
+cursor.execute('''CREATE TABLE IF NOT EXISTS antecedentes_familiares (
+                    id_paciente INTEGER PRIMARY KEY,
+                    diabetes_mellitus TEXT,
+                    diabetes_mellitus_familiar TEXT,
+                    dislipidemias TEXT, 
+                    dislipidemias_familiar TEXT,
+                    sobrepeso_obesidad TEXT,
+                    sobrepeso_obesidad_familiar TEXT,
+                    cancer_tipo TEXT, 
+                    cancer_tipo_familiar TEXT,
+                    hipertension TEXT,
+                    hipertension_familiar TEXT,
+                    cardiopatias TEXT,
+                    cardiopatias_familiar TEXT,
+                    litiasis_renal BOOLEAN,
+                    litiasis_renal_familiar TEXT,
+                    litiasis_vesicular TEXT,
+                    litiasis_vesicular_familiar TEXT,
+                    artritis TEXT,
+                    artritis_familiar TEXT,
+                    asma TEXT,
+                    asma_familiar TEXT,
+                    otras_enfermedades TEXT,
+                    otras_enfermedades_familiar TEXT,
+                    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
+                )''')
+#cursor.execute('DROP TABLE IF EXISTS antecedentes_familiares')
+
 conexion.commit()
 cursor.close()
 
@@ -78,8 +106,9 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 @app.route('/')
-@login_required
 def index():
+    session.pop('username', None)  # Eliminar la clave 'username' de la sesión
+
     return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -215,14 +244,6 @@ def historial_citas():
         cursor.execute("SELECT id_cita, id_paciente, fecha_consulta, hora_consulta, observaciones, estado FROM citas")
         citas = cursor.fetchall()
 
-    if request.method == 'POST':
-        filter_text = request.form['filter_text']
-        filter_by = request.form['filter_by']
-
-        if filter_by == 'apellidos':
-            pacientes = [paciente for paciente in pacientes if filter_text.lower() in f"{paciente[1]} {paciente[2]} {paciente[3]} ".lower()]
-        elif filter_by == 'id_paciente':
-            pacientes = [paciente for paciente in pacientes if filter_text.lower() in paciente[0].lower()]
     return render_template('historial_citas.html', citas=citas)
 
 @app.route('/directorio_pacientes', methods=['GET', 'POST'])
@@ -243,6 +264,64 @@ def directorio_pacientes():
 
     return render_template('directorio_pacientes.html', pacientes=pacientes)
 
+@app.route('/registro_antecedentes_familiares', methods=['GET', 'POST'])
+@login_required
+def registro_antecedentes_familiares():
+    if request.method == 'POST':
+        # Capturar datos de antecedentes familiares del formulario
+        id_paciente = request.form['id_paciente']
+        diabetes_mellitus = 'on' if request.form.get('diabetes_mellitus') else 'off'
+        diabetes_mellitus_familiar = request.form['diabetes_mellitus_familiar']
+        dislipidemias = request.form['dislipidemias']
+        dislipidemias_familiar = request.form['dislipidemias_familiar']
+        sobrepeso_obesidad = 'on' if request.form.get('sobrepeso_obesidad') else 'off'
+        sobrepeso_obesidad_familiar = request.form['sobrepeso_obesidad_familiar']
+        cancer_tipo = request.form['cancer_tipo']
+        cancer_tipo_familiar = request.form['cancer_tipo_familiar']
+        hipertension = 'on' if request.form.get('hipertension') else 'off'
+        hipertension_familiar = request.form['hipertension_familiar']
+        cardiopatias = 'on' if request.form.get('cardiopatias') else 'off'
+        cardiopatias_familiar = request.form['cardiopatias_familiar']
+        litiasis_renal = 'on' if request.form.get('litiasis_renal') else 'off'
+        litiasis_renal_familiar = request.form['litiasis_renal_familiar']
+        litiasis_vesicular = 'on' if request.form.get('litiasis_vesicular') else 'off'
+        litiasis_vesicular_familiar = request.form['litiasis_vesicular_familiar']
+        artritis = 'on' if request.form.get('artritis') else 'off'
+        artritis_familiar = request.form['artritis_familiar']
+        asma = 'on' if request.form.get('asma') else 'off'
+        asma_familiar = request.form['asma_familiar']
+        otras_enfermedades = request.form['otras_enfermedades']
+        otras_enfermedades_familiar = request.form['otras_enfermedades_familiar']
+
+        # Insertar datos en la tabla de antecedentes familiares
+        with get_db_connection() as connection:
+            cursor = connection.cursor()
+            cursor.execute('''INSERT INTO antecedentes_familiares (
+                                id_paciente, diabetes_mellitus, diabetes_mellitus_familiar, 
+                                dislipidemias, dislipidemias_familiar, sobrepeso_obesidad, 
+                                sobrepeso_obesidad_familiar, cancer_tipo, cancer_tipo_familiar, 
+                                hipertension, hipertension_familiar, cardiopatias, cardiopatias_familiar, 
+                                litiasis_renal, litiasis_renal_familiar, litiasis_vesicular, 
+                                litiasis_vesicular_familiar, artritis, artritis_familiar, 
+                                asma, asma_familiar, otras_enfermedades, otras_enfermedades_familiar
+                            ) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
+                            (id_paciente, diabetes_mellitus, diabetes_mellitus_familiar, 
+                            dislipidemias, dislipidemias_familiar, sobrepeso_obesidad, 
+                            sobrepeso_obesidad_familiar, cancer_tipo, cancer_tipo_familiar, 
+                            hipertension, hipertension_familiar, cardiopatias, cardiopatias_familiar, 
+                            litiasis_renal, litiasis_renal_familiar, litiasis_vesicular, 
+                            litiasis_vesicular_familiar, artritis, artritis_familiar, 
+                            asma, asma_familiar, otras_enfermedades, otras_enfermedades_familiar))
+        
+        with get_db_connection() as connection:
+            cursor = connection.cursor()
+            cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
+            pacientes = cursor.fetchall()
+
+        return render_template('registro_antecedentes_familiares.html', pacientes=pacientes)
+
+    return render_template('registro_antecedentes_familiares.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
