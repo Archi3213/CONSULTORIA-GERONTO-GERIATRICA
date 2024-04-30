@@ -314,7 +314,7 @@ def registro_antecedentes_familiares():
 
 @app.route('/expediente')
 @login_required
-def options():
+def expediente():
     return render_template('expediente.html')
 
 if __name__ == '__main__':

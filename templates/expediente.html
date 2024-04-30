@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendario</title>
+    <title>Expedientes a llenar </title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -45,6 +45,21 @@
             color: #0a2400;
         }
 
+        .content a {
+            display: inline-block;
+            padding: 34px 78px; /* Aumentado el tamaño de los botones */
+            background-color: #288f00; /* Color base de los botones */
+            color: white;
+            text-decoration: none;
+            border-radius: 20px; /* Mayor redondez en los bordes */
+            margin: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .content a:hover {
+            background-color: #333; /* Cambio de color al pasar el ratón */
+        }
+
         h1 {
             margin-bottom: 10px;
         }
@@ -68,24 +83,6 @@
             }
         }
 
-        .filter-form {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .filter-form label {
-            margin-right: 10px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            background-color: #fff; /* Cambio de color de fondo */
-            border-radius: 8px; /* Borde redondeado */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
         th, td {
             padding: 10px;
             text-align: center;
@@ -106,51 +103,6 @@
         /* Color para renglones impares */
         tr:nth-child(odd) {
             background-color: #e6e6e6;
-        }
-
-        input[type="text"],
-        input[type="number"] {
-            width: 150px;
-            padding: 6px;
-            margin-right: 10px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
-
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-
-        .add-button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-
-        .add-button:hover {
-            background-color: #45a049;
-        }
-
-        /* Estilo para el IMC */
-        .imc {
-            color: #ffffff;
-            background-color: #ff5722;
-            border-radius: 4px;
-            padding: 4px 8px;
-            transition: background-color 0.3s; /* Transición de color al pasar el ratón */
         }
 
         .imc:hover {
@@ -177,10 +129,14 @@
     </div>
 
     <div class="content">
-    <a href="/registro_antecedentes_familiares.html">Antecedentes Familiares</a>
-    <a href="/registro_antecedentes_familiares.html">Antecedentes Familiares</a>
-    <a href="/registro_antecedentes_familiares.html">Antecedentes Familiares</a>
-    <a href="/registro_antecedentes_familiares.html">Antecedentes Familiares</a>
-    <a href="/registro_antecedentes_familiares.html">Antecedentes Familiares</a>
-    <a href="/registro_antecedentes_familiares.html">Antecedentes Familiares</a>
+        <a href="/registro_antecedentes_familiares">Antecedentes Familiares</a>
+        <a href="/registro_antecedentes_nofamiliares.html">Antecedentes No Familiares</a>
+        <a href="/registro_bioquimica.html">Evaluacion Bioquimica</a>
+        <a href="/registro_evaluacion_dietetica.html">Evaluacion Dietetica</a>
+        <a href="/registro_evaluacion_antropometrica.html">Evaluacion Antropometrica</a>
+        <a href="/registro_seguimiento.html">Seguimiento Dietetico</a>
+    </div>
+</body>
+
+</html>
 
