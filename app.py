@@ -323,5 +323,10 @@ def registro_antecedentes_familiares():
 
     return render_template('registro_antecedentes_familiares.html')
 
+@app.route('/expediente')
+@login_required
+def options():
+    return render_template('expediente.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
