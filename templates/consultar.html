@@ -164,8 +164,9 @@
         <a href="/agendar_cita">Agendar Cita</a>
         <a href="/historial_citas">Historial de Citas</a>
         <a href="/directorio_pacientes">Directorio Pacientes</a>
-        <a href="/crear_expediente">Expediente</a>
-    </div>
+        <a href="/expediente">Expediente</a>
+        </div>
+    <br>      <br>   </br></br>
     <h1>Consulta de Pacientes</h1>
     <!-- Formulario de filtrado por apellidos -->
     <form action="{{ url_for('consulta_paciente') }}" method="post" class="filter-form">
@@ -213,7 +214,7 @@
             <td>{{ paciente[6] }}</td>
             <td>{{ paciente[7] }}</td>
             <td>{{ paciente[8] }}</td>
-            <td>{{ paciente[10] }}</td>
+            <td>{{ paciente[9] }}</td>
             <td>{{ paciente[11] }}</td>
             <td>{{ paciente[12] }}</td>
             <td>{{ paciente[13] }}</td>

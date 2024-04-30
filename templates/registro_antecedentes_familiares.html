@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Registro de Antecedentes Familiares</title>
+        <style>
+        body {
+            background-image: url('https://img.freepik.com/vector-gratis/fondo-frutas-verduras_23-2148485148.jpg?w=740&t=st=1713248651~exp=1713249251~hmac=30e168e9f2d449c4894d64a9e7ff69ce1449d8aca24ba3c0d846298490ca6041');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Estilos para la barra de navegación */
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+        }
+
+        .navbar a {
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            border-radius: 5px;
+            margin: 0 5px;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .content {
+            text-align: center;
+            margin-top: 50px;
+            color: #0a2400;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        strong {
+            color: #000000;
+        }
+
+        @media screen and (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+            }
+
+            .navbar a {
+                flex: 1 0 50%;
+                margin: 5px;
+            }
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff; /* Cambiamos el color de fondo */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .container h1 {
+            color: #333; /* Color del título */
+            text-align: center; /* Alineamos al centro */
+            margin-bottom: 20px; /* Agregamos margen inferior */
+        }
+
+        .form-group label {
+            display: block; /* Mostramos las etiquetas en bloque para separar verticalmente */
+            margin-bottom: 5px; /* Agregamos margen inferior a las etiquetas */
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group input[type="number,2"],
+        .form-group select,
+        .form-group input[type="date"] {
+            width: 100%; /* Ancho completo para los campos de entrada */
+            padding: 8px; /* Aumentamos el padding para mejorar la apariencia */
+            margin-bottom: 10px; /* Agregamos margen inferior a los campos */
+            border-radius: 4px; /* Borde redondeado */
+            border: 1px solid #ccc; /* Borde con color gris */
+        }
+
+        .form-group input[type="submit"] {
+            background-color: #4CAF50; /* Color de fondo del botón */
+            color: white; /* Color del texto del botón */
+            border: none; /* Quitamos el borde */
+            padding: 10px 20px; /* Ajustamos el padding del botón */
+            border-radius: 4px; /* Borde redondeado */
+            cursor: pointer; /* Cambiamos el cursor al pasar sobre el botón */
+        }
+
+        .form-group input[type="submit"]:hover {
+            background-color: #45a049; /* Cambio de color al pasar el mouse */
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="checkbox"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+    </style>
+    
+</head>
+<body>
+      <div class="navbar">
+        <a href="/">Inicio</a>
+        <a href="/registro">Registro</a>
+        <a href="/consultar">Registro de consultas</a>
+        <a href="/options">Calendario</a>
+        <a href="/agendar_cita">Agendar Cita</a>
+        <a href="/historial_citas">Historial de Citas</a>
+        <a href="/directorio_pacientes">Directorio Pacientes</a>
+        <a href="/expediente">Expediente</a>
+        </div>
+    <h1>Registro de Antecedentes Familiares</h1>
+    <form method="POST" action="/registro_antecedentes_familiares">
+        <label for="id_paciente">Selecciona un paciente:</label>
+        <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
+        <datalist id="pacientes_list">
+            {% for paciente in pacientes %}
+            <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
+            {% endfor %}
+        </datalist><br><br>
+              
+                <label for="diabetes_mellitus">Diabetes Mellitus:</label>
+                <input type="radio" id="diabetes_mellitus_si" name="diabetes_mellitus" value="Sí">
+                <label for="diabetes_mellitus_si">Sí</label>
+                <input type="radio" id="diabetes_mellitus_no" name="diabetes_mellitus" value="No">
+                <label for="diabetes_mellitus_no">No</label>
+                <label for="diabetes_mellitus_familiar">Familiar con Diabetes Mellitus:</label>
+                <input type="text" id="diabetes_mellitus_familiar" name="diabetes_mellitus_familiar"><br><br>
+        
+                <label for="dislipidemias">Dislipidemias:</label>
+                <input type="radio" id="dislipidemias_si" name="dislipidemias" value="Sí">
+                <label for="dislipidemias_si">Sí</label>
+                <input type="radio" id="dislipidemias_no" name="dislipidemias" value="No">
+                <label for="dislipidemias_no">No</label>
+                <label for="dislipidemias_familiar">Familiar con Dislipidemias:</label>
+                <input type="text" id="dislipidemias_familiar" name="dislipidemias_familiar"><br><br>
+        
+                <label for="sobrepeso_obesidad">Sobrepeso u Obesidad:</label>
+                <input type="radio" id="sobrepeso_obesidad_si" name="sobrepeso_obesidad" value="Sí">
+                <label for="sobrepeso_obesidad_si">Sí</label>
+                <input type="radio" id="sobrepeso_obesidad_no" name="sobrepeso_obesidad" value="No">
+                <label for="sobrepeso_obesidad_no">No</label>
+                <label for="sobrepeso_obesidad_familiar">Familiar con Sobrepeso u Obesidad:</label>
+                <input type="text" id="sobrepeso_obesidad_familiar" name="sobrepeso_obesidad_familiar"><br><br>
+        
+                <label for="cancer_tipo">Cáncer (Tipo):</label>
+                <input type="text" id="cancer_tipo" name="cancer_tipo">
+                <label for="cancer_tipo_familiar">Familiar con Cáncer:</label>
+                <input type="text" id="cancer_tipo_familiar" name="cancer_tipo_familiar"><br><br>
+        
+                <label for="hipertension">Hipertensión:</label>
+                <input type="radio" id="hipertension_si" name="hipertension" value="Sí">
+                <label for="hipertension_si">Sí</label>
+                <input type="radio" id="hipertension_no" name="hipertension" value="No">
+                <label for="hipertension_no">No</label>
+                <label for="hipertension_familiar">Familiar con Hipertensión:</label>
+                <input type="text" id="hipertension_familiar" name="hipertension_familiar"><br><br>
+        
+                <label for="cardiopatias">Cardiopatías:</label>
+                <input type="radio" id="cardiopatias_si" name="cardiopatias" value="Sí">
+                <label for="cardiopatias_si">Sí</label>
+                <input type="radio" id="cardiopatias_no" name="cardiopatias" value="No">
+                <label for="cardiopatias_no">No</label>
+                <label for="cardiopatias_familiar">Familiar con Cardiopatías:</label>
+                <input type="text" id="cardiopatias_familiar" name="cardiopatias_familiar"><br><br>
+        
+                <label for="litiasis_renal">Litiasis Renal:</label>
+                <input type="radio" id="litiasis_renal_si" name="litiasis_renal" value="Sí">
+                <label for="litiasis_renal_si">Sí</label>
+                <input type="radio" id="litiasis_renal_no" name="litiasis_renal" value="No">
+                <label for="litiasis_renal_no">No</label>
+                <label for="litiasis_renal_familiar">Familiar con Litiasis Renal:</label>
+                <input type="text" id="litiasis_renal_familiar" name="litiasis_renal_familiar"><br><br>
+        
+                <label for="litiasis_vesicular">Litiasis Vesicular:</label>
+                <input type="radio" id="litiasis_vesicular_si" name="litiasis_vesicular" value="Sí">
+                <label for="litiasis_vesicular_si">Sí</label>
+                <input type="radio" id="litiasis_vesicular_no" name="litiasis_vesicular" value="No">
+                <label for="litiasis_vesicular_no">No</label>
+                <label for="litiasis_vesicular_familiar">Familiar con Litiasis Vesicular:</label>
+                <input type="text" id="litiasis_vesicular_familiar" name="litiasis_vesicular_familiar"><br><br>
+        
+                <label for="artritis">Artritis:</label>
+                <input type="radio" id="artritis_si" name="artritis" value="Sí">
+                <label for="artritis_si">Sí</label>
+                <input type="radio" id="artritis_no" name="artritis" value="No">
+                <label for="artritis_no">No</label>
+                <label for="artritis_familiar">Familiar con Artritis:</label>
+                <input type="text" id="artritis_familiar" name="artritis_familiar"><br><br>
+        
+                <label for="asma">Asma:</label>
+                <input type="radio" id="asma_si" name="asma" value="Sí">
+                <label for="asma_si">Sí</label>
+                <input type="radio" id="asma_no" name="asma" value="No">
+                <label for="asma_no">No</label>
+                <label for="asma_familiar">Familiar con Asma:</label>
+                <input type="text" id="asma_familiar" name="asma_familiar"><br><br>
+        
+                <label for="otras_enfermedades">Otras Enfermedades:</label>
+                <input type="text" id="otras_enfermedades" name="otras_enfermedades">
+                <label for="otras_enfermedades_familiar">Familiar con Otras Enfermedades:</label>
+                <input type="text" id="otras_enfermedades_familiar" name="otras_enfermedades_familiar"><br><br>
+        
+                <input type="submit" value="Guardar Antecedentes Familiares">
+            </form>
+        </body>
+        </html>
+        
