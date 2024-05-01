@@ -329,14 +329,14 @@ def registro_antecedentes_familiares():
                             litiasis_vesicular_familiar, artritis, artritis_familiar, 
                             asma, asma_familiar, otras_enfermedades, otras_enfermedades_familiar))
         
-        with get_db_connection() as connection:
-            cursor = connection.cursor()
-            cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
-            pacientes = cursor.fetchall()
+    with get_db_connection() as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
+        pacientes = cursor.fetchall()
+
 
         return render_template('registro_antecedentes_familiares.html', pacientes=pacientes)
 
-    return render_template('registro_antecedentes_familiares.html')
 
 @app.route('/expediente')
 @login_required

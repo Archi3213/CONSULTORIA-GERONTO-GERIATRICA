@@ -159,8 +159,8 @@
         <a href="/expediente">Expediente</a>
         </div>
     <h1>Registro de Antecedentes Familiares</h1>
-    <form method="POST" action="/registro_antecedentes_familiares">
-        <label for="id_paciente">Selecciona un paciente:</label>
+    <form method="POST" action="/registro_antecedentes_familiares">      
+          <label for="id_paciente">Selecciona un paciente:</label>
         <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
         <datalist id="pacientes_list">
             {% for paciente in pacientes %}
