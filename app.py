@@ -352,5 +352,13 @@ def registro_antecedentes_nofamiliares():
 @login_required
 def evaluacion_clinica():
     return render_template('evaluacion_clinica.html')
+@app.route('/evaluacion_dietetica')
+@login_required
+def evaluacion_dietetica():
+    return render_template('evaluacion_dietetica.html')
+@app.route('/evaluacion_antropometrica')
+@login_required
+def evaluacion_antropometrica():
+    return render_template('evaluacion_antropometrica.html')
 if __name__ == '__main__':
     app.run(debug=True)

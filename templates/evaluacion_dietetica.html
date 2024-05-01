@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Evaluación Dietética</title>
+        <style>
+        body {
+            background-image: url('https://img.freepik.com/vector-gratis/fondo-frutas-verduras_23-2148485148.jpg?w=740&t=st=1713248651~exp=1713249251~hmac=30e168e9f2d449c4894d64a9e7ff69ce1449d8aca24ba3c0d846298490ca6041');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Estilos para la barra de navegación */
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+        }
+
+        .navbar a {
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            border-radius: 5px;
+            margin: 0 5px;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .content {
+            text-align: center;
+            margin-top: 50px;
+            color: #0a2400;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        strong {
+            color: #000000;
+        }
+
+        @media screen and (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+            }
+
+            .navbar a {
+                flex: 1 0 50%;
+                margin: 5px;
+            }
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff; /* Cambiamos el color de fondo */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .container h1 {
+            color: #333; /* Color del título */
+            text-align: center; /* Alineamos al centro */
+            margin-bottom: 20px; /* Agregamos margen inferior */
+        }
+
+        .form-group label {
+            display: block; /* Mostramos las etiquetas en bloque para separar verticalmente */
+            margin-bottom: 5px; /* Agregamos margen inferior a las etiquetas */
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group input[type="number,2"],
+        .form-group select,
+        .form-group input[type="date"] {
+            width: 100%; /* Ancho completo para los campos de entrada */
+            padding: 8px; /* Aumentamos el padding para mejorar la apariencia */
+            margin-bottom: 10px; /* Agregamos margen inferior a los campos */
+            border-radius: 4px; /* Borde redondeado */
+            border: 1px solid #ccc; /* Borde con color gris */
+        }
+
+        .form-group input[type="submit"] {
+            background-color: #4CAF50; /* Color de fondo del botón */
+            color: white; /* Color del texto del botón */
+            border: none; /* Quitamos el borde */
+            padding: 10px 20px; /* Ajustamos el padding del botón */
+            border-radius: 4px; /* Borde redondeado */
+            cursor: pointer; /* Cambiamos el cursor al pasar sobre el botón */
+        }
+
+        .form-group input[type="submit"]:hover {
+            background-color: #45a049; /* Cambio de color al pasar el mouse */
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="checkbox"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>    
+</head>
+<body>
+      <div class="navbar">
+        <a href="/">Inicio</a>
+        <a href="/registro">Registro</a>
+        <a href="/consultar">Registro de consultas</a>
+        <a href="/options">Calendario</a>
+        <a href="/agendar_cita">Agendar Cita</a>
+        <a href="/historial_citas">Historial de Citas</a>
+        <a href="/directorio_pacientes">Directorio Pacientes</a>
+        <a href="/expediente">Expediente</a>
+        </div>
+
+<body>
+    <h2>Evaluación Dietética</h2>
+    <form action="/evaluacion_dietetica" method="POST">
+        <label for="orientacion_alimentaria">Orientación alimentaria</label>
+        <input type="radio" id="si_orientacion" name="orientacion_alimentaria" value="SI">
+        <label for="si_orientacion">SI</label>
+        <input type="radio" id="no_orientacion" name="orientacion_alimentaria" value="NO">
+        <label for="no_orientacion">NO</label>
+        <br>
+        <label for="quien_orientacion">¿De quién?</label>
+        <input type="text" id="quien_orientacion" name="quien_orientacion">
+        <br><br>
+
+        <label for="intolerancia_alimento">Intolerancia a algún alimento</label>
+        <input type="radio" id="si_intolerancia" name="intolerancia_alimento" value="SI">
+        <label for="si_intolerancia">SI</label>
+        <input type="radio" id="no_intolerancia" name="intolerancia_alimento" value="NO">
+        <label for="no_intolerancia">NO</label>
+        <br>
+        <label for="cual_intolerancia">¿Cuál?</label>
+        <input type="text" id="cual_intolerancia" name="cual_intolerancia">
+        <br><br>
+
+        <label for="alergia_alimentaria">Alergia Alimentaria</label>
+        <input type="radio" id="si_alergia" name="alergia_alimentaria" value="SI">
+        <label for="si_alergia">SI</label>
+        <input type="radio" id="no_alergia" name="alergia_alimentaria" value="NO">
+        <label for="no_alergia">NO</label>
+        <br>
+        <label for="cual_alergia">¿Cuál?</label>
+        <input type="text" id="cual_alergia" name="cual_alergia">
+        <br><br>
+
+        <label for="consumo_agua">Consumo de agua al día</label>
+        <input type="radio" id="si_agua" name="consumo_agua" value="SI">
+        <label for="si_agua">SI</label>
+        <input type="radio" id="no_agua" name="consumo_agua" value="NO">
+        <label for="no_agua">NO</label>
+        <br>
+        <label for="cuanto_agua">¿Cuánto?</label>
+        <input type="text" id="cuanto_agua" name="cuanto_agua">
+        <br><br>
+
+        <label for="disminucion_apetito">En los últimos tres meses ha disminuido su apetito</label>
+        <input type="radio" id="si_apetito" name="disminucion_apetito" value="SI">
+        <label for="si_apetito">SI</label>
+        <input type="radio" id="no_apetito" name="disminucion_apetito" value="NO">
+        <label for="no_apetito">NO</label>
+        <br>
+        <label for="motivo_apetito">¿Motivo?</label>
+        <input type="text" id="motivo_apetito" name="motivo_apetito">
+        <br><br>
+
+        <label for="preferencia_alimentos">Alimentos de preferencia</label>
+        <textarea id="preferencia_alimentos" name="preferencia_alimentos"></textarea>
+        <br><br>
+
+        <label for="desagradables_alimentos">Alimentos desagradables</label>
+        <textarea id="desagradables_alimentos" name="desagradables_alimentos"></textarea>
+        <br><br>
+
+        <label for="dinero_semanal">Dinero destinado a la alimentación semanal</label>
+        <input type="number" id="dinero_semanal" name="dinero_semanal">
+        <label for="num_personas">No. Personas:</label>
+        <input type="number" id="num_personas" name="num_personas">
+        <br>
+        <label for="quien_prepara">¿Quién lo prepara?</label>
+        <input type="text" id="quien_prepara" name="quien_prepara">
+        <br><br>
+
+        <label for="recordatorio">Recordatorio de 24 horas</label>
+        <input type="checkbox" id="recordatorio_24" name="recordatorio" value="24 horas">
+        <label for="recordatorio_24">DIETA HABITUAL</label>
+        <input type="checkbox" id="dieta_habitual" name="recordatorio" value="dieta habitual">
+        <label for="dieta_habitual">DIETA HABITUAL</label>
+        <br><br>
+
+        <h3>Entre semana</h3>
+
+        <label for="desayuno_lugar">DESAYUNO - Lugar:</label>
+        <input type="text" id="desayuno_lugar" name="desayuno_lugar">
+        <label for="desayuno_horario">Horario:</label>
+        <input type="text" id="desayuno_horario" name="desayuno_horario">
+        <br><br>
+
+        <label for="colacion1_lugar">COLACIÓN - Lugar:</label>
+        <input type="text" id="colacion1_lugar" name="colacion1_lugar">
+        <label for="colacion1_horario">Horario:</label>
+        <input type="text" id="colacion1_horario" name="colacion1_horario">
+        <br><br>
+
+        <label for="almuerzo_lugar">ALMUERZO - Lugar:</label>
+        <input type="text" id="almuerzo_lugar" name="almuerzo_lugar">
+        <label for="almuerzo_horario">Horario:</label>
+        <input type="text" id="almuerzo_horario" name="almuerzo_horario">
+        <br><br>
+
+        <label for="colacion2_lugar">COLACIÓN - Lugar:</label>
+        <input type="text" id="colacion2_lugar" name="colacion2_lugar">
+        <label for="colacion2_horario">Horario:</label>
+        <input type="text" id="colacion2_horario" name="colacion2_horario">
+        <br><br>
+
+        <label for="cena_lugar">CENA - Lugar:</label>
+        <input type="text" id="cena_lugar" name="cena_lugar">
+        <label for="cena_horario">Horario:</label>
+        <input type="text" id="cena_horario" name="cena_horario">
+        <br><br>
+
+        <input type="submit" value="Guardar">
+    </form>
+    <h3>Frecuencia de Consumo</h3>
+    <label for="fecha_consumo">Fecha:</label>
+    <input type="date" id="fecha_consumo" name="fecha_consumo">
+    <br><br>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Grupo de alimentos</th>
+                <th>Frecuencia</th>
+                <th>Tipo</th>
+                <th>Cantidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>CEREALES</td>
+                <td><input type="text" id="frecuencia_cereales" name="frecuencia_cereales"></td>
+                <td><input type="text" id="tipo_cereales" name="tipo_cereales"></td>
+                <td><input type="text" id="cantidad_cereales" name="cantidad_cereales"></td>
+            </tr>
+            <tr>
+                <td>FRUTAS</td>
+                <td><input type="text" id="frecuencia_frutas" name="frecuencia_frutas"></td>
+                <td><input type="text" id="tipo_frutas" name="tipo_frutas"></td>
+                <td><input type="text" id="cantidad_frutas" name="cantidad_frutas"></td>
+            </tr>
+            <tr>
+                <td>VERDURAS</td>
+                <td><input type="text" id="frecuencia_verduras" name="frecuencia_verduras"></td>
+                <td><input type="text" id="tipo_verduras" name="tipo_verduras"></td>
+                <td><input type="text" id="cantidad_verduras" name="cantidad_verduras"></td>
+            </tr>
+            <tr>
+                <td>AOA (alimentos de origen animal)</td>
+                <td><input type="text" id="frecuencia_aoa" name="frecuencia_aoa"></td>
+                <td><input type="text" id="tipo_aoa" name="tipo_aoa"></td>
+                <td><input type="text" id="cantidad_aoa" name="cantidad_aoa"></td>
+            </tr>
+            <tr>
+                <td>LEGUMINOSAS</td>
+                <td><input type="text" id="frecuencia_leguminosas" name="frecuencia_leguminosas"></td>
+                <td><input type="text" id="tipo_leguminosas" name="tipo_leguminosas"></td>
+                <td><input type="text" id="cantidad_leguminosas" name="cantidad_leguminosas"></td>
+            </tr>
+            <tr>
+                <td>LÁCTEOS</td>
+                <td><input type="text" id="frecuencia_lacteos" name="frecuencia_lacteos"></td>
+                <td><input type="text" id="tipo_lacteos" name="tipo_lacteos"></td>
+                <td><input type="text" id="cantidad_lacteos" name="cantidad_lacteos"></td>
+            </tr>
+            <tr>
+                <td>GRASAS</td>
+                <td><input type="text" id="frecuencia_grasas" name="frecuencia_grasas"></td>
+                <td><input type="text" id="tipo_grasas" name="tipo_grasas"></td>
+                <td><input type="text" id="cantidad_grasas" name="cantidad_grasas"></td>
+            </tr>
+            <tr>
+                <td>AZÚCARES</td>
+                <td><input type="text" id="frecuencia_azucar" name="frecuencia_azucar"></td>
+                <td><input type="text" id="tipo_azucar" name="tipo_azucar"></td>
+                <td><input type="text" id="cantidad_azucar" name="cantidad_azucar"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br><br>
+    <input type="submit" value="Guardar">
+</form>
+</body>
+</html>
