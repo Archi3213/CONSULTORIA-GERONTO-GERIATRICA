@@ -236,15 +236,41 @@ def agendar_cita():
         pacientes = cursor.fetchall()
 
     return render_template('agendar_cita.html', pacientes=pacientes)
-@app.route('/historial_citas', methods=['GET'])
+@app.route('/historial_citas', methods=['GET', 'POST'])
 @login_required
 def historial_citas():
+    filter_text = request.form.get('filter_text')
+    filter_by = request.form.get('filter_by')
+
     with get_db_connection() as connection:
         cursor = connection.cursor()
-        cursor.execute("SELECT id_cita, id_paciente, fecha_consulta, hora_consulta, observaciones, estado FROM citas")
+
+        if request.method == 'POST' and filter_text and filter_by:
+            if filter_by == 'id_paciente':
+                cursor.execute("SELECT * FROM citas WHERE LOWER(id_paciente) LIKE LOWER(?)", ('%' + filter_text + '%',))
+            elif filter_by == 'estado':
+                cursor.execute("SELECT * FROM citas WHERE LOWER(estado) = LOWER(?)", (filter_text, ))
+            else:
+                cursor.execute("SELECT * FROM citas")
+        else:
+            cursor.execute("SELECT * FROM citas")
+
         citas = cursor.fetchall()
 
     return render_template('historial_citas.html', citas=citas)
+@app.route('/actualizar_estado', methods=['POST'])
+@login_required
+def actualizar_estado():
+    if request.method == 'POST':
+        id_cita = request.form['id_cita']
+        nuevo_estado = request.form['estado']
+
+        with get_db_connection() as connection:
+            cursor = connection.cursor()
+            cursor.execute("UPDATE citas SET estado = ? WHERE id_cita = ?", (nuevo_estado, id_cita))
+            connection.commit()
+
+    return redirect(url_for('historial_citas'))
 
 @app.route('/directorio_pacientes', methods=['GET', 'POST'])
 def directorio_pacientes():
@@ -325,8 +351,17 @@ def registro_antecedentes_familiares():
 
 @app.route('/expediente')
 @login_required
-def options():
+def expediente():
     return render_template('expediente.html')
 
+@app.route('/registro_antecedentes_nofamiliares')
+@login_required
+def registro_antecedentes_nofamiliares():
+    return render_template('registro_antecedentes_nofamiliares.html')
+
+@app.route('/evaluacion_clinica')
+@login_required
+def evaluacion_clinica():
+    return render_template('evaluacion_clinica.html')
 if __name__ == '__main__':
     app.run(debug=True)

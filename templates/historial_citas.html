@@ -175,21 +175,21 @@
         <a href="/directorio_pacientes">Directorio Pacientes</a>
         <a href="/expediente">Expediente</a>
         </div>
-    <div class="container">
-        <h1>Historial de Citas</h1>
-        <form action="{{ url_for('historial_citas') }}" method="post" class="filter-form">
-            <label for="filtro_apellidos">Filtrar por Apellidos:</label>
-            <input type="text" id_paciente="filtro_apellidos" name="filter_text" placeholder="Ingrese apellidos...">
-            <input type="hidden" name="filter_by" value="apellidos">
-            <input type="submit" value="Buscar">
-        </form>
         <!-- Formulario de filtrado por ID -->
-        <form action="{{ url_for('historial_citas') }}" method="post" class="filter-form">
+        <br>
+    </br>
+            <h1>Historial de Citas</h1>
+        
+            <br></br>
+            <form action="{{ url_for('historial_citas') }}" method="post" class="filter-form">
+
             <label for="filtro_id">Filtrar por ID:</label>
-            <input type="text" id_paciente="filtro_id" name="filter_text" placeholder="Ingrese ID...">
+            <input type="text" id="filtro_id" name="filter_text" placeholder="Ingrese ID...">
             <input type="hidden" name="filter_by" value="id_paciente">
             <input type="submit" value="Buscar">
         </form>
+     
+        
         <table border="1">
             <tr>
                 <th>ID</th>
@@ -197,7 +197,20 @@
                 <th>Fecha Consulta</th>
                 <th>Hora Consulta</th>
                 <th>Observaciones</th>
-                <th>Estado</th>
+                <th>Estado
+                    <form action="{{ url_for('historial_citas') }}" method="post" class="filter-form">
+            
+                        <label for="filter_estado">Estado:</label>
+                        <select id="filter_estado" name="filter_estado">
+                            <option value="Cancelada" {% if filter_estado == 'Cancelada' %} selected {% endif %}>Cancelada</option>
+                            <option value="Pendiente" {% if filter_estado == 'Pendiente' %} selected {% endif %}>Pendiente</option>
+                            <option value="Realizada" {% if filter_estado == 'Realizada' %} selected {% endif %}>Realizada</option>
+                            <input type="submit" value="Buscar">
+
+                        </select>
+                    </form>
+                    
+                </th>
             </tr>
             {% for cita in citas %}
             <tr>
@@ -211,7 +224,7 @@
                         <input type="hidden" name="id_cita" value="{{ cita[0] }}">
                         <select name="estado">
                             <option value="Pendiente" {% if cita[5] == 'Pendiente' %}selected{% endif %}>Pendiente</option>
-                            <option value="Confirmada" {% if cita[5] == 'Confirmada' %}selected{% endif %}>Confirmada</option>
+                            <option value="Atendida" {% if cita[5] == 'Atendida' %}selected{% endif %}>Atendida</option>
                             <option value="Cancelada" {% if cita[5] == 'Cancelada' %}selected{% endif %}>Cancelada</option>
                         </select>
                         <input type="submit" value="Actualizar">
