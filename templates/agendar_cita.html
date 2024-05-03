@@ -15,7 +15,47 @@
             background-position: center;
             background-repeat: no-repeat;
         }
+        label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
 
+    input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        transition: border-color 0.3s ease-in-out;
+        font-size: 16px;
+    }
+
+    input[type="text"]:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
+    datalist {
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 5px 0;
+        background-color: #28a745; /* Cambiar color de fondo a verde */
+    }
+
+    option {
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    /* Estilo de opción seleccionada */
+    option:checked {
+        background-color: #007bff;
+        color: #fff;
+    }
         .navbar {
             overflow: hidden;
             background-color: #333;

@@ -159,88 +159,92 @@
 <head>
 <title>Antecedentes No Familiares</title>
 </head>
-<body>
+<fieldset>
+    <body>
     <h1>Antecedentes No Familiares</h1>
     <form action="/registro_antecedentes_nofamiliares" method="POST">
-            <label for="ninguno">Ninguno</label>
-            <input type="radio" id="ninguno" name="ninguno" value="ninguno"><br><br>
-            
-            <label for="padecimiento">Padecimiento Actual y tiempo de diagnóstico:</label>
-            <input type="text" id="padecimiento" name="padecimiento"><br><br>
-            
-            <label for="otras_enfermedades">Otras enfermedades y tiempo de diagnóstico:</label>
-            <textarea id="otras_enfermedades" name="otras_enfermedades"></textarea><br><br>
-            
-            <label for="medicamentos">Medicamentos:</label>
-            <textarea id="medicamentos" name="medicamentos"></textarea><br><br>
-            
-            <label for="discapacidad">¿Tiene alguna discapacidad?</label>
-            <input type="radio" id="si_discapacidad" name="discapacidad" value="si">
-            <label for="si_discapacidad">Sí</label>
-            <input type="radio" id="no_discapacidad" name="discapacidad" value="no">
-            <label for="no_discapacidad">No</label><br>
+        <label for="Antecedentes">Tiene Antecedentes Patológicos? </label>
+        <label><input type="radio" name="Antecedentes" value="ninguno" required> Ninguno
+            <input type="radio" name="Antecedentes" value="Si" required> Si</label><br><br>
+    
+            <table>
+                <tr>
+                  <td><label for="padecimiento">Padecimiento Actual:</label></td>
+                  <td><input type="text" id="padecimiento" name="padecimiento"></td>
+                </tr>
+                <tr>
+                  <td><label for="tiempo_diagnostico">Tiempo de diagnóstico (en años):</label></td>
+                  <td><input type="number" id="tiempo_diagnostico" name="tiempo_diagnostico"></td>
+                </tr>
+              </table>
+
+        <label for="otras_enfermedades">Otras enfermedades y tiempo de diagnóstico:</label>
+        <textarea id="otras_enfermedades" name="otras_enfermedades"></textarea><br><br>
+    
+        <label for="medicamentos">Medicamentos:</label>
+        <textarea id="medicamentos" name="medicamentos"></textarea><br><br>
+    
+        <div id="discapacidad">
+            <label>¿Tiene alguna discapacidad?</label>
+            <input type="radio" id="si_discapacidad" name="discapacidad" value="si"> Sí
+            <input type="radio" id="no_discapacidad" name="discapacidad" value="no"> No
             <label for="especificar_discapacidad">Especifique cuál:</label>
             <input type="text" id="especificar_discapacidad" name="especificar_discapacidad"><br><br>
-            
-            <label for="cirugias">Cirugías:</label>
-            <input type="radio" id="si_cirugias" name="cirugias" value="si">
-            <label for="si_cirugias">Sí</label>
-            <input type="radio" id="no_cirugias" name="cirugias" value="no">
-            <label for="no_cirugias">No</label><br>
+        </div>
+    
+        <div id="cirugias">
+            <label>Cirugías</label>
+            <input type="radio" id="si_cirugias" name="cirugias" value="si"> Sí
+            <input type="radio" id="no_cirugias" name="cirugias" value="no"> No
             <label for="cuales_cirugias">¿Cuál?:</label>
             <input type="text" id="cuales_cirugias" name="cuales_cirugias"><br><br>
-            
-            <label for="alergias">Alergias:</label>
-            <input type="radio" id="si_alergias" name="alergias" value="si">
-            <label for="si_alergias">Sí</label>
-            <input type="radio" id="no_alergias" name="alergias" value="no">
-            <label for="no_alergias">No</label><br>
+        </div>
+    
+        <div id="alergias">
+            <label>Alergias</label>
+            <input type="radio" id="si_alergias" name="alergias" value="si"> Sí
+            <input type="radio" id="no_alergias" name="alergias" value="no"> No
             <label for="cuales_alergias">¿Cuál?:</label>
             <input type="text" id="cuales_alergias" name="cuales_alergias"><br><br>
-            
-            <h2>FACTORES DIGESTIVOS</h2>
-            <label for="ninguno_digestivos">Ninguno</label>
-            <input type="radio" id="ninguno_digestivos" name="ninguno_digestivos" value="ninguno"><br><br>
-            
-            <label for="nauseas">Náuseas</label>
-            <input type="radio" id="nauseas" name="digestivos_nauseas" value="nauseas" > 
-            <input type="radio" id="sin nauseas" name="digestivos_nauseas" value="sin nauseas"> <br><br>
-            
-            <label for="vomitos">Vómitos</label>
-            <input type="radio" id="vomitos" name="digestivos_vomitos" value="vomitos"><br><br>
-            
-            <label for="diarreas">Diarreas</label>
-            <input type="radio" id="diarreas" name="digestivos_diarreas" value="diarreas"><br><br>
-            
-            <label for="estreñimientos">Estreñimientos</label>
-            <input type="radio" id="estreñimientos" name="digestivos_estreñimientos" value="estreñimientos"><br><br>
-            
-            <label for="disfagia">Disfagia</label>
-            <input type="radio" id="disfagia" name="digestivos_disfagia" value="disfagia"><br><br>
-            
-            <label for="reflujo">Reflujo</label>
-            <input type="radio" id="reflujo" name="digestivos_reflujo" value="reflujo"><br><br>
-            
-            <label for="gastritis">Gastritis</label>
-            <input type="radio" id="gastritis" name="digestivos_gastritis" value="gastritis"><br><br>
-            
-            <label for="antecedentes_no_patologicos">Antecedentes Personales No Patológicos:</label><br>
-            <input type="checkbox" id="consumo_alcohol" name="consumo_alcohol" value="consumo_alcohol">
-            <label for="consumo_alcohol">Consumo Alcohol</label><br>
-            
-            <input type="checkbox" id="tabaco" name="tabaco" value="tabaco">
-            <label for="tabaco">Tabaco</label><br>
-            
-            <input type="checkbox" id="suplementos" name="suplementos" value="suplementos">
-            <label for="suplementos">Suplementos</label><br><br>
-            
-            <label for="cafeina">Cafeína</label>
-            <input type="text" id="cafeina" name="cafeina"><br><br>
-            
-            <label for="observaciones">Observaciones:</label>
-            <textarea id="observaciones" name="observaciones"></textarea><br><br>
-
-            <input type="submit" value="Guardar">
+        </div>
+    
+        <!-- Más campos se pueden agregar con un botón -->
+        <button type="button" onclick="agregarCampo()">Agregar Campo</button>
+    
+        <h2>FACTORES DIGESTIVOS</h2>
+        <!-- Campos de factores digestivos -->
+    
+        <label for="antecedentes_no_patologicos">Antecedentes Personales No Patológicos:</label><br>
+        <input type="checkbox" id="consumo_alcohol" name="consumo_alcohol" value="consumo_alcohol">
+        <label for="consumo_alcohol">Consumo Alcohol</label><br>
+    
+        <input type="checkbox" id="tabaco" name="tabaco" value="tabaco">
+        <label for="tabaco">Tabaco</label><br>
+    
+        <input type="checkbox" id="suplementos" name="suplementos" value="suplementos">
+        <label for="suplementos">Suplementos</label><br><br>
+    
+        <input type="checkbox" id="cafeina" name="cafeina" value="cafeina">
+        <label for="cafeina">Cafeína</label>
+    
+        <label for="observaciones">Observaciones:</label>
+        <textarea id="observaciones" name="observaciones"></textarea><br><br>
+    
+        <input type="submit" value="Guardar">
     </form>
-</body>
-</html>
+            </fieldset>
+
+    <script>
+        function agregarCampo() {
+            // Código para agregar más campos dinámicamente
+            // Por ejemplo:
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <label>Nuevo Campo</label>
+                <input type="text" name="nuevo_campo"><br><br>
+            `;
+            document.getElementById('cirugias').appendChild(div);
+        }
+    </script>
+            </body>
+            </html>

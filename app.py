@@ -161,14 +161,23 @@ def registro_paciente():
         fecha_registro = request.form['fecha_registro']
         registrado_por = request.form['registrado_por'].upper()
 
-        # Calcular ID del paciente y IMC
+        # Calcular ID del paciente y verificar si ya existe
         id_paciente = f"{primer_apellido[:2].upper()}{segundo_apellido[:2].upper()}{nombres[:2].upper()}{fecha_nacimiento.replace('-', '')}"
+        id_existente = True
         altura_metros = altura / 100
         imc = peso / (altura_metros ** 2)
 
-        # Insertar datos en la base de datos
         with get_db_connection() as connection:
             cursor = connection.cursor()
+            while id_existente:
+                cursor.execute("SELECT id_paciente FROM pacientes WHERE id_paciente = ?", (id_paciente,))
+                if cursor.fetchone():
+                    # Si el ID existe, generar uno nuevo
+                    id_paciente = f"{primer_apellido[:2].upper()}{segundo_apellido[:2].upper()}{nombres[:2].upper()}{fecha_nacimiento.replace('-', '')}"
+                else:
+                    id_existente = False  # El ID generado es único, salir del bucle
+
+            # Insertar datos en la base de datos
             cursor.execute('''INSERT INTO pacientes (id_paciente, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, religion, escolaridad, ocupacion, estado_civil, servicio_salud, celular, turno, genero, peso, altura, imc, fecha_registro, registrado_por) 
                             VALUES (?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?, ?)''', 
                             (id_paciente, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, religion, escolaridad, ocupacion, estado_civil,  servicio_salud,  celular, turno, genero, peso, altura, imc, fecha_registro, registrado_por))
@@ -245,8 +254,12 @@ def historial_citas():
             cursor.execute("SELECT * FROM citas")
 
         citas = cursor.fetchall()
+    with get_db_connection() as connection:
+     cursor = connection.cursor()
+    cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
+    pacientes = cursor.fetchall()
 
-    return render_template('historial_citas.html', citas=citas)
+    return render_template('historial_citas.html', citas=citas, pacientes=pacientes)
 @app.route('/actualizar_estado', methods=['POST'])
 @login_required
 def actualizar_estado():

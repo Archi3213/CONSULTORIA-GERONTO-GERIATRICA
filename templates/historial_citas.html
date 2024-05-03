@@ -184,7 +184,12 @@
             <form action="{{ url_for('historial_citas') }}" method="post" class="filter-form">
 
             <label for="filtro_id">Filtrar por ID:</label>
-            <input type="text" id="filtro_id" name="filter_text" placeholder="Ingrese ID...">
+            <input type="text" id="filter_id" name="filter_text" list="pacientes_list" required>
+            <datalist id="pacientes_list">
+                {% for paciente in pacientes %}
+                <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
+                {% endfor %}
+            </datalist>
             <input type="hidden" name="filter_by" value="id_paciente">
             <input type="submit" value="Buscar">
         </form>
