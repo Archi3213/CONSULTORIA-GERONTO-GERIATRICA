@@ -2,148 +2,8 @@
 <html lang="en">
 <head>
     <title>Evaluación Antropométrica</title>
-        <style>
-        body {
-            background-image: url('https://img.freepik.com/vector-gratis/fondo-frutas-verduras_23-2148485148.jpg?w=740&t=st=1713248651~exp=1713249251~hmac=30e168e9f2d449c4894d64a9e7ff69ce1449d8aca24ba3c0d846298490ca6041');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Estilos para la barra de navegación */
-        .navbar {
-            overflow: hidden;
-            background-color: #333;
-            display: flex;
-            justify-content: center;
-            padding: 10px 0;
-        }
-
-        .navbar a {
-            color: #f2f2f2;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-            border-radius: 5px;
-            margin: 0 5px;
-        }
-
-        .navbar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-
-        .content {
-            text-align: center;
-            margin-top: 50px;
-            color: #0a2400;
-        }
-
-        h1 {
-            margin-bottom: 10px;
-        }
-
-        p {
-            margin-bottom: 20px;
-        }
-
-        strong {
-            color: #000000;
-        }
-
-        @media screen and (max-width: 768px) {
-            .navbar {
-                flex-wrap: wrap;
-            }
-
-            .navbar a {
-                flex: 1 0 50%;
-                margin: 5px;
-            }
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            background-color: #fff; /* Cambiamos el color de fondo */
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .container h1 {
-            color: #333; /* Color del título */
-            text-align: center; /* Alineamos al centro */
-            margin-bottom: 20px; /* Agregamos margen inferior */
-        }
-
-        .form-group label {
-            display: block; /* Mostramos las etiquetas en bloque para separar verticalmente */
-            margin-bottom: 5px; /* Agregamos margen inferior a las etiquetas */
-        }
-
-        .form-group input[type="text"],
-        .form-group input[type="number"],
-        .form-group input[type="number,2"],
-        .form-group select,
-        .form-group input[type="date"] {
-            width: 100%; /* Ancho completo para los campos de entrada */
-            padding: 8px; /* Aumentamos el padding para mejorar la apariencia */
-            margin-bottom: 10px; /* Agregamos margen inferior a los campos */
-            border-radius: 4px; /* Borde redondeado */
-            border: 1px solid #ccc; /* Borde con color gris */
-        }
-
-        .form-group input[type="submit"] {
-            background-color: #4CAF50; /* Color de fondo del botón */
-            color: white; /* Color del texto del botón */
-            border: none; /* Quitamos el borde */
-            padding: 10px 20px; /* Ajustamos el padding del botón */
-            border-radius: 4px; /* Borde redondeado */
-            cursor: pointer; /* Cambiamos el cursor al pasar sobre el botón */
-        }
-
-        .form-group input[type="submit"]:hover {
-            background-color: #45a049; /* Cambio de color al pasar el mouse */
-        }
-        form {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input[type="text"],
-        input[type="checkbox"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-    </style>    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+   
 </head>
 <body>
       <div class="navbar">
@@ -158,9 +18,11 @@
         </div>
 <head>
 <body>
-    <h2>Evaluación Antropométrica</h2>
+   
     <form action="/evaluacion_antropometrica" method="POST">
-        <label for="nombre_paciente">Nombre del paciente:</label>
+        <fieldset>
+        <legend>Registro de Evaluación Antropométrica</legend>
+        <div class="container1"><label for="nombre_paciente">Nombre del paciente:</label>
         <input type="text" id="nombre_paciente" name="nombre_paciente">
         <br><br>
         <label for="estatura">Estatura:</label>
@@ -221,5 +83,7 @@
         <br><br>
         <input type="submit" value="Guardar">
     </form>
+</fieldset>
+</div>
 </body>
 </html>

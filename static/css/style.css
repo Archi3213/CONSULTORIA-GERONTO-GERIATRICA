@@ -3,10 +3,28 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-image: url('https://img.freepik.com/vector-gratis/fondo-frutas-verduras_23-2148485148.jpg?w=740&t=st=1713248651~exp=1713249251~hmac=30e168e9f2d449c4894d64a9e7ff69ce1449d8aca24ba3c0d846298490ca6041');
+    background-image: url('/static/css/Imagen/fondo.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+}
+.logo {
+    width: 150px; /* Ajusta el tamaño según sea necesario */
+    height: auto; /* Para mantener la proporción de la imagen */
+}
+button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff; /* Cambia el color de fondo según tu preferencia */
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+/* Estilos para el botón al pasar el mouse */
+.button:hover {
+    background-color: #0056b3; /* Cambia el color de fondo al pasar el mouse */
 }
 .content {
     display: flex;
@@ -25,7 +43,156 @@ body {
     border-radius: 5px;
     transition: background-color 0.3s ease;
 }
-/* Estilos para la barra de navegación */
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 40px;
+    border: 2px solid #01ad01;
+    border-radius: 10px;
+    background-color: #3dcc30;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.container h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.container p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.container button {
+    padding: 12px 24px;
+    font-size: 20px;
+    border: none;
+    border-radius: 6px;
+    background-color: #00a028;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.container button:hover {
+    background-color: #000000;
+}
+
+.container input[type="text"],
+.container input[type="password"],
+.container input[type="submit"] {
+    width: calc(100% - 20px);
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 18px;
+}
+
+.container input[type="submit"] {
+    background-color: #00c020;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.container input[type="submit"]:hover {
+    background-color: #3dc200;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="submit"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.error-message,
+.success-message {
+    font-size: 14px;
+    margin-top: 10px;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.error-message {
+    color: #d9534f;
+    background-color: #f2dede;
+    text-align: center;
+}
+
+.success-message {
+    color: #5cb85c;
+    background-color: #dff0d8;
+}
+
+input:required {
+    border-color: #ff9999;
+}
+
+input:focus {
+    outline: none;
+    border-color: #000000;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+    color: #999;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.container * {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
 .navbar {
     overflow: hidden;
     background-color: #333;
@@ -49,14 +216,12 @@ body {
     color: black;
 }
 
-/* Estilos para el contenido */
 .content {
     text-align: center;
     margin-top: 50px;
     color: #0a2400;
 }
 
-/* Estilos para tablas */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -86,10 +251,11 @@ tr:nth-child(odd) {
     background-color: #e6e6e6;
 }
 
-/* Estilos para formularios y botones */
 input[type="text"],
 input[type="number"],
 input[type="submit"],
+input[type="number,2"],
+
 .add-button {
     width: 150px;
     padding: 8px 12px;
@@ -104,14 +270,13 @@ input[type="submit"]:hover,
     background-color: #45a049;
 }
 
-/* Estilos para elementos específicos */
 h1 {
     margin-bottom: 10px;
     text-align: center;
 }
 
 h2 {
-    color: #2996fc;
+    color: #000000;
     font-size: 1.25em;
     margin-bottom: 10px;
 }
@@ -125,7 +290,6 @@ strong {
     margin-bottom: 25px;
 }
 
-/* Estilos responsivos */
 @media screen and (max-width: 768px) {
     .navbar {
         flex-wrap: wrap;
@@ -156,4 +320,63 @@ strong {
         font-size: 1em;
         margin-bottom: 8px;
     }
+}
+.container1 {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 40px;
+    border: 2px solid #57f442; /* Color de borde de Google */
+    border-radius: 10px;
+    background-color: #f0f0f0; /* Color de fondo de Google */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.container1 h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.container1 .form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.container1 label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555; /* Color de texto de Google */
+}
+
+.container1 input[type="text"],
+.container1 input[type="number"],
+.container1 input[type="date"],
+.container1 input[type="time"],
+.container1 select {
+    
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+.container1 input[type="radio"]
+
+.container1 input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #4285f4; /* Color de botón de Google */
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.container1 input[type="submit"]:hover {
+    background-color: #3367d6; /* Color de botón de Google al pasar el mouse */
 }
