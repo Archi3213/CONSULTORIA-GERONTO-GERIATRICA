@@ -6,8 +6,9 @@ body {
     padding: 0;
     background-image: url('/static/css/Imagen/fondo.jpg');
     background-size: cover;
-    background-position: center;
+    background-position: auto;
     background-repeat: no-repeat;
+    background-attachment: scroll;
 }
 
 /* Estilos para elementos de navegación */
@@ -40,11 +41,32 @@ button, .button, .btn-login, input[type="submit"] {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    border:  #215f00;
     text-decoration: none;
+    background: #215f00;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #88e410, #215f00);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #88e410, #215f00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+}
+.button1 {
+    background: #3CA55C;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #B5AC49, #3CA55C);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #B5AC49, #3CA55C); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 26px;
+    padding: 50px 40px;
+    text-align: center;
+    cursor: pointer;
 }
 
+.button1:hover {
+    background-color: #45a049;
+}
 button:hover, .button:hover, .btn-login:hover, input[type="submit"]:hover {
-    background-color: #005f05;
+    background-color: #0f7e00;
 }
 
 /* Estilos para contenedores */
@@ -52,9 +74,11 @@ button:hover, .button:hover, .btn-login:hover, input[type="submit"]:hover {
     max-width: 600px;
     margin: 50px auto;
     padding: 40px;
-    border: 2px solid #01ad01;
+    border: 2px solid #002700;
     border-radius: 10px;
-    background-color: #3dcc30;
+    background: #dce35b; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #dce35b, #45b649); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #dce35b, #45b649);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
 }
@@ -64,7 +88,12 @@ button:hover, .button:hover, .btn-login:hover, input[type="submit"]:hover {
     margin-bottom: 20px;
     color: #333;
 }
-
+.content_exp {
+    display: grid;
+    grid-template-columns: auto(auto-fill, minmax(200px, 1fr));
+    grid-gap: 20px;
+    justify-content: center;
+}
 .container p {
     font-size: 18px;
     margin-bottom: 20px;
