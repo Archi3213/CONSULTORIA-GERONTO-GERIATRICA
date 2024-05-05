@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Antecedentes Familiares</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/png" href="static\css\Imagen\_44109a07-adb5-4db9-90c0-8bac1621533a-removebg-preview.png">
+
 </head>
 <body>
       <div class="navbar">
@@ -19,71 +21,72 @@
         <a href="/expediente">Expediente</a>
         </div>
     <h1>Registro de Antecedentes Familiares</h1>
-    <form method="POST" action="/registro_antecedentes_familiares">      
-<div class="container1">            
-        <fieldset>
-            <legend>Antecedentes Familiares</legend>
-            <label for="id_paciente">Selecciona un paciente:</label>
-        <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
-        <datalist id="pacientes_list">
-            {% for paciente in pacientes %}
-            <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
-            {% endfor %}
-        </datalist><br><br>
-              
-        <label>
-            Diabetes Mellitus:
-            <input type="radio" name="diabetes_mellitus" value="Sí"required> Sí
-            <input type="radio" name="diabetes_mellitus" value="No"required> No
-        </label>
-        <label>
-            Familiar con Diabetes Mellitus:
-            <input type="text" name="diabetes_mellitus_familiar">
-        </label>
-        
-        
-        <label>
-            Dislipidemias:
-            <input type="radio" name="dislipidemias" value="Sí"required> Sí
-            <input type="radio" name="dislipidemias" value="No"required> No
-        </label>
-        <label>
-            Familiar con Dislipidemias:
-            <input type="text" name="dislipidemias_familiar">
-        </label>
+    <form method="POST" action="/registro_antecedentes_familiares">
+        <div class="container1">
+            <fieldset>
+                <legend>Antecedentes Familiares</legend>
+                <label for="id_paciente">Selecciona un paciente:</label>
+                <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
+                <datalist id="pacientes_list">
+                    {% for paciente in pacientes %}
+                    <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
+                    {% endfor %}
+                </datalist><br><br>
     
-        <label>
-            Sobrepeso u Obesidad:
-            <input type="radio" name="sobrepeso_obesidad" value="Sí"required> Sí
-            <input type="radio" name="sobrepeso_obesidad" value="No"required> No
-        </label>
-        <label>
-            Familiar con Sobrepeso u Obesidad:
-            <input type="text" name="sobrepeso_obesidad_familiar">
-        </label>
+                <label>
+                    Diabetes Mellitus:
+                    <input type="radio" name="diabetes_mellitus" value="Sí" required> Sí
+                    <input type="radio" name="diabetes_mellitus" value="No" required> No
+                </label>
+                <label>
+                    Familiar con Diabetes Mellitus:
+                    <input type="text" name="diabetes_mellitus_familiar">
+                </label>
     
-        <label>
-            Cáncer (Tipo):
-            <input type="text" name="cancer_tipo">
-        </label>
-        <label>
-            Familiar con Cáncer:
-            <input type="text" name="cancer_tipo_familiar">
-        </label>
+                <label>
+                    Dislipidemias:
+                    <input type="radio" name="dislipidemias" value="Sí" required> Sí
+                    <input type="radio" name="dislipidemias" value="No" required> No
+                </label>
+                <label>
+                    Familiar con Dislipidemias:
+                    <input type="text" name="dislipidemias_familiar">
+                </label>
     
-        <label>
-            Hipertensión:
-            <input type="radio" name="hipertension" value="Sí"required> Sí
-            <input type="radio" name="hipertension" value="No"required> No
-        </label>
-        <label>
-            Familiar con Hipertensión:
-            <input type="text" name="hipertension_familiar">
-        </label>
+                <label>
+                    Sobrepeso u Obesidad:
+                    <input type="radio" name="sobrepeso_obesidad" value="Sí" required> Sí
+                    <input type="radio" name="sobrepeso_obesidad" value="No" required> No
+                </label>
+                <label>
+                    Familiar con Sobrepeso u Obesidad:
+                    <input type="text" name="sobrepeso_obesidad_familiar">
+                </label>
     
-        <!-- Otros elementos omitidos por brevedad -->
+                <label>
+                    Cáncer (Tipo):
+                    <input type="text" name="cancer_tipo">
+                </label>
+                <label>
+                    Familiar con Cáncer:
+                    <input type="text" name="cancer_tipo_familiar">
+                </label>
     
-        <input type="submit" value="Guardar Antecedentes Familiares">
+                <label>
+                    Hipertensión:
+                    <input type="radio" name="hipertension" value="Sí" required> Sí
+                    <input type="radio" name="hipertension" value="No" required> No
+                </label>
+                <label>
+                    Familiar con Hipertensión:
+                    <input type="text" name="hipertension_familiar">
+                </label>
+    
+                <button type="submit">Guardar</button>
+            </fieldset>
+        </div>
+    </form>
+    
         </fieldset>
 </div>
         </body>
