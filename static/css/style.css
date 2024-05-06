@@ -63,7 +63,9 @@ button, .button, .btn-login, input[type="submit"] {
 }
 
 .button1:hover {
-    background-color: #45a049;
+    background: #3CA55C;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #49b576, #3CA55C);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #49b569, #3CA55C);;
 }
 button:hover, .button:hover, .btn-login:hover, input[type="submit"]:hover {
     background-color: #0f7e00;
@@ -94,6 +96,7 @@ button:hover, .button:hover, .btn-login:hover, input[type="submit"]:hover {
     grid-gap: 20px;
     justify-content: center;
 }
+
 .container p {
     font-size: 18px;
     margin-bottom: 20px;
