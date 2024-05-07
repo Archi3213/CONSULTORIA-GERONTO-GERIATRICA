@@ -1,7 +1,8 @@
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, session
-import hashlib
-import sqlite3
+import hashlib, sqlite3
+from operator import itemgetter
+
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
@@ -245,6 +246,14 @@ def historial_citas():
      cursor = connection.cursor()
     cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
     pacientes = cursor.fetchall()
+    citas_ordenadas = sorted(citas, key=itemgetter(0), reverse=True)
+
+    with get_db_connection() as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
+        pacientes = cursor.fetchall()
+
+    return render_template('historial_citas.html', citas=citas_ordenadas, pacientes=pacientes)
 
     return render_template('historial_citas.html', citas=citas, pacientes=pacientes)
 @app.route('/actualizar_estado', methods=['POST'])
@@ -335,10 +344,10 @@ def registro_antecedentes_familiares():
 def expediente():
     return render_template('expediente.html')
 
-@app.route('/registro_antecedentes_nofamiliares')
+@app.route('/registro_antecedentes_personales')
 @login_required
-def registro_antecedentes_nofamiliares():
-    return render_template('registro_antecedentes_nofamiliares.html')
+def registro_antecedentes_personales():
+    return render_template('registro_antecedentes_personales.html')
 
 @app.route('/evaluacion_clinica')
 @login_required

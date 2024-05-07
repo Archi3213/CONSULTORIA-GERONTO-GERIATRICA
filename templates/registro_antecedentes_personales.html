@@ -26,8 +26,17 @@
 <div class="container1">
 <fieldset>
     <body>
-    <h1>Antecedentes No Familiares</h1>
-    <form action="/registro_antecedentes_nofamiliares" method="POST">
+    <legend>Antecedentes personales</legend>
+    <form action="/registro_antecedentes_personales" method="POST">
+        
+        <label for="id_paciente">Selecciona un paciente:</label>
+        <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
+        <datalist id="pacientes_list">
+            {% for paciente in pacientes %}
+            <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
+            {% endfor %}
+        </datalist><br><br>
+
         <label for="Antecedentes">Tiene Antecedentes Patológicos? </label>
         <label><input type="radio" name="Antecedentes" value="ninguno" required> Ninguno
             <input type="radio" name="Antecedentes" value="Si" required> Si</label><br><br>
@@ -43,12 +52,27 @@
                 </tr>
               </table>
 
-        <label for="otras_enfermedades">Otras enfermedades y tiempo de diagnóstico:</label>
-        <textarea id="otras_enfermedades" name="otras_enfermedades"></textarea><br><br>
+      
+        <label for="otras_enfermedades">Otras enfermedades:</label>
+        <input type="text" id="otras_enfermedades" name="otras_enfermedades" placeholder="Ingrese la enfermedad"><br><br>
+
+        <label for="tiempo_diagnostico">Tiempo de diagnóstico (meses):</label>
+        <input type="number" id="tiempo_diagnostico" name="tiempo_diagnostico" placeholder="Tiempo en meses"><br><br>
+
+        <!-- Campo oculto para combinar datos en el servidor -->
+        <input type="hidden" id="otras_enfermedades_tiempo" name="otras_enfermedades_tiempo">
+
+       
     
-        <label for="medicamentos">Medicamentos:</label>
-        <textarea id="medicamentos" name="medicamentos"></textarea><br><br>
-    
+        <label for="medicamento">Nombre del medicamento:</label>
+        <input type="text" id="medicamento" name="medicamento" placeholder="Nombre del medicamento"><br><br>
+
+        <label for="dosis">Dosis:</label>
+        <input type="text" id="dosis" name="dosis" placeholder="Dosis del medicamento"><br><br>
+
+        <!-- Campo oculto para combinar datos en el servidor -->
+        <input type="hidden" id="medicamento_dosis" name="medicamento_dosis">
+
         <div id="discapacidad">
             <label>¿Tiene alguna discapacidad?</label>
             <input type="radio" id="si_discapacidad" name="discapacidad" value="si"> Sí
@@ -109,7 +133,41 @@
                 <input type="text" name=cirugias"><br><br>
             `;
             document.getElementById('cirugias').appendChild(div);
-        }
+        } 
+        // Función para combinar los datos de enfermedades y tiempo antes de enviar el formulario
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evitar el envío del formulario por defecto
+
+            // Obtener los valores de los campos
+            const enfermedad = document.getElementById('otras_enfermedades').value;
+            const tiempo = document.getElementById('tiempo_diagnostico').value;
+
+            // Combinar los valores en un solo dato separado por un caracter especial
+            const datosCombinados = `${enfermedad}|${tiempo}`;
+
+            // Asignar el valor combinado al campo oculto
+            document.getElementById('otras_enfermedades_tiempo').value = datosCombinados;
+
+            // Enviar el formulario
+            this.submit();
+        });
+         // Función para combinar los datos de medicamento y dosis antes de enviar el formulario
+         document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evitar el envío del formulario por defecto
+
+            // Obtener los valores de los campos
+            const medicamento = document.getElementById('medicamento').value;
+            const dosis = document.getElementById('dosis').value;
+
+            // Combinar los valores en un solo dato separado por un caracter especial
+            const datosCombinados = `${medicamento}|${dosis}`;
+
+            // Asignar el valor combinado al campo oculto
+            document.getElementById('medicamento_dosis').value = datosCombinados;
+
+            // Enviar el formulario
+            this.submit();
+        });
     </script>
     </div>
 
