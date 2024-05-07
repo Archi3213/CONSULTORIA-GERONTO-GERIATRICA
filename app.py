@@ -76,9 +76,9 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS antecedentes_familiares (
                     hipertension_familiar TEXT,
                     cardiopatias_familiar TEXT,
                     litiasis_familiar TEXT,
-                    artristis_familiar TEXT,
+                    artritis_familiar TEXT,
                     asma_familiar TEXT,
-                    otras TEXT,  -- Agregado para otras condiciones
+                    otras TEXT,
                     FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
                 )''')
 
@@ -289,6 +289,10 @@ def registro_antecedentes_familiares():
         sobrepeso_obesidad_familiar = request.form['sobrepeso_obesidad_familiar']
         cancer_tipo_familiar = request.form['cancer_tipo_familiar']
         hipertension_familiar = request.form['hipertension_familiar']
+        cardiopatias_familiar = request.form['cardiopatias_familiar']
+        litiasis_familiar = request.form['litiasis_familiar']
+        artritis_familiar = request.form['artritis_familiar']
+        asma_familiar = request.form['asma_familiar']
         otras = request.form['otras']
 
         with get_db_connection() as connection:
@@ -297,21 +301,27 @@ def registro_antecedentes_familiares():
             cursor.execute("SELECT id_paciente FROM antecedentes_familiares WHERE id_paciente = ?", (id_paciente,))
             if cursor.fetchone():
                 # Si existe, actualizar los datos en lugar de insertarlos
-                cursor.execute("""UPDATE antecedentes_familiares SET diabetes_mellitus_familiar=?, 
+                  cursor.execute("""UPDATE antecedentes_familiares SET diabetes_mellitus_familiar=?, 
                                   dislipidemias_familiar=?, sobrepeso_obesidad_familiar=?, 
-                                  cancer_tipo_familiar=?, hipertension_familiar=?, otras=? 
-                                  WHERE id_paciente=?""",
+                                  cancer_tipo_familiar=?, hipertension_familiar=?, otras=?, 
+                                  cardiopatias_familiar=?, litiasis_familiar=?, artritis_familiar=?, 
+                                  asma_familiar=? WHERE id_paciente=?""",
                                (diabetes_mellitus_familiar, dislipidemias_familiar, sobrepeso_obesidad_familiar,
-                                cancer_tipo_familiar, hipertension_familiar, otras, id_paciente))
+                                cancer_tipo_familiar, hipertension_familiar, otras, cardiopatias_familiar, 
+                                litiasis_familiar, artritis_familiar, asma_familiar, id_paciente))
             else:
                 # Si no existe, insertar los datos
                 cursor.execute("""INSERT INTO antecedentes_familiares 
                                   (id_paciente, diabetes_mellitus_familiar, dislipidemias_familiar,
-                                   sobrepeso_obesidad_familiar, cancer_tipo_familiar, hipertension_familiar, otras) 
-                                  VALUES (?, ?, ?, ?, ?, ?, ?)""",
+                                   sobrepeso_obesidad_familiar, cancer_tipo_familiar, hipertension_familiar, 
+                                   otras, cardiopatias_familiar, litiasis_familiar, artritis_familiar, 
+                                   asma_familiar) 
+                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                                (id_paciente, diabetes_mellitus_familiar, dislipidemias_familiar,
-                                sobrepeso_obesidad_familiar, cancer_tipo_familiar, hipertension_familiar, otras))
-
+                                sobrepeso_obesidad_familiar, cancer_tipo_familiar, hipertension_familiar, 
+                                otras, cardiopatias_familiar, litiasis_familiar, artritis_familiar, 
+                                asma_familiar))
+                
         return redirect(url_for('registro_exitoso'))
     
     with get_db_connection() as connection:
