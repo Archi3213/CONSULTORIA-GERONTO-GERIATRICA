@@ -69,16 +69,16 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS citas (
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS antecedentes_familiares (
                     id_paciente PRIMARY KEY NOT NULL,
-                    diabetes_mellitus TEXT,
                     diabetes_mellitus_familiar TEXT,
-                    dislipidemias TEXT,
                     dislipidemias_familiar TEXT,
-                    sobrepeso_obesidad TEXT,
                     sobrepeso_obesidad_familiar TEXT,
-                    cancer_tipo TEXT,
                     cancer_tipo_familiar TEXT,
-                    hipertension TEXT,
                     hipertension_familiar TEXT,
+                    cardiopatias_familiar TEXT,
+                    litiasis_familiar TEXT,
+                    artristis_familiar TEXT,
+                    asma_familiar TEXT,
+                    otras TEXT,  -- Agregado para otras condiciones
                     FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
                 )''')
 
@@ -131,8 +131,9 @@ def options():
 @app.route('/registro', methods=['GET', 'POST'])
 @login_required
 def registro_paciente():
+    mensaje_error = None
+
     if request.method == 'POST':
-        # Capturar datos del formulario
         primer_apellido = request.form['primer_apellido'].upper()
         segundo_apellido = request.form['segundo_apellido'].upper()
         nombres = request.form['nombres'].upper()
@@ -145,35 +146,32 @@ def registro_paciente():
         celular = request.form['celular']
         turno = request.form['turno'].upper()
         genero = request.form['genero'].upper()
-        peso = float(request.form['peso'])  # Convertir a float directamente
-        altura = float(request.form['altura'])  # Convertir a float directamente
+        peso = float(request.form['peso'])
+        altura = float(request.form['altura'])
         fecha_registro = request.form['fecha_registro']
         registrado_por = request.form['registrado_por'].upper()
 
-        # Calcular ID del paciente y verificar si ya existe
         id_paciente = f"{primer_apellido[:2].upper()}{segundo_apellido[:2].upper()}{nombres[:2].upper()}{fecha_nacimiento.replace('-', '')}"
-        id_existente = True
         altura_metros = altura / 100
         imc = peso / (altura_metros ** 2)
 
         with get_db_connection() as connection:
             cursor = connection.cursor()
-            while id_existente:
-                cursor.execute("SELECT id_paciente FROM pacientes WHERE id_paciente = ?", (id_paciente,))
-                if cursor.fetchone():
-                    # Si el ID existe, generar uno nuevo
-                    id_paciente = f"{primer_apellido[:2].upper()}{segundo_apellido[:2].upper()}{nombres[:2].upper()}{fecha_nacimiento.replace('-', '')}"
-                else:
-                    id_existente = False  # El ID generado es único, salir del bucle
+            cursor.execute("SELECT id_paciente FROM pacientes WHERE id_paciente = ?", (id_paciente,))
+            if cursor.fetchone():
+                mensaje_error = "El ID del paciente ya existe en la base de datos"
+                id_paciente = f"{primer_apellido[:2].upper()}{segundo_apellido[:2].upper()}{nombres[:2].upper()}{fecha_nacimiento.replace('-', '')}"
+            else:
+                cursor.execute('''INSERT INTO pacientes (id_paciente, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, religion, escolaridad, ocupacion, estado_civil, servicio_salud, celular, turno, genero, peso, altura, imc, fecha_registro, registrado_por) 
+                                VALUES (?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?, ?)''', 
+                                (id_paciente, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, religion, escolaridad, ocupacion, estado_civil,  servicio_salud,  celular, turno, genero, peso, altura, imc, fecha_registro, registrado_por))
 
-            # Insertar datos en la base de datos
-            cursor.execute('''INSERT INTO pacientes (id_paciente, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, religion, escolaridad, ocupacion, estado_civil, servicio_salud, celular, turno, genero, peso, altura, imc, fecha_registro, registrado_por) 
-                            VALUES (?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?, ?)''', 
-                            (id_paciente, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, religion, escolaridad, ocupacion, estado_civil,  servicio_salud,  celular, turno, genero, peso, altura, imc, fecha_registro, registrado_por))
+        if mensaje_error:
+            return render_template('registro.html', mensaje_error=mensaje_error)
+        else:
+            return redirect(url_for('registro_exitoso', id_paciente=id_paciente, nombre_paciente=f"{nombres} {primer_apellido} {segundo_apellido}"))
 
-        return redirect(url_for('registro_exitoso', id_paciente=id_paciente, nombre_paciente=f"{nombres} {primer_apellido} {segundo_apellido}"))
     return render_template('registro.html')
-
 @app.route('/registro_exitoso')
 def registro_exitoso():
     id_paciente = request.args.get('id_paciente')
@@ -286,43 +284,42 @@ def directorio_pacientes():
 def registro_antecedentes_familiares():
     if request.method == 'POST':
         id_paciente = request.form['id_paciente']
-        diabetes_mellitus = request.form['diabetes_mellitus']
         diabetes_mellitus_familiar = request.form['diabetes_mellitus_familiar']
-        dislipidemias = request.form['dislipidemias']
         dislipidemias_familiar = request.form['dislipidemias_familiar']
-        sobrepeso_obesidad = request.form['sobrepeso_obesidad']
         sobrepeso_obesidad_familiar = request.form['sobrepeso_obesidad_familiar']
-        cancer_tipo = request.form['cancer_tipo']
         cancer_tipo_familiar = request.form['cancer_tipo_familiar']
-        hipertension = request.form['hipertension']
         hipertension_familiar = request.form['hipertension_familiar']
-        
-        # Insertar datos en la tabla de antecedentes familiares
+        otras = request.form['otras']
+
         with get_db_connection() as connection:
             cursor = connection.cursor()
-            cursor.execute("""INSERT INTO "antecedentes_familiares" 
-                              (id_paciente, diabetes_mellitus, diabetes_mellitus_familiar,
-                               dislipidemias, dislipidemias_familiar, sobrepeso_obesidad, 
-                               sobrepeso_obesidad_familiar, cancer_tipo, cancer_tipo_familiar, 
-                               hipertension, hipertension_familiar) 
-                              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-                           (id_paciente, diabetes_mellitus, diabetes_mellitus_familiar,
-                            dislipidemias, dislipidemias_familiar, sobrepeso_obesidad,
-                            sobrepeso_obesidad_familiar, cancer_tipo, cancer_tipo_familiar,
-                            hipertension, hipertension_familiar))
-        
-        # Redirigir a una página de éxito o a donde desees después de guardar los datos
-        return redirect(url_for('registro_exitoso'))
+            # Verificar si el id_paciente ya tiene registros en antecedentes_familiares
+            cursor.execute("SELECT id_paciente FROM antecedentes_familiares WHERE id_paciente = ?", (id_paciente,))
+            if cursor.fetchone():
+                # Si existe, actualizar los datos en lugar de insertarlos
+                cursor.execute("""UPDATE antecedentes_familiares SET diabetes_mellitus_familiar=?, 
+                                  dislipidemias_familiar=?, sobrepeso_obesidad_familiar=?, 
+                                  cancer_tipo_familiar=?, hipertension_familiar=?, otras=? 
+                                  WHERE id_paciente=?""",
+                               (diabetes_mellitus_familiar, dislipidemias_familiar, sobrepeso_obesidad_familiar,
+                                cancer_tipo_familiar, hipertension_familiar, otras, id_paciente))
+            else:
+                # Si no existe, insertar los datos
+                cursor.execute("""INSERT INTO antecedentes_familiares 
+                                  (id_paciente, diabetes_mellitus_familiar, dislipidemias_familiar,
+                                   sobrepeso_obesidad_familiar, cancer_tipo_familiar, hipertension_familiar, otras) 
+                                  VALUES (?, ?, ?, ?, ?, ?, ?)""",
+                               (id_paciente, diabetes_mellitus_familiar, dislipidemias_familiar,
+                                sobrepeso_obesidad_familiar, cancer_tipo_familiar, hipertension_familiar, otras))
 
-    # Obtener la lista de pacientes para el formulario
+        return redirect(url_for('registro_exitoso'))
+    
     with get_db_connection() as connection:
         cursor = connection.cursor()
         cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
         pacientes = cursor.fetchall()
 
     return render_template('registro_antecedentes_familiares.html', pacientes=pacientes)
-
-
 @app.route('/expediente')
 @login_required
 def expediente():

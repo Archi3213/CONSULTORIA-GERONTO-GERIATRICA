@@ -21,6 +21,11 @@
     <h1>Registro de Paciente</h1>
     <div class="form-group">
         <form method="post" action="/registro">
+            {% if mensaje_error %}
+            <div class="alert alert-danger" role="alert">
+              {{ mensaje_error }}
+            </div>
+            {% endif %}
             <label>Primer apellido:</label>
             <input type="text" name="primer_apellido"required>
             <label>Segundo apellido:</label>
@@ -112,7 +117,9 @@
             <input type="text" name="registrado_por"required>
 
             <input type="submit" value="Registrar">
+
         </form>
+        
     </div>
 </body>
 </html>
