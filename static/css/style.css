@@ -4,11 +4,23 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+
+}
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
     background-image: url('/static/css/Imagen/fondo.jpg');
-    background-size: cover;
-    background-position: auto;
+    background-position: cover;
     background-repeat: no-repeat;
     background-attachment: scroll;
+    opacity: .7;
+    background-size: cover;
+    filter: blur(2px);
 }
 
 /* Estilos para elementos de navegación */
@@ -199,6 +211,8 @@ table {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    opacity: 1;
+
 }
 
 th, td {

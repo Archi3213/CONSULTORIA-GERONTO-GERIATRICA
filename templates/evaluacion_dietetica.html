@@ -23,6 +23,13 @@
         <div class="container1">
                 <h2>Evaluación Dietética</h2>
     <form action="/evaluacion_dietetica" method="POST">
+        <label for="id_paciente">Selecciona un paciente:</label>
+        <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
+        <datalist id="pacientes_list">
+            {% for paciente in pacientes %}
+            <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
+            {% endfor %}
+        </datalist><br><br>
         <label for="orientacion_alimentaria">Orientación alimentaria</label>
         <input type="radio" id="si_orientacion" name="orientacion_alimentaria" value="SI">
         <label for="si_orientacion">SI</label>

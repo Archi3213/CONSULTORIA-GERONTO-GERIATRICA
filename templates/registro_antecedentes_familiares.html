@@ -32,209 +32,153 @@
                     <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
                     {% endfor %}
                 </datalist><br><br>
-    
                 <label>
               
         <label for="diabetes_mellitus_familiar">Familiar con Diabetes mellitus:</label>
         <select id="diabetes_mellitus_familiar" name="diabetes_mellitus_familiar" required><br><br>
             <option value="Ninguno">Ninguno</option>
             <option value="Madre">Madre</option>
+            <option value="Padre">Padre</option>
+            <option value="Hermana/o ">Hermana/o </option>
             <option value="Abuela materna">Abuela materna</option>
             <option value="Abuelo materno">Abuelo materno</option>
-            <option value="Hermano materno">Hermano materno</option>
-            <option value="Hermana materna">Hermana materna</option>
-            <option value="Tío materno">Tío materno</option>
-            <option value="Tía materna">Tía materna</option>
-            <option value="Primo materno">Primo materno</option>
-            <option value="Prima materna">Prima materna</option>
-            <option value="Padre">Padre</option>
             <option value="Abuela paterna">Abuela paterna</option>
             <option value="Abuelo paterno">Abuelo paterno</option>
-            <option value="Hermano paterno">Hermano paterno</option>
-            <option value="Hermana paterna">Hermana paterna</option>
-            <option value="Tío paterno">Tío paterno</option>
-            <option value="Tía paterna">Tía paterna</option>
-            <option value="Primo paterno">Primo paterno</option>
-            <option value="Prima paterna">Prima paterna</option>
-        </select><br><br>
++           <option value="Tío/a materno">Tío/a materno</option>
+            <option value="Tío/a  paterna">Tío/a paterna</option>
+            <option value="Prima/o materno">Prima/o materno</option>
+            <option value="Prima/o paterna">Prima/o paterna</option>
+        </select>
+<br><br>
         
-        <label for="dislipidemias_familiar">Familiar con Dislipidemias:</label>
-        <select id="dislipidemias_familiar" name="dislipidemias_familiar" required><br><br>
+        <label for="dislipidemias_con_familiar">Familiar con Dislipidemias:</label>
+        <select id="dislipidemias_con_familiar" name="dislipidemias_con_familiar" required><br><br>
             <option value="Ninguno">Ninguno</option>
             <option value="Madre">Madre</option>
+            <option value="Padre">Padre</option>
+            <option value="Hermana/o ">Hermana/o </option>
             <option value="Abuela materna">Abuela materna</option>
             <option value="Abuelo materno">Abuelo materno</option>
-            <option value="Hermano materno">Hermano materno</option>
-            <option value="Hermana materna">Hermana materna</option>
-            <option value="Tío materno">Tío materno</option>
-            <option value="Tía materna">Tía materna</option>
-            <option value="Primo materno">Primo materno</option>
-            <option value="Prima materna">Prima materna</option>
-            <option value="Padre">Padre</option>
             <option value="Abuela paterna">Abuela paterna</option>
             <option value="Abuelo paterno">Abuelo paterno</option>
-            <option value="Hermano paterno">Hermano paterno</option>
-            <option value="Hermana paterna">Hermana paterna</option>
-            <option value="Tío paterno">Tío paterno</option>
-            <option value="Tía paterna">Tía paterna</option>
-            <option value="Primo paterno">Primo paterno</option>
-            <option value="Prima paterna">Prima paterna</option>
-        </select><br><br>
++           <option value="Tío/a materno">Tío/a materno</option>
+            <option value="Tío/a  paterna">Tío/a paterna</option>
+            <option value="Prima/o materno">Prima/o materno</option>
+            <option value="Prima/o paterna">Prima/o paterna</option>
+        </select>
+        <input type="text" id="tipo_dislipidemias" name="tipo_dislipidemias" ><br><br>
+        <br><br>
         <label for="sobrepeso_obesidad_familiar">Familiar con  Sobrepeso/obesidad:</label>
         <select id="sobrepeso_obesidad_familiar" name="sobrepeso_obesidad_familiar" required><br><br>
-                        <option value="Ninguno">Ninguno</option>
-            <option value="Madre">Madre</option>
-            <option value="Abuela materna">Abuela materna</option>
-            <option value="Abuelo materno">Abuelo materno</option>
-            <option value="Hermano materno">Hermano materno</option>
-            <option value="Hermana materna">Hermana materna</option>
-            <option value="Tío materno">Tío materno</option>
-            <option value="Tía materna">Tía materna</option>
-            <option value="Primo materno">Primo materno</option>
-            <option value="Prima materna">Prima materna</option>
-            <option value="Padre">Padre</option>
-            <option value="Abuela paterna">Abuela paterna</option>
-            <option value="Abuelo paterno">Abuelo paterno</option>
-            <option value="Hermano paterno">Hermano paterno</option>
-            <option value="Hermana paterna">Hermana paterna</option>
-            <option value="Tío paterno">Tío paterno</option>
-            <option value="Tía paterna">Tía paterna</option>
-            <option value="Primo paterno">Primo paterno</option>
-            <option value="Prima paterna">Prima paterna</option>
-        </select><br><br>
-
-        <label for="cancer_tipo_familiar">Familiar con Cáncer:</label>
-        <select id="cancer_tipo_familiar" name="cancer_tipo_familiar" required><br><br>
             <option value="Ninguno">Ninguno</option>
             <option value="Madre">Madre</option>
+            <option value="Padre">Padre</option>
+            <option value="Hermana/o ">Hermana/o </option>
             <option value="Abuela materna">Abuela materna</option>
             <option value="Abuelo materno">Abuelo materno</option>
-            <option value="Hermano materno">Hermano materno</option>
-            <option value="Hermana materna">Hermana materna</option>
-            <option value="Tío materno">Tío materno</option>
-            <option value="Tía materna">Tía materna</option>
-            <option value="Primo materno">Primo materno</option>
-            <option value="Prima materna">Prima materna</option>
-            <option value="Padre">Padre</option>
             <option value="Abuela paterna">Abuela paterna</option>
             <option value="Abuelo paterno">Abuelo paterno</option>
-            <option value="Hermano paterno">Hermano paterno</option>
-            <option value="Hermana paterna">Hermana paterna</option>
-            <option value="Tío paterno">Tío paterno</option>
-            <option value="Tía paterna">Tía paterna</option>
-            <option value="Primo paterno">Primo paterno</option>
-            <option value="Prima paterna">Prima paterna</option>
++           <option value="Tío/a materno">Tío/a materno</option>
+            <option value="Tío/a  paterna">Tío/a paterna</option>
+            <option value="Prima/o materno">Prima/o materno</option>
+            <option value="Prima/o paterna">Prima/o paterna</option>
         </select><br><br>
+
+        <label for="cancer_familiar">Familiar con Cáncer:</label>
+        <select id="cancer_familiar"name="cancer_familiar" required><br><br>
+            <option value="Ninguno">Ninguno</option>
+            <option value="Madre">Madre</option>
+            <option value="Padre">Padre</option>
+            <option value="Hermana/o ">Hermana/o </option>
+            <option value="Abuela materna">Abuela materna</option>
+            <option value="Abuelo materno">Abuelo materno</option>
+            <option value="Abuela paterna">Abuela paterna</option>
+            <option value="Abuelo paterno">Abuelo paterno</option>
++           <option value="Tío/a materno">Tío/a materno</option>
+            <option value="Tío/a  paterna">Tío/a paterna</option>
+            <option value="Prima/o materno">Prima/o materno</option>
+            <option value="Prima/o paterna">Prima/o paterna</option>
+        </select>
+                <input type="text" id="Tipo_cancer" name="tipo_cancer" placeholder="tipo_cancer">
+<br><br>
         <label for="hipertension_familiar">Familiar con Hipertensión:</label>
         <select id="hipertension_familiar" name="hipertension_familiar" required><br><br>
             <option value="Ninguno">Ninguno</option>
             <option value="Madre">Madre</option>
+            <option value="Padre">Padre</option>
+            <option value="Hermana/o ">Hermana/o </option>
             <option value="Abuela materna">Abuela materna</option>
             <option value="Abuelo materno">Abuelo materno</option>
-            <option value="Hermano materno">Hermano materno</option>
-            <option value="Hermana materna">Hermana materna</option>
-            <option value="Tío materno">Tío materno</option>
-            <option value="Tía materna">Tía materna</option>
-            <option value="Primo materno">Primo materno</option>
-            <option value="Prima materna">Prima materna</option>
-            <option value="Padre">Padre</option>
             <option value="Abuela paterna">Abuela paterna</option>
             <option value="Abuelo paterno">Abuelo paterno</option>
-            <option value="Hermano paterno">Hermano paterno</option>
-            <option value="Hermana paterna">Hermana paterna</option>
-            <option value="Tío paterno">Tío paterno</option>
-            <option value="Tía paterna">Tía paterna</option>
-            <option value="Primo paterno">Primo paterno</option>
-            <option value="Prima paterna">Prima paterna</option>
++           <option value="Tío/a materno">Tío/a materno</option>
+            <option value="Tío/a  paterna">Tío/a paterna</option>
+            <option value="Prima/o materno">Prima/o materno</option>
+            <option value="Prima/o paterna">Prima/o paterna</option>
         </select><br><br>
-        <label for="cardiopatias_familiar">Familiar con Cardiopatías:</label>
-        <select id="cardiopatias_familiar" name="cardiopatias_familiar" required><br><br>
+        <label for="familiar_con_cardiopatias">Familiar con Cardiopatías:</label>
+        <select id="familiar_con_cardiopatias" name="familiar_con_cardiopatias" required><br><br>
             <option value="Ninguno">Ninguno</option>
             <option value="Madre">Madre</option>
+            <option value="Padre">Padre</option>
+            <option value="Hermana/o ">Hermana/o </option>
             <option value="Abuela materna">Abuela materna</option>
             <option value="Abuelo materno">Abuelo materno</option>
-            <option value="Hermano materno">Hermano materno</option>
-            <option value="Hermana materna">Hermana materna</option>
-            <option value="Tío materno">Tío materno</option>
-            <option value="Tía materna">Tía materna</option>
-            <option value="Primo materno">Primo materno</option>
-            <option value="Prima materna">Prima materna</option>
-            <option value="Padre">Padre</option>
             <option value="Abuela paterna">Abuela paterna</option>
             <option value="Abuelo paterno">Abuelo paterno</option>
-            <option value="Hermano paterno">Hermano paterno</option>
-            <option value="Hermana paterna">Hermana paterna</option>
-            <option value="Tío paterno">Tío paterno</option>
-            <option value="Tía paterna">Tía paterna</option>
-            <option value="Primo paterno">Primo paterno</option>
-            <option value="Prima paterna">Prima paterna</option>
-        </select><br><br>
++           <option value="Tío/a materno">Tío/a materno</option>
+            <option value="Tío/a  paterna">Tío/a paterna</option>
+            <option value="Prima/o materno">Prima/o materno</option>
+            <option value="Prima/o paterna">Prima/o paterna</option>
+        </select>
+        <input type="text" id="tipo_cardiopatias" name="tipo_cardiopatias" ><br><br>
+<br><br>
+        
         <label for="litiasis_familiar">Familiar con Litiasis:</label>
         <select id="litiasis_familiar" name="litiasis_familiar" required><br><br>
-        <option value="Ninguno">Ninguno</option>
-        <option value="Madre">Madre</option>
-        <option value="Abuela materna">Abuela materna</option>
-        <option value="Abuelo materno">Abuelo materno</option>
-        <option value="Hermano materno">Hermano materno</option>
-        <option value="Hermana materna">Hermana materna</option>
-        <option value="Tío materno">Tío materno</option>
-        <option value="Tía materna">Tía materna</option>
-        <option value="Primo materno">Primo materno</option>
-        <option value="Prima materna">Prima materna</option>
-        <option value="Padre">Padre</option>
-        <option value="Abuela paterna">Abuela paterna</option>
-        <option value="Abuelo paterno">Abuelo paterno</option>
-        <option value="Hermano paterno">Hermano paterno</option>
-        <option value="Hermana paterna">Hermana paterna</option>
-        <option value="Tío paterno">Tío paterno</option>
-        <option value="Tía paterna">Tía paterna</option>
-        <option value="Primo paterno">Primo paterno</option>
-        <option value="Prima paterna">Prima paterna</option>
-    </select><br><br>
+            <option value="Ninguno">Ninguno</option>
+            <option value="Madre">Madre</option>
+            <option value="Padre">Padre</option>
+            <option value="Hermana/o ">Hermana/o </option>
+            <option value="Abuela materna">Abuela materna</option>
+            <option value="Abuelo materno">Abuelo materno</option>
+            <option value="Abuela paterna">Abuela paterna</option>
+            <option value="Abuelo paterno">Abuelo paterno</option>
++           <option value="Tío/a materno">Tío/a materno</option>
+            <option value="Tío/a  paterna">Tío/a paterna</option>
+            <option value="Prima/o materno">Prima/o materno</option>
+            <option value="Prima/o paterna">Prima/o paterna</option>
+        </select><br><br>
         <label for="artritis_familiar">Familiar con Artritis:</label>
          <select id="artritis_familiar" name="artritis_familiar" required><br><br>
-                <option value="Ninguno">Ninguno</option>
-        <option value="Madre">Madre</option>
-        <option value="Abuela materna">Abuela materna</option>
-        <option value="Abuelo materno">Abuelo materno</option>
-        <option value="Hermano materno">Hermano materno</option>
-        <option value="Hermana materna">Hermana materna</option>
-        <option value="Tío materno">Tío materno</option>
-        <option value="Tía materna">Tía materna</option>
-        <option value="Primo materno">Primo materno</option>
-        <option value="Prima materna">Prima materna</option>
-        <option value="Padre">Padre</option>
-        <option value="Abuela paterna">Abuela paterna</option>
-        <option value="Abuelo paterno">Abuelo paterno</option>
-        <option value="Hermano paterno">Hermano paterno</option>
-        <option value="Hermana paterna">Hermana paterna</option>
-        <option value="Tío paterno">Tío paterno</option>
-        <option value="Tía paterna">Tía paterna</option>
-        <option value="Primo paterno">Primo paterno</option>
-        <option value="Prima paterna">Prima paterna</option>
-    </select><br><br>
+            <option value="Ninguno">Ninguno</option>
+            <option value="Madre">Madre</option>
+            <option value="Padre">Padre</option>
+            <option value="Hermana/o ">Hermana/o </option>
+            <option value="Abuela materna">Abuela materna</option>
+            <option value="Abuelo materno">Abuelo materno</option>
+            <option value="Abuela paterna">Abuela paterna</option>
+            <option value="Abuelo paterno">Abuelo paterno</option>
++           <option value="Tío/a materno">Tío/a materno</option>
+            <option value="Tío/a  paterna">Tío/a paterna</option>
+            <option value="Prima/o materno">Prima/o materno</option>
+            <option value="Prima/o paterna">Prima/o paterna</option>
+        </select><br><br>
         <label for="asma_familiar">Familiar con Asma:</label>
           <select id="asma_familiar" name="asma_familiar" required><br><br>
-        <option value="Ninguno">Ninguno</option>
-        <option value="Madre">Madre</option>
-        <option value="Abuela materna">Abuela materna</option>
-        <option value="Abuelo materno">Abuelo materno</option>
-        <option value="Hermano materno">Hermano materno</option>
-        <option value="Hermana materna">Hermana materna</option>
-        <option value="Tío materno">Tío materno</option>
-        <option value="Tía materna">Tía materna</option>
-        <option value="Primo materno">Primo materno</option>
-        <option value="Prima materna">Prima materna</option>
-        <option value="Padre">Padre</option>
-        <option value="Abuela paterna">Abuela paterna</option>
-        <option value="Abuelo paterno">Abuelo paterno</option>
-        <option value="Hermano paterno">Hermano paterno</option>
-        <option value="Hermana paterna">Hermana paterna</option>
-        <option value="Tío paterno">Tío paterno</option>
-        <option value="Tía paterna">Tía paterna</option>
-        <option value="Primo paterno">Primo paterno</option>
-        <option value="Prima paterna">Prima paterna</option>
-    </select><br><br>
+            <option value="Ninguno">Ninguno</option>
+            <option value="Madre">Madre</option>
+            <option value="Padre">Padre</option>
+            <option value="Hermana/o ">Hermana/o </option>
+            <option value="Abuela materna">Abuela materna</option>
+            <option value="Abuelo materno">Abuelo materno</option>
+            <option value="Abuela paterna">Abuela paterna</option>
+            <option value="Abuelo paterno">Abuelo paterno</option>
++           <option value="Tío/a materno">Tío/a materno</option>
+            <option value="Tío/a  paterna">Tío/a paterna</option>
+            <option value="Prima/o materno">Prima/o materno</option>
+            <option value="Prima/o paterna">Prima/o paterna</option>
+        </select><br><br>
         <label for="otras">Familiar con otras condiciones:</label>
         <input type="text" id="otras" name="otras"><br><br>
     
@@ -246,5 +190,6 @@
         </fieldset>
 </div>
         </body>
+
         </html>
         

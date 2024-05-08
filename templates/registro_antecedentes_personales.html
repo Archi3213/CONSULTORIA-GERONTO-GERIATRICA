@@ -36,11 +36,6 @@
             <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
             {% endfor %}
         </datalist><br><br>
-
-        <label for="Antecedentes">Tiene Antecedentes Patológicos? </label>
-        <label><input type="radio" name="Antecedentes" value="ninguno" required> Ninguno
-            <input type="radio" name="Antecedentes" value="Si" required> Si</label><br><br>
-    
             <table>
                 <tr>
                   <td><label for="padecimiento">Padecimiento Actual:</label></td>
@@ -53,48 +48,43 @@
               </table>
 
       
-        <label for="otras_enfermedades">Otras enfermedades:</label>
-        <input type="text" id="otras_enfermedades" name="otras_enfermedades" placeholder="Ingrese la enfermedad"><br><br>
-
-        <label for="tiempo_diagnostico">Tiempo de diagnóstico (meses):</label>
+        <label for="otras_enfermedades">Otras enfermedades y tiempo de diagnostico:</label>
+        <input type="text" id="otras_enfermedades" name="otras_enfermedades" placeholder="Ingrese la enfermedad">
         <input type="number" id="tiempo_diagnostico" name="tiempo_diagnostico" placeholder="Tiempo en meses"><br><br>
-
-        <!-- Campo oculto para combinar datos en el servidor -->
         <input type="hidden" id="otras_enfermedades_tiempo" name="otras_enfermedades_tiempo">
 
        
     
-        <label for="medicamento">Nombre del medicamento:</label>
-        <input type="text" id="medicamento" name="medicamento" placeholder="Nombre del medicamento"><br><br>
-
-        <label for="dosis">Dosis:</label>
+        <label for="medicamento">Nombre del medicamento y dosis:</label>
+        <input type="text" id="medicamento" name="medicamento" placeholder="Nombre del medicamento">
         <input type="text" id="dosis" name="dosis" placeholder="Dosis del medicamento"><br><br>
 
         <!-- Campo oculto para combinar datos en el servidor -->
         <input type="hidden" id="medicamento_dosis" name="medicamento_dosis">
 
         <div id="discapacidad">
-            <label>¿Tiene alguna discapacidad?</label>
-            <input type="radio" id="si_discapacidad" name="discapacidad" value="si"> Sí
-            <input type="radio" id="no_discapacidad" name="discapacidad" value="no"> No
-            <label for="especificar_discapacidad">Especifique cuál:</label>
-            <input type="text" id="especificar_discapacidad" name="especificar_discapacidad"><br><br>
-        </div>
-    
-        <div id="cirugias">
-            <label>Cirugías</label>
-            <input type="radio" id="si_cirugias" name="cirugias" value="si"> Sí
-            <input type="radio" id="no_cirugias" name="cirugias" value="no"> No
-            <label for="cuales_cirugias">¿Cuál?:</label>
-            <input type="text" id="cuales_cirugias" name="cuales_cirugias"><br><br>
+            <label>Discapacidad que posea el paciente</label>
+            <label for="discapacidad"></label>
+            <select id="discapacidad" name="discapacidad">
+            <option  value="NINGUNA ">NINGUNA </option> 
+            <option  value="ARTROPATIA">ARTROPATIA</option> 
+            <option  value="AUDITIVA">AUDITIVA</option> 
+            <option  value="AUDITIVA-MOTRIZ ">AUDITIVA-MOTRIZ </option> 
+            <option  value="VISUAL">VISUAL </option> 
+            <option  value="AUDITIVA-VISUAL">AUDITIVA-VISUAL</option> 
+            <option  value="VISUAL-MOTRIZ ">VISUAL-MOTRIZ</option> 
+            <option  value=" AUDITIVA-VISUAL"> AUDITIVA-VISUAL </option> 
+            <option  value="MOTRIZ ">MOTRIZ  </option> 
+        </select><br><br>
+    </div>
+        <div id="cirugia">
+            <label>Cirugía que posea</label>
+            <input type="text" id="cirugia" name="cirugia"><br><br>
         </div>
     
         <div id="alergias">
-            <label>Alergias</label>
-            <input type="radio" id="si_alergias" name="alergias" value="si"> Sí
-            <input type="radio" id="no_alergias" name="alergias" value="no"> No
-            <label for="cuales_alergias">¿Cuál?:</label>
-            <input type="text" id="cuales_alergias" name="cuales_alergias"><br><br>
+            <label>Alergias que posea</label>
+            <input type="text" id="alergias" name="alergias"><br><br>
         </div>
     
         <!-- Más campos se pueden agregar con un botón -->

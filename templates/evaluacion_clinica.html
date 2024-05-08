@@ -24,6 +24,13 @@
         <fieldset>
     <h1>Formulario de Evaluación Clínica</h1>
     <form action="/evaluacion_clinica" method="POST">
+        <label for="id_paciente">Selecciona un paciente:</label>
+        <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
+        <datalist id="pacientes_list">
+            {% for paciente in pacientes %}
+            <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
+            {% endfor %}
+        </datalist><br><br>
         <label for="signos">Signos:</label>
         <input type="text" id="signos" name="signos" required><br><br>
 

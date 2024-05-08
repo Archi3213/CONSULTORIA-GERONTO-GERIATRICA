@@ -294,15 +294,21 @@ def registro_antecedentes_familiares():
     if request.method == 'POST':
         id_paciente = request.form['id_paciente']
         diabetes_mellitus_familiar = request.form['diabetes_mellitus_familiar']
-        dislipidemias_familiar = request.form['dislipidemias_familiar']
         sobrepeso_obesidad_familiar = request.form['sobrepeso_obesidad_familiar']
-        cancer_tipo_familiar = request.form['cancer_tipo_familiar']
         hipertension_familiar = request.form['hipertension_familiar']
-        cardiopatias_familiar = request.form['cardiopatias_familiar']
         litiasis_familiar = request.form['litiasis_familiar']
         artritis_familiar = request.form['artritis_familiar']
         asma_familiar = request.form['asma_familiar']
         otras = request.form['otras']
+        cancer_familiar = request.form['cancer_familiar']
+        tipo_cancer = request.form['tipo_cancer']
+        cancer_tipo_familiar = f"{cancer_familiar} - {tipo_cancer}"
+        dislipidemias_con_familiar = request.form['dislipidemias_con_familiar']
+        tipo_dislipidemias = request.form['tipo_dislipidemias']
+        dislipidemias_familiar = f"{dislipidemias_con_familiar} - {tipo_dislipidemias}"
+        familiar_con_cardiopatias = request.form['familiar_con_cardiopatias']
+        tipo_cardiopatias = request.form['tipo_cardiopatias']
+        cardiopatias_familiar = f"{familiar_con_cardiopatias} - {tipo_cardiopatias}"
 
         with get_db_connection() as connection:
             cursor = connection.cursor()
@@ -347,19 +353,35 @@ def expediente():
 @app.route('/registro_antecedentes_personales')
 @login_required
 def registro_antecedentes_personales():
-    return render_template('registro_antecedentes_personales.html')
+    with get_db_connection() as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
+        pacientes = cursor.fetchall()
+    return render_template('registro_antecedentes_personales.html', pacientes=pacientes)
 
 @app.route('/evaluacion_clinica')
 @login_required
 def evaluacion_clinica():
-    return render_template('evaluacion_clinica.html')
+    with get_db_connection() as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
+        pacientes = cursor.fetchall()
+    return render_template('evaluacion_clinica.html', pacientes=pacientes)
 @app.route('/evaluacion_dietetica')
 @login_required
 def evaluacion_dietetica():
-    return render_template('evaluacion_dietetica.html')
+    with get_db_connection() as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
+        pacientes = cursor.fetchall()
+    return render_template('evaluacion_dietetica.html', pacientes=pacientes)
 @app.route('/evaluacion_antropometrica')
 @login_required
 def evaluacion_antropometrica():
-    return render_template('evaluacion_antropometrica.html')
+    with get_db_connection() as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
+        pacientes = cursor.fetchall()
+    return render_template('evaluacion_antropometrica.html', pacientes=pacientes)
 if __name__ == '__main__':
     app.run(debug=True)
