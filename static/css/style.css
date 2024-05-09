@@ -73,7 +73,28 @@ button, .button, .btn-login, input[type="submit"] {
     text-align: center;
     cursor: pointer;
 }
-
+input[type="checkbox"] {
+    margin-right: 10px; /* Espacio entre el checkbox y el texto */
+    transform: scale(1.5); /* Aumenta el tamaño del checkbox */
+    margin-right: 10px;
+    border: 2px solid black; /* Cambia el color del borde del checkbox */
+    cursor: pointer; 
+}
+input[type="checkbox"]:checked {
+    color: blue; /* Cambia el color del texto cuando el checkbox está marcado */
+}
+input[type="checkbox"]:focus {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Agrega una sombra alrededor del checkbox al estar enfocado */
+}
+#observaciones {
+    width: 100%; /* El textarea ocupará todo el ancho del contenedor */
+    box-sizing: border-box; /* Incluye el padding y el borde en el ancho total */
+}
+/* Estilos para los labels */
+label {
+    display: inline-block; /* Para que los checkboxes y labels estén en línea */
+    margin-bottom: 5px; /* Espacio entre cada checkbox y su label */
+}
 .button1:hover {
     background: #3CA55C;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #49b576, #3CA55C);  /* Chrome 10-25, Safari 5.1-6 */

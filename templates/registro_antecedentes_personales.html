@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="icon" type="image/png" href="static\css\Imagen\_44109a07-adb5-4db9-90c0-8bac1621533a-removebg-preview.png">
 
-    <title>Registro de Antecedentes No Familiares</title>
+    <title>Registro de Antecedentes Personales</title>
 
 </head>
 <body>
@@ -21,7 +21,7 @@
         <a href="/expediente">Expediente</a>
         </div>
 <head>
-<title>Antecedentes No Familiares</title>
+<title>Antecedentes Personales</title>
 </head>
 <div class="container1">
 <fieldset>
@@ -87,24 +87,20 @@
             <input type="text" id="alergias" name="alergias"><br><br>
         </div>
     
-        <!-- Más campos se pueden agregar con un botón -->
-        <button type="button" onclick="agregarCampo()">Agregar Campo</button>
     
         <h2>FACTORES DIGESTIVOS</h2>
         <!-- Campos de factores digestivos -->
-    
-        <label for="antecedentes_no_patologicos">Antecedentes Personales No Patológicos:</label><br>
-        <input type="checkbox" id="consumo_alcohol" name="consumo_alcohol" value="consumo_alcohol">
-        <label for="consumo_alcohol">Consumo Alcohol</label><br>
-    
-        <input type="checkbox" id="tabaco" name="tabaco" value="tabaco">
-        <label for="tabaco">Tabaco</label><br>
-    
-        <input type="checkbox" id="suplementos" name="suplementos" value="suplementos">
-        <label for="suplementos">Suplementos</label><br><br>
-    
-        <input type="checkbox" id="cafeina" name="cafeina" value="cafeina">
-        <label for="cafeina">Cafeína</label>
+    <label for="consumo_alcohol">Consumo Alcohol:</label>
+    <input type="checkbox" id="consumo_alcohol" name="consumo_alcohol" value="Si"><br>
+
+    <label for="tabaco">Tabaco:</label>
+    <input type="checkbox" id="tabaco" name="tabaco" value="Si"><br>
+
+    <label for="suplementos">Suplementos:</label>
+    <input type="checkbox" id="suplementos" name="suplementos" value="Si"><br>
+
+    <label for="cafeina">Cafeína:</label>
+    <input type="checkbox" id="cafeina" name="cafeina" value="Si">
     
         <label for="observaciones">Observaciones:</label>
         <textarea id="observaciones" name="observaciones"></textarea><br><br>
