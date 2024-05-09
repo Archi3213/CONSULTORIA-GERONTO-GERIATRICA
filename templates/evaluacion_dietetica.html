@@ -31,70 +31,51 @@
             {% endfor %}
         </datalist><br><br>
         <label for="orientacion_alimentaria">Orientación alimentaria</label>
-        <input type="radio" id="si_orientacion" name="orientacion_alimentaria" value="SI">
-        <label for="si_orientacion">SI</label>
-        <input type="radio" id="no_orientacion" name="orientacion_alimentaria" value="NO">
-        <label for="no_orientacion">NO</label>
-        <br>
-        <label for="quien_orientacion">¿De quién?</label>
-        <input type="text" id="quien_orientacion" name="quien_orientacion">
+       
+        <label for="quien_orientacion">¿De quién recibe orientacion alimentaria?</label>
+        <input type="text" id="quien_orientacion" name="quien_orientacion"required>
         <br><br>
 
         <label for="intolerancia_alimento">Intolerancia a algún alimento</label>
-        <input type="radio" id="si_intolerancia" name="intolerancia_alimento" value="SI">
-        <label for="si_intolerancia">SI</label>
-        <input type="radio" id="no_intolerancia" name="intolerancia_alimento" value="NO">
-        <label for="no_intolerancia">NO</label>
-        <br>
-        <label for="cual_intolerancia">¿Cuál?</label>
-        <input type="text" id="cual_intolerancia" name="cual_intolerancia">
+        <input type="text" id="intolerancia_alimento" name="intolerancia_alimento"required>
         <br><br>
 
         <label for="alergia_alimentaria">Alergia Alimentaria</label>
-        <input type="radio" id="si_alergia" name="alergia_alimentaria" value="SI">
-        <label for="si_alergia">SI</label>
-        <input type="radio" id="no_alergia" name="alergia_alimentaria" value="NO">
-        <label for="no_alergia">NO</label>
-        <br>
-        <label for="cual_alergia">¿Cuál?</label>
-        <input type="text" id="cual_alergia" name="cual_alergia">
+        <input type="text" id="alergia_alimentaria" name="alergia_alimentaria"required>
         <br><br>
 
         <label for="consumo_agua">Consumo de agua al día</label>
-        <input type="radio" id="si_agua" name="consumo_agua" value="SI">
-        <label for="si_agua">SI</label>
-        <input type="radio" id="no_agua" name="consumo_agua" value="NO">
-        <label for="no_agua">NO</label>
-        <br>
-        <label for="cuanto_agua">¿Cuánto?</label>
-        <input type="text" id="cuanto_agua" name="cuanto_agua">
+        <input type="text" id="consumo_agua" name="consumo_agua"required>
         <br><br>
+        <label>
+            En los últimos tres meses ha disminuido su apetito
+            <input type="radio" id="si_apetito" name="disminucion_apetito" value="SI">
+            <span>SI</span>
+            <input type="radio" id="no_apetito" name="disminucion_apetito" value="NO"required>
+            <span>NO</span>
+        </label>
 
-        <label for="disminucion_apetito">En los últimos tres meses ha disminuido su apetito</label>
-        <input type="radio" id="si_apetito" name="disminucion_apetito" value="SI">
-        <label for="si_apetito">SI</label>
-        <input type="radio" id="no_apetito" name="disminucion_apetito" value="NO">
-        <label for="no_apetito">NO</label>
-        <br>
         <label for="motivo_apetito">¿Motivo?</label>
         <input type="text" id="motivo_apetito" name="motivo_apetito">
         <br><br>
 
         <label for="preferencia_alimentos">Alimentos de preferencia</label>
-        <textarea id="preferencia_alimentos" name="preferencia_alimentos"></textarea>
+        <textarea id="preferencia_alimentos" name="preferencia_alimentos"required></textarea>
         <br><br>
 
         <label for="desagradables_alimentos">Alimentos desagradables</label>
-        <textarea id="desagradables_alimentos" name="desagradables_alimentos"></textarea>
+        <textarea id="desagradables_alimentos" name="desagradables_alimentos"required></textarea>
         <br><br>
 
         <label for="dinero_semanal">Dinero destinado a la alimentación semanal</label>
-        <input type="number" id="dinero_semanal" name="dinero_semanal">
+        <input type="number" id="dinero_semanal" name="dinero_semanal" oninput="formatoPesosMexicanos(this)">
+        <span id="dinero_semanal_display">0.00 MXN</span>
+        <br><br>
         <label for="num_personas">No. Personas:</label>
-        <input type="number" id="num_personas" name="num_personas">
+        <input type="number" id="num_personas" name="num_personas"required>
         <br>
         <label for="quien_prepara">¿Quién lo prepara?</label>
-        <input type="text" id="quien_prepara" name="quien_prepara">
+        <input type="text" id="quien_prepara" name="quien_prepara"required>
         <br><br>
 
         <label for="recordatorio">Recordatorio de 24 horas</label>
@@ -106,42 +87,40 @@
 
         <h3>Entre semana</h3>
 
-        <label for="desayuno_lugar">DESAYUNO - Lugar:</label>
-        <input type="text" id="desayuno_lugar" name="desayuno_lugar">
-        <label for="desayuno_horario">Horario:</label>
-        <input type="text" id="desayuno_horario" name="desayuno_horario">
-        <br><br>
-
-        <label for="colacion1_lugar">COLACIÓN - Lugar:</label>
-        <input type="text" id="colacion1_lugar" name="colacion1_lugar">
-        <label for="colacion1_horario">Horario:</label>
-        <input type="text" id="colacion1_horario" name="colacion1_horario">
-        <br><br>
-
-        <label for="almuerzo_lugar">ALMUERZO - Lugar:</label>
-        <input type="text" id="almuerzo_lugar" name="almuerzo_lugar">
-        <label for="almuerzo_horario">Horario:</label>
-        <input type="text" id="almuerzo_horario" name="almuerzo_horario">
-        <br><br>
-
-        <label for="colacion2_lugar">COLACIÓN - Lugar:</label>
-        <input type="text" id="colacion2_lugar" name="colacion2_lugar">
-        <label for="colacion2_horario">Horario:</label>
-        <input type="text" id="colacion2_horario" name="colacion2_horario">
-        <br><br>
-
-        <label for="cena_lugar">CENA - Lugar:</label>
-        <input type="text" id="cena_lugar" name="cena_lugar">
-        <label for="cena_horario">Horario:</label>
-        <input type="text" id="cena_horario" name="cena_horario">
-        <br><br>
-
-        <input type="submit" value="Guardar">
+        <table border="1">
+            <tr>
+                <th>Comida</th>
+                <th>Lugar</th>
+                <th>Horario</th>
+            </tr>
+            <tr>
+                <td>Desayuno</td>
+                <td><input type="text" id="desayuno_lugar" name="desayuno_lugar"></td>
+                <td><input type="text" id="desayuno_horario" name="desayuno_horario"></td>
+            </tr>
+            <tr>
+                <td>Colación 1</td>
+                <td><input type="text" id="colacion1_lugar" name="colacion1_lugar"></td>
+                <td><input type="text" id="colacion1_horario" name="colacion1_horario"></td>
+            </tr>
+            <tr>
+                <td>Almuerzo</td>
+                <td><input type="text" id="almuerzo_lugar" name="almuerzo_lugar"></td>
+                <td><input type="text" id="almuerzo_horario" name="almuerzo_horario"></td>
+            </tr>
+            <tr>
+                <td>Colación 2</td>
+                <td><input type="text" id="colacion2_lugar" name="colacion2_lugar"></td>
+                <td><input type="text" id="colacion2_horario" name="colacion2_horario"></td>
+            </tr>
+            <tr>
+                <td>Cena</td>
+                <td><input type="text" id="cena_lugar" name="cena_lugar"></td>
+                <td><input type="text" id="cena_horario" name="cena_horario"></td>
+            </tr>
+        </table>
     </form>
     <h3>Frecuencia de Consumo</h3>
-    <label for="fecha_consumo">Fecha:</label>
-    <input type="date" id="fecha_consumo" name="fecha_consumo">
-    <br><br>
     <table border="1">
         <thead>
             <tr>
@@ -209,4 +188,26 @@
 </fieldset>
 </div>
 </body>
+<script>
+    function formatoPesosMexicanos(input) {
+        // Obtener el valor del input
+        let cantidad = input.value;
+
+        // Validar que la cantidad sea numérica y no esté vacía
+        if (!isNaN(cantidad) && cantidad !== '') {
+            // Formatear la cantidad a pesos mexicanos (MXN)
+            let formatoMXN = new Intl.NumberFormat('es-MX', {
+                style: 'currency',
+                currency: 'MXN',
+                minimumFractionDigits: 2
+            }).format(cantidad);
+
+            // Mostrar la cantidad formateada en el span
+            document.getElementById('dinero_semanal_display').textContent = formatoMXN;
+        } else {
+            // Si la cantidad no es válida, mostrar 0.00 MXN
+            document.getElementById('dinero_semanal_display').textContent = '0.00 MXN';
+        }
+    }
+</script>
 </html>

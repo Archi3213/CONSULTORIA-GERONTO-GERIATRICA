@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación Bioquímica</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='css/Imagen/_44109a07-adb5-4db9-90c0-8bac1621533a-removebg-preview.png') }}">
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">Inicio</a>
+        <a href="/registro">Registro</a>
+        <a href="/consultar">Registro de consultas</a>
+        <a href="/options">Calendario</a>
+        <a href="/agendar_cita">Agendar Cita</a>
+        <a href="/historial_citas">Historial de Citas</a>
+        <a href="/directorio_pacientes">Directorio Pacientes</a>
+        <a href="/expediente">Expediente</a>
+    </div>
+    <h2>Evaluación Bioquímica</h2>
+    <form method="POST" action="/evaluacion_bioquimica">
+        <label for="id_paciente">Selecciona un paciente:</label>
+        <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
+        <datalist id="pacientes_list">
+            {% for paciente in pacientes %}
+            <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
+            {% endfor %}
+        </datalist><br><br>
+        <label>
+        <table border="1" style="width: 50%;">
+            <!-- Parte superior de la tabla -->
+            <tr>
+                <td colspan="18"><strong>Fecha de Análisis</strong></td>
+            </tr>
+            <tr>
+                <td colspan="3"><label for="fecha_hb_hto">Fecha de Hb y Hto:</label></td>
+                <td><input type="date" id="fecha_hb_hto" name="fecha_hb_hto">                              </td>
+                
+                <td colspan="3"><label for="fecha_col_trig">Fecha de Colesterol y Triglicéridos:</label></td>
+                <td><input type="date" id="fecha_col_trig" name="fecha_col_trig"></td>
+                    
+                <td colspan="9"><label for="fecha_guca">Fecha de Glucosa, Urea, Creatinina y Acido Urico:</label></td>
+                <td><input type="date" id="fecha_guca" name="fecha_guca"></td>
+            </tr>
+            <!-- Parte inferior de la tabla -->
+            <tr>
+                <td colspan="18"><strong>Resultados de Análisis</strong></td>
+            </tr>
+            <tr>
+                <td><label for="hb">Hb (g/dL):</label></td>
+                <td><input type="number" id="hb" name="hb" min="0" step="0.1"></td>
+          
+                <td><label for="hto">Hto (%):</label></td>
+                <td><input type="number" id="hto" name="hto" min="0" step="0.1"></td>
+        
+                <td><label for="colesterol">Colesterol (mg/dL):</label></td>
+                <td><input type="number" id="colesterol" name="colesterol" min="0" step="0.1"></td>
+       
+                <td><label for="trigliceridos">Triglicéridos (mg/dL):</label></td>
+                <td><input type="number" id="trigliceridos" name="trigliceridos" min="0" step="0.1"></td>
+          
+                <td><label for="glucosa">Glucosa (mg/dL):</label></td>
+                <td><input type="number" id="glucosa" name="glucosa" min="0" step="0.1"></td>
+                <td><label for="urea">Urea (mg/dL):</label></td>
+                <td><input type="number" id="urea" name="urea" min="0" step="0.1"></td>
+                <td><label for="creatinina">Creatinina (mg/dL):</label></td>
+                <td><input type="number" id="creatinina" name="creatinina" min="0" step="0.1"></td>
+                <td><label for="acido_urico">Ácido Úrico (mg/dL):</label></td>
+                <td><input type="number" id="acido_urico" name="acido_urico" min="0" step="0.1"></td>
+                <td><label for="otros">Otros:</label></td>
+                <td><input type="text" id="otros" name="otros"></td>
+            </tr>
+        </table>
+
+        <input type="submit" value="Enviar">
+    </form>
+</body>
+</html>

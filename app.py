@@ -383,5 +383,13 @@ def evaluacion_antropometrica():
         cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
         pacientes = cursor.fetchall()
     return render_template('evaluacion_antropometrica.html', pacientes=pacientes)
+@app.route('/evaluacion_bioquimica')
+@login_required
+def evaluacion_bioquimica():
+    with get_db_connection() as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
+        pacientes = cursor.fetchall()
+    return render_template('evaluacion_bioquimica.html', pacientes=pacientes)
 if __name__ == '__main__':
     app.run(debug=True)
