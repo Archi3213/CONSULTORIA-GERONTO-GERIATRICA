@@ -37,8 +37,8 @@
             <input type="date" name="fecha_nacimiento"required>
 
             <label for="celular"> Numero de celular:</label>
-        <input type="number" id_paciente="celular" name="celular" pattern="[0-9]" +
-        title="Ingrese al menos 9 dígitos numéricos" required><br>
+            <input type="tel" id="celular" name="celular" pattern="[0-9]+" title="Ingrese al menos 10 dígitos numéricos" required minlength="10" maxlength="10"><br>
+
          
         <label>Escolaridad:</label>
         <select name="escolaridad">
@@ -60,13 +60,13 @@
 
         <label>Religion:</label>
         <select name="religion">
+            <option value="ninguno"required>Ninguna</option>
             <option value="catolico"required>Catolico</option>
             <option value="evangelico"required>Evangelico</option>
             <option value="protestante"required>Protestante</option>
             <option value="judio"required>Judio</option>
             <option value="budista"required>Budista</option>
             <option value="islamico"required>Islamico</option>
-            <option value="ninguno"required>Ninguna</option>
             <option value="otro"required>Otro</option>
         </select>
 
@@ -85,12 +85,12 @@
 
         <label>Servicio de salud con el que cuenta:</label>
         <select name="servicio_salud">
+            <option value="ninguno"required>Ninguno</option>
             <option value="imss"required>IMSS</option>
             <option value="issste"required>ISSSTE</option>
             <option value="otro"required>Otro</option>
             <option value="sedena"required>SEDENA</option>
             <option value="independiente"required>Independiente</option>
-            <option value="ninguno"required>Ninguno</option>
         </select>
         
             <label>Turno:</label>

@@ -20,69 +20,30 @@
         <a href="/directorio_pacientes">Directorio Pacientes</a>
         <a href="/expediente">Expediente</a>
         </div>
-    <div class="calendar-container">
-        <h1 class="calendar-header">Calendario del Mes</h1>
-        <table class="calendar-table">
-            <thead>
-                <tr>
-                    <th>Lun</th>
-                    <th>Mar</th>
-                    <th>Mié</th>
-                    <th>Jue</th>
-                    <th>Vie</th>
-                    <th>Sáb</th>
-                    <th>Dom</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="weekend"><span class="day-number">1</span></td>
-                    <td class="weekend"><span class="day-number">2</span></td>
-                    <td><span class="day-number">3</span></td>
-                    <td><span class="day-number">4</span></td>
-                    <td><span class="day-number">5</span></td>
-                    <td><span class="day-number">6</span></td>
-                    <td class="weekend"><span class="day-number">7</span></td>
-                </tr>
-                <tr>
-                    <td><span class="day-number">8</span></td>
-                    <td><span class="day-number">9</span></td>
-                    <td><span class="day-number">10</span></td>
-                    <td><span class="day-number">11</span></td>
-                    <td><span class="day-number">12</span></td>
-                    <td><span class="day-number">13</span></td>
-                    <td class="weekend"><span class="day-number">14</span></td>
-                </tr>
-                <tr>
-                    <td><span class="day-number">15</span></td>
-                    <td><span class="day-number">16</span></td>
-                    <td><span class="day-number">17</span></td>
-                    <td><span class="day-number">18</span></td>
-                    <td><span class="day-number">19</span></td>
-                    <td><span class="day-number">20</span></td>
-                    <td class="weekend"><span class="day-number">21</span></td>
-                </tr>
-                <tr>
-                    <td><span class="day-number">22</span></td>
-                    <td><span class="day-number">23</span></td>
-                    <td><span class="day-number">24</span></td>
-                    <td><span class="day-number">25</span></td>
-                    <td><span class="day-number">26</span></td>
-                    <td><span class="day-number">27</span></td>
-                    <td class="weekend"><span class="day-number">28</span></td>
-                </tr>
-                <tr>
-                    <td><span class="day-number">29</span></td>
-                    <td><span class="day-number">30</span></td>
-                    <td><span class="day-number">31</span></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+        <div class="content">
+            <h1>CITAS AGENDADAS PARA HOY</h1>
+            {% if cita_agendada %}
+            <p>Cita Agendada para Hoy:</p>
+            <div class="cita-agendada">
+                <p>ID Cita: {{ cita_agendada[0] }}</p>
+                <p>ID Paciente: {{ cita_agendada[1] }}</p>
+                <p>Fecha Cita: {{ cita_agendada[2] }}</p>
+                <p>Hora Cita: {{ cita_agendada[3] }}</p>
+                <p>Hora Cita: {{ cita_agendada[5] }}</p>
+                <!-- Agrega más detalles de la cita según tu estructura de datos -->
+            </div>
+            <ul>
+                <li>ID Cita: {{ cita_agendada[0] }}</li>
+                <li>ID Paciente: {{ cita_agendada[1] }}</li>
+                <li>Fecha Cita: {{ cita_agendada[2] }}</li>
+                <li>Hora Cita: {{ cita_agendada[3] }}</li>
+                <li>Diagnostico: {{ cita_agendada[4] }}</li>
+                <!-- Agrega más detalles de la cita según tu estructura de datos -->
+            </ul>
+            {% else %}
+            <p>No hay citas agendadas para hoy.</p>
+            {% endif %}
+        </div>
 </body>
 
 </html>

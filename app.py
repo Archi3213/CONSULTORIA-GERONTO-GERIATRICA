@@ -2,6 +2,8 @@ from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, session
 import hashlib, sqlite3
 from operator import itemgetter
+from datetime import datetime
+
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -127,8 +129,14 @@ def login():
 @app.route('/options')
 @login_required
 def options():
-    return render_template('options.html')
+    current_date = datetime.now().date()
 
+    with get_db_connection() as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM citas WHERE fecha_consulta = ?", (current_date,))
+        cita_agendada = cursor.fetchone()
+
+    return render_template('options.html', cita_agendada=cita_agendada)
 @app.route('/registro', methods=['GET', 'POST'])
 @login_required
 def registro_paciente():
@@ -255,7 +263,6 @@ def historial_citas():
 
     return render_template('historial_citas.html', citas=citas_ordenadas, pacientes=pacientes)
 
-    return render_template('historial_citas.html', citas=citas, pacientes=pacientes)
 @app.route('/actualizar_estado', methods=['POST'])
 @login_required
 def actualizar_estado():

@@ -27,6 +27,8 @@
             <h1>Historial de Citas</h1>
         
             <br></br>
+            <div class="filter-container">
+
             <form action="{{ url_for('historial_citas') }}" method="post" class="filter-form">
 
             <label for="filtro_id">Filtrar por ID:</label>
@@ -39,6 +41,7 @@
             <input type="hidden" name="filter_by" value="id_paciente">
             <input type="submit" value="Buscar">
         </form>
+    </div>
      
         
         <table border="1">
@@ -49,6 +52,7 @@
                 <th>Hora Consulta</th>
                 <th>Observaciones</th>
                 <th>Estado
+
                     <form action="{{ url_for('historial_citas') }}" method="post" class="filter-form">
             
                         <label for="filter_estado">Estado:</label>

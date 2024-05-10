@@ -1,11 +1,10 @@
 /* Estilos generales */
-/* Estilos globales */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-
 }
+
 body::before {
     content: "";
     position: absolute;
@@ -15,12 +14,9 @@ body::before {
     height: 100%;
     z-index: -1;
     background-image: url('/static/css/Imagen/fondo.jpg');
-    background-position: cover;
-    background-repeat: no-repeat;
-    background-attachment: scroll;
-    opacity: .7;
     background-size: cover;
     filter: blur(2px);
+    opacity: .7;
 }
 
 /* Estilos para elementos de navegación */
@@ -48,23 +44,17 @@ body::before {
 }
 
 /* Estilos para botones */
-button, .button, .btn-login, input[type="submit"] {
+.button, .btn-login, input[type="submit"] {
     display: inline-block;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    border:  #215f00;
     text-decoration: none;
-    background: #215f00;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #88e410, #215f00);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #88e410, #215f00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    
+    transition: background-color 0.3s ease;
 }
+
 .button1 {
-    background: #3CA55C;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #B5AC49, #3CA55C);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #B5AC49, #3CA55C); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    
+    background: linear-gradient(to right, #B5AC49, #3CA55C);
     color: white;
     text-decoration: none;
     border: none;
@@ -73,28 +63,28 @@ button, .button, .btn-login, input[type="submit"] {
     text-align: center;
     cursor: pointer;
 }
+
 input[type="checkbox"] {
-    margin-right: 10px; /* Espacio entre el checkbox y el texto */
-    transform: scale(1.5); /* Aumenta el tamaño del checkbox */
+    transform: scale(1.5);
     margin-right: 10px;
-    border: 2px solid black; /* Cambia el color del borde del checkbox */
-    cursor: pointer; 
+    border: 2px solid black;
+    cursor: pointer;
 }
+
 input[type="checkbox"]:checked {
-    color: blue; /* Cambia el color del texto cuando el checkbox está marcado */
+    color: blue;
 }
+
 input[type="checkbox"]:focus {
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Agrega una sombra alrededor del checkbox al estar enfocado */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
-#observaciones {
-    width: 100%; /* El textarea ocupará todo el ancho del contenedor */
-    box-sizing: border-box; /* Incluye el padding y el borde en el ancho total */
-}
-textarea {
+
+#observaciones, textarea {
     width: 100%;
-    height: 100px; /* Puedes ajustar el valor según tus necesidades */
-    resize: none; /* Evita la redimensión por el usuario */
+    box-sizing: border-box;
+    resize: none;
 }
+
 .tabla-responsiva {
     width: 100%;
     max-width: 100%;
@@ -103,16 +93,8 @@ textarea {
 
 /* Estilos para los labels */
 label {
-    display: inline-block; /* Para que los checkboxes y labels estén en línea */
-    margin-bottom: 5px; /* Espacio entre cada checkbox y su label */
-}
-.button1:hover {
-    background: #3CA55C;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #49b576, #3CA55C);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #49b569, #3CA55C);;
-}
-button:hover, .button:hover, .btn-login:hover, input[type="submit"]:hover {
-    background-color: #0f7e00;
+    display: inline-block;
+    margin-bottom: 5px;
 }
 
 /* Estilos para contenedores */
@@ -122,8 +104,6 @@ button:hover, .button:hover, .btn-login:hover, input[type="submit"]:hover {
     padding: 40px;
     border: 2px solid #002700;
     border-radius: 10px;
-    background: #dce35b; /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #dce35b, #45b649); /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #dce35b, #45b649);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
@@ -134,9 +114,10 @@ button:hover, .button:hover, .btn-login:hover, input[type="submit"]:hover {
     margin-bottom: 20px;
     color: #333;
 }
+
 .content_exp {
     display: grid;
-    grid-template-columns: auto(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     grid-gap: 20px;
     justify-content: center;
 }
@@ -162,7 +143,11 @@ button:hover, .button:hover, .btn-login:hover, input[type="submit"]:hover {
 .container input[type="submit"] {
     background-color: #00c020;
     color: #fff;
-    transition: background-color 0.3s ease;
+}
+/* Estilos para los botones */
+.container input[type="submit"]:hover,
+.add-button:hover {
+    background-color: #45a049;
 }
 
 .container input[type="submit"]:hover {
@@ -206,7 +191,6 @@ input[type="password"]::placeholder {
 
 input[type="text"],
 input[type="number"],
-input[type="submit"],
 .add-button {
     width: 150px;
     padding: 8px 12px;
@@ -214,11 +198,6 @@ input[type="submit"],
     border-radius: 4px;
     border: 1px solid #ccc;
     cursor: pointer;
-}
-
-input[type="submit"]:hover,
-.add-button:hover {
-    background-color: #45a049;
 }
 
 /* Estilos generales */
@@ -237,14 +216,20 @@ input[type="submit"]:hover,
 
 /* Estilos para la tabla */
 table {
-    width: 100%;
+    width: 90%;
+    margin: 0 auto;
+    border: 2px solid #000000;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     opacity: 1;
-
+    animation: fadeIn 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out;
 }
 
 th, td {
@@ -287,6 +272,17 @@ h2 {
     font-size: 1.25em;
     margin-bottom: 10px;
 }
+.cita-agendada {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.cita-agendada p {
+    margin: 5px 0;
+}
 
 strong {
     color: #000000;
@@ -304,26 +300,34 @@ strong {
     text-align: center;
 }
 
+/* Estilos para el título */
 .container1 h1 {
     font-size: 32px;
     margin-bottom: 20px;
 }
 
+/* Estilos para los grupos de formularios */
 .container1 .form-group {
     text-align: left;
     margin-bottom: 20px;
 }
 
+/* Estilos para las etiquetas de los campos */
 .container1 label {
     display: block;
     margin-bottom: 5px;
     color: #555;
 }
 
+/* Estilos para los campos de entrada */
 .container1 input[type="text"],
 .container1 input[type="number"],
 .container1 input[type="date"],
 .container1 input[type="time"],
+.container1 input[type="tel"],
+.container1 input[type="number,2"],
+
+
 .container1 select {
     width: calc(100% - 20px);
     padding: 10px;
@@ -334,12 +338,13 @@ strong {
     font-size: 16px;
 }
 
+/* Estilos para el botón de envío del formulario */
 .container1 input[type="submit"] {
     width: 100%;
     padding: 12px;
     border: none;
     border-radius: 6px;
-    background-color: #4285f4;
+    background-color: #36d633;
     color: #fff;
     cursor: pointer;
     font-size: 16px;
@@ -347,5 +352,93 @@ strong {
 }
 
 .container1 input[type="submit"]:hover {
-    background-color: #3367d6;
+    background-color: #36d633;
+}
+
+/* Estilos para el contenedor de filtros */
+.filter-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+
+
+}
+
+/* Estilos para el formulario de filtro */
+.filter-form {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+
+}
+
+.filter-form label {
+    margin-right: 10px;
+    color: #555;
+    font-weight: bold;
+
+}
+
+.filter-form input[type="text"],
+.filter-form input[type="submit"] {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+
+}
+
+.filter-form input[type="submit"] {
+    background-color: #36d633;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+
+}
+
+.filter-form input[type="submit"]:hover {
+    background-color: #36d633;
+    
+}
+.container1 select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: #fff;
+    color: #333;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.container1 select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.6);
+}
+
+.container1 select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #555;
+}
+
+/* Estilo para opciones del cuadro desplegable */
+.container1 select option {
+    padding: 10px;
+    background-color: #fff;
+    color: #333;
+    border-bottom: 1px solid #ccc;
+}
+
+.container1 select option:hover {
+    background-color: #f0f0f0;
 }

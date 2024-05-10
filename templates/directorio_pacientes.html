@@ -25,7 +25,7 @@
 <br>      <br> 
     <!-- Contenido principal -->
     <h1>Directorio de Pacientes</h1>
-
+    <div class="filter-container">
     <!-- Formulario de filtrado por nombre o apellidos -->
     <form action="{{ url_for('directorio_pacientes') }}" method="post" class="filter-form">
         <label for="filtro_apellidos">Filtrar por Nombre o Apellidos:</label>
@@ -41,7 +41,7 @@
         <input type="hidden" name="filter_by" value="id_paciente">
         <input type="submit" value="Buscar">
     </form>
-
+    </div>
     <!-- Tabla de pacientes -->
     <table>
         <tr>

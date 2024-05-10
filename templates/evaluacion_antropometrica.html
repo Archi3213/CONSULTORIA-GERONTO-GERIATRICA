@@ -20,8 +20,7 @@
     </div>
     <form action="/evaluacion_antropometrica" method="POST">
         <h1>Evaluación Antropométrica</h1>
-        <div class="contenedor">
-            <table border="1">
+        <div class="conteiner1"> 
                 <tr>
                     <td><label for="id_paciente">Selecciona un paciente:</label></td>
                     <td>
@@ -32,28 +31,10 @@
                             {% endfor %}
                         </datalist>
                     </td>
-                </tr>
-                <tr>
-                    <td><label for="estatura">Estatura:</label></td>
-                    <td><input type="number" id="estatura" name="estatura"min="0"> cm</td>
-                </tr>
-                <tr>
-                    <td><label for="peso_habitual">Peso habitual:</label></td>
-                    <td><input type="number" id="peso_habitual" name="peso_habitual"min="0"> kg</td>
-                </tr>
-                <tr>
-                    <td><label for="peso_maximo">Peso máximo:</label></td>
-                    <td><input type="number" id="peso_maximo" name="peso_maximo"min="0"> kg</td>
-                </tr>
-                <tr>
-                    <td><label for="peso_minimo">Peso mínimo:</label></td>
-                    <td><input type="number" id="peso_minimo" name="peso_minimo"min="0"> kg</td>
-                </tr>
-            </table>
-            
+                </tr>            
             <br> </br>
             <h3>Registros</h3>
-            <div class="tabla-responsiva">
+            <div class="table">
                 <table border="1">
                     <thead>
                         <tr>
@@ -89,7 +70,11 @@
                             <td><input type="text" id="presion_arterial" name="presion_arterial"min="0"></td>
                             <td><input type="number" id="g_capilar" name="g_capilar"min="0"></td>
                             <td><input type="text" id="diagnostico_antropometrico" name="diagnostico_antropometrico"min="0"></td>
-                            <td><input type="text" id="plan_alimentacion" name="plan_alimentacion"min="0"></td>
+                            <td>  <select id="plan_alimentacion" name="plan_alimentacion">
+                            <option value="plan_alimentacio"> Plan de alimentación</option>
+                            <option value="orientacion_alimentaria">Orientacion alimentaria</option>
+                             </select>
+                    </td>
                             <td><textarea id="observaciones" name="observaciones"></textarea></td>
                         </tr>
                     </tbody>
