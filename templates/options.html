@@ -20,49 +20,53 @@
         <a href="/directorio_pacientes">Directorio Pacientes</a>
         <a href="/expediente">Expediente</a>
         </div>
-        <div class="content">
             <h1>CITAS AGENDADAS</h1>
         
-            <h2>Para Hoy</h2>
-            {% if citas_hoy %}
-            {% for cita in citas_hoy %}
-            <div class="cita-agendada">
-                <p>ID Cita: {{ cita[0] }}</p>
-                <p>ID Paciente: {{ cita[1] }}</p>
-                <p>Fecha Cita: {{ cita[2] }}</p>
-                <p>Hora Cita: {{ cita[3] }}</p>
-                <p>{{ cita[5] }}</p>
-                <!-- Agrega más detalles de la cita según tu estructura de datos -->
-                <form action="/actualizar_estado" method="POST" class="update-form">
-                    <input type="hidden" name="id_cita" value="{{ cita[0] }}">
-                    <label for="estado">Nuevo Estado:</label>
-                    <select name="estado" id="estado">
-                        <option value="Pendiente">Pendiente</option>
-                        <option value="Atendida">Atendida</option>
-                        <option value="Cancelada">Cancelada</option>
-                    </select>
-                    <input type="submit" value="Actualizar Estado">
-                </form>
-            </div>
-            {% endfor %}
-            {% else %}
-            <p>No hay citas agendadas para hoy.</p>
-            {% endif %}
+            <div class="citas-container">
+                <div class="citas-hoy">
+                    <h2>Para Hoy</h2>
+                    {% if citas_hoy %}
+                    {% for cita in citas_hoy %}
+                    <div class="cita-agendada">
+                        <p>ID Cita: {{ cita[0] }}</p>
+                        <p>ID Paciente: {{ cita[1] }}</p>
+                        <p>Fecha Cita: {{ cita[2] }}</p>
+                        <p>Hora Cita: {{ cita[3] }}</p>
+                        <p>{{ cita[5] }}</p>
+                        <!-- Agrega más detalles de la cita según tu estructura de datos -->
+                        <form action="/actualizar_estado" method="POST" class="update-form">
+                            <input type="hidden" name="id_cita" value="{{ cita[0] }}">
+                            <label for="estado">Nuevo Estado:</label>
+                            <select name="estado" id="estado">
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="Atendida">Atendida</option>
+                                <option value="Cancelada">Cancelada</option>
+                            </select>
+                            <input type="submit" value="Actualizar Estado">
+                        </form>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p>No hay citas agendadas para hoy.</p>
+                    {% endif %}
+                </div>
         
-            <h2>Para Mañana</h2>
-            {% if citas_manana %}
-            {% for cita in citas_manana %}
-            <div class="cita-agendada-mañana">
-                <p>ID Cita: {{ cita[0] }}</p>
-                <p>ID Paciente: {{ cita[1] }}</p>
-                <p>Fecha Cita: {{ cita[2] }}</p>
-                <p>Hora Cita: {{ cita[3] }}</p>
-                <!-- Agrega más detalles de la cita según tu estructura de datos -->
-            </div>
-            {% endfor %}
-            {% else %}
-            <p>No hay citas agendadas para mañana.</p>
-            {% endif %}
+                <div class="citas-mañana">
+                    <h2>Para Mañana</h2>
+                    {% if citas_manana %}
+                    {% for cita in citas_manana %}
+                    <div class="cita-agendada-mañana">
+                        <p>ID Cita: {{ cita[0] }}</p>
+                        <p>ID Paciente: {{ cita[1] }}</p>
+                        <p>Fecha Cita: {{ cita[2] }}</p>
+                        <p>Hora Cita: {{ cita[3] }}</p>
+                        <!-- Agrega más detalles de la cita según tu estructura de datos -->
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p>No hay citas agendadas para mañana.</p>
+                    {% endif %}
+                </div>
         </div>
 </body>
 
