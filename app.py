@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import hashlib, sqlite3
 from operator import itemgetter
 from datetime import datetime
+from datetime import datetime, timedelta
 
 
 app = Flask(__name__)
@@ -130,13 +131,17 @@ def login():
 @login_required
 def options():
     current_date = datetime.now().date()
+    tomorrow_date = current_date + timedelta(days=1)
 
     with get_db_connection() as connection:
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM citas WHERE fecha_consulta = ?", (current_date,))
-        cita_agendada = cursor.fetchone()
+        citas_hoy = cursor.fetchall()
 
-    return render_template('options.html', cita_agendada=cita_agendada)
+        cursor.execute("SELECT * FROM citas WHERE fecha_consulta = ?", (tomorrow_date,))
+        citas_manana = cursor.fetchall()
+
+    return render_template('options.html', citas_hoy=citas_hoy, citas_manana=citas_manana)
 @app.route('/registro', methods=['GET', 'POST'])
 @login_required
 def registro_paciente():
