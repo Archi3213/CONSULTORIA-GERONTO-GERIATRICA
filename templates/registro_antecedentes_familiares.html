@@ -20,10 +20,12 @@
         <a href="/directorio_pacientes">Directorio Pacientes</a>
         <a href="/expediente">Expediente</a>
         </div>
+        <br>      <br> 
+        <br>      <br> 
     <h1>Registro de Antecedentes Familiares</h1>
     <form method="POST" action="/registro_antecedentes_familiares">
         <div class="container1">
-            <fieldset>
+ <fieldset>
                 <legend>Antecedentes Familiares</legend>
                 <label for="id_paciente">Selecciona un paciente:</label>
                 <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
@@ -32,20 +34,38 @@
                     <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
                     {% endfor %}
                 </datalist><br><br>
-                <label>
-              
-        <label for="diabetes_mellitus_familiar">Familiar con Diabetes mellitus:</label>
-        <select id="diabetes_mellitus_familiar" name="diabetes_mellitus_familiar" required><br><br>
-            <option value="Ninguno">Ninguno</option>
-            <option value="Madre">Madre</option>
-            <option value="Padre">Padre</option>
-            <option value="Abuela materna">Abuela materna</option>
-            <option value="Abuelo materno">Abuelo materno</option>
-            <option value="Abuela paterna">Abuela paterna</option>
-            <option value="Abuelo paterno">Abuelo paterno</option>
-        </select>
+           
+                <div class="checkbox-container-container1">
+                    <label>Familiar(es) con Diabetes mellitus:</label>
+                    <div class="checkbox-container">
+                        <div class="checkbox-column">
+                        <input type="checkbox" id="ninguno" name="diabetes_mellitus_familiar" value="Ninguno"checked>
+                        <label for="ninguno">Ninguno</label><br>
+                        
+                        <input type="checkbox" id="madre" name="diabetes_mellitus_familiar" value="Madre">
+                        <label for="madre">Madre</label><br>
+                        
+                        <input type="checkbox" id="padre" name="diabetes_mellitus_familiar" value="Padre">
+                        <label for="padre">Padre</label><br>
+                        </div>
+                        <div class="checkbox-column">
+                        <input type="checkbox" id="abuela_materna" name="diabetes_mellitus_familiar" value="Abuela materna">
+                        <label for="abuela_materna">Abuela materna</label><br>
+                        
+                        <input type="checkbox" id="abuelo_materno" name="diabetes_mellitus_familiar" value="Abuelo materno">
+                        <label for="abuelo_materno">Abuelo materno</label><br>
+                        
+                        <input type="checkbox" id="abuela_paterna" name="diabetes_mellitus_familiar" value="Abuela paterna">
+                        <label for="abuela_paterna">Abuela paterna</label><br>
+                        
+                        <input type="checkbox" id="abuelo_paterno" name="diabetes_mellitus_familiar" value="Abuelo paterno">
+                        <label for="abuelo_paterno">Abuelo paterno</label><br>
+                        </div>
+                </div>
+            </div>
+
 <br><br>
-        
+<div class="checkbox-container-container2">
         <label for="dislipidemias_con_familiar">Familiar con Dislipidemias:</label>
         <select id="dislipidemias_con_familiar" name="dislipidemias_con_familiar" required><br><br>
             <option value="Ninguno">Ninguno</option>
@@ -57,17 +77,37 @@
             <option value="Abuelo paterno">Abuelo paterno</option>
         </select>
         <input type="text" id="tipo_dislipidemias" name="tipo_dislipidemias" ><br><br>
-        <br><br>
+        <br><br>    
+       </div>
+        <div class="checkbox-container-container3">
         <label for="sobrepeso_obesidad_familiar">Familiar con  Sobrepeso/obesidad:</label>
-        <select id="sobrepeso_obesidad_familiar" name="sobrepeso_obesidad_familiar" required><br><br>
-            <option value="Ninguno">Ninguno</option>
-            <option value="Madre">Madre</option>
-            <option value="Padre">Padre</option>
-            <option value="Abuela materna">Abuela materna</option>
-            <option value="Abuelo materno">Abuelo materno</option>
-            <option value="Abuela paterna">Abuela paterna</option>
-            <option value="Abuelo paterno">Abuelo paterno</option>
-        </select>
+        <div class="checkbox-container">
+            <div class="checkbox-column">
+                <input type="checkbox" id="ninguno" name="sobrepeso_obesidad_familiar" value="Ninguno" checked>
+                <label for="ninguno">Ninguno</label><br>
+                
+                <input type="checkbox" id="madre" name="sobrepeso_obesidad_familiar" value="Madre">
+                <label for="madre">Madre</label><br>
+                
+                <input type="checkbox" id="padre" name="sobrepeso_obesidad_familiar" value="Padre">
+                <label for="padre">Padre</label><br>
+            </div>
+            <div class="checkbox-column">
+                <input type="checkbox" id="abuela_materna" name="sobrepeso_obesidad_familiar" value="Abuela materna">
+                <label for="abuela_materna">Abuela materna</label><br>
+                
+                <input type="checkbox" id="abuelo_materno" name="sobrepeso_obesidad_familiar" value="Abuelo materno">
+                <label for="abuelo_materno">Abuelo materno</label><br>
+                
+                <input type="checkbox" id="abuela_paterna" name="sobrepeso_obesidad_familiar" value="Abuela paterna">
+                <label for="abuela_paterna">Abuela paterna</label><br>
+                
+                <input type="checkbox" id="abuelo_paterno" name="sobrepeso_obesidad_familiar" value="Abuelo paterno">
+                <label for="abuelo_paterno">Abuelo paterno</label><br>
+            </div>
+        </div>
+    </div>
+    <div class="checkbox-container-container4">
 
         <label for="cancer_familiar">Familiar con Cáncer:</label>
         <select id="cancer_familiar"name="cancer_familiar" required><br><br>   
@@ -80,17 +120,37 @@
             <option value="Abuelo paterno">Abuelo paterno</option>
         </select>
                 <input type="text" id="Tipo_cancer" name="tipo_cancer" placeholder="tipo_cancer">
-<br><br>
+<br><br> </div>
+
+<div class="checkbox-container-container5">
         <label for="hipertension_familiar">Familiar con Hipertensión:</label>
-        <select id="hipertension_familiar" name="hipertension_familiar" required><br><br>
-            <option value="Ninguno">Ninguno</option>
-            <option value="Madre">Madre</option>
-            <option value="Padre">Padre</option>
-            <option value="Abuela materna">Abuela materna</option>
-            <option value="Abuelo materno">Abuelo materno</option>
-            <option value="Abuela paterna">Abuela paterna</option>
-            <option value="Abuelo paterno">Abuelo paterno</option>
-        </select>
+        <div class="checkbox-container">
+            <div class="checkbox-column">
+                <input type="checkbox" id="ninguno" name="hipertension_familiar" value="Ninguno" checked>
+                <label for="ninguno">Ninguno</label><br>
+                
+                <input type="checkbox" id="madre" name="hipertension_familiar" value="Madre">
+                <label for="madre">Madre</label><br>
+                
+                <input type="checkbox" id="padre" name="hipertension_familiar" value="Padre">
+                <label for="padre">Padre</label><br>
+            </div>
+            <div class="checkbox-column">
+                <input type="checkbox" id="abuela_materna" name="hipertension_familiar" value="Abuela materna">
+                <label for="abuela_materna">Abuela materna</label><br>
+                
+                <input type="checkbox" id="abuelo_materno" name="hipertension_familiar" value="Abuelo materno">
+                <label for="abuelo_materno">Abuelo materno</label><br>
+                
+                <input type="checkbox" id="abuela_paterna" name="hipertension_familiar" value="Abuela paterna">
+                <label for="abuela_paterna">Abuela paterna</label><br>
+                
+                <input type="checkbox" id="abuelo_paterno" name="hipertension_familiar" value="Abuelo paterno">
+                <label for="abuelo_paterno">Abuelo paterno</label><br>
+            </div>
+        </div>
+       </div>
+        <div class="checkbox-container-container6">
         <label for="familiar_con_cardiopatias">Familiar con Cardiopatías:</label>
         <select id="familiar_con_cardiopatias" name="familiar_con_cardiopatias" required><br><br>
             <option value="Ninguno">Ninguno</option>
@@ -103,37 +163,90 @@
         </select>
         <input type="text" id="tipo_cardiopatias" name="tipo_cardiopatias" ><br><br>
 <br><br>
-        
+</div>
+<div class="checkbox-container-container7"> 
         <label for="litiasis_familiar">Familiar con Litiasis:</label>
-        <select id="litiasis_familiar" name="litiasis_familiar" required><br><br>
-            <option value="Ninguno">Ninguno</option>
-            <option value="Madre">Madre</option>
-            <option value="Padre">Padre</option>
-            <option value="Abuela materna">Abuela materna</option>
-            <option value="Abuelo materno">Abuelo materno</option>
-            <option value="Abuela paterna">Abuela paterna</option>
-            <option value="Abuelo paterno">Abuelo paterno</option>
-        </select>
+       <div class="checkbox-container">
+    <div class="checkbox-column">
+        <input type="checkbox" id="ninguno" name="litiasis_familiar" value="Ninguno" checked>
+        <label for="ninguno">Ninguno</label><br>
+        
+        <input type="checkbox" id="madre" name="litiasis_familiar" value="Madre">
+        <label for="madre">Madre</label><br>
+        
+        <input type="checkbox" id="padre" name="litiasis_familiar" value="Padre">
+        <label for="padre">Padre</label><br>
+    </div>
+    <div class="checkbox-column">
+        <input type="checkbox" id="abuela_materna" name="litiasis_familiar" value="Abuela materna">
+        <label for="abuela_materna">Abuela materna</label><br>
+        
+        <input type="checkbox" id="abuelo_materno" name="litiasis_familiar" value="Abuelo materno">
+        <label for="abuelo_materno">Abuelo materno</label><br>
+        
+        <input type="checkbox" id="abuela_paterna" name="litiasis_familiar" value="Abuela paterna">
+        <label for="abuela_paterna">Abuela paterna</label><br>
+        
+        <input type="checkbox" id="abuelo_paterno" name="litiasis_familiar" value="Abuelo paterno">
+        <label for="abuelo_paterno">Abuelo paterno</label><br>
+    </div>
+</div>
+</div>
+<div class="checkbox-container-container8">
         <label for="artritis_familiar">Familiar con Artritis:</label>
-         <select id="artritis_familiar" name="artritis_familiar" required><br><br>
-            <option value="Ninguno">Ninguno</option>
-            <option value="Madre">Madre</option>
-            <option value="Padre">Padre</option>
-            <option value="Abuela materna">Abuela materna</option>
-            <option value="Abuelo materno">Abuelo materno</option>
-            <option value="Abuela paterna">Abuela paterna</option>
-            <option value="Abuelo paterno">Abuelo paterno</option>
-        </select>
+        <div class="checkbox-container">
+            <div class="checkbox-column">
+                <input type="checkbox" id="ninguno" name="artritis_familiar" value="Ninguno" checked>
+                <label for="ninguno">Ninguno</label><br>
+                
+                <input type="checkbox" id="madre" name="artritis_familiar" value="Madre">
+                <label for="madre">Madre</label><br>
+                
+                <input type="checkbox" id="padre" name="artritis_familiar" value="Padre">
+                <label for="padre">Padre</label><br>
+            </div>
+            <div class="checkbox-column">
+                <input type="checkbox" id="abuela_materna" name="artritis_familiar" value="Abuela materna">
+                <label for="abuela_materna">Abuela materna</label><br>
+                
+                <input type="checkbox" id="abuelo_materno" name="artritis_familiar" value="Abuelo materno">
+                <label for="abuelo_materno">Abuelo materno</label><br>
+                
+                <input type="checkbox" id="abuela_paterna" name="artritis_familiar" value="Abuela paterna">
+                <label for="abuela_paterna">Abuela paterna</label><br>
+                
+                <input type="checkbox" id="abuelo_paterno" name="artritis_familiar" value="Abuelo paterno">
+                <label for="abuelo_paterno">Abuelo paterno</label><br>
+            </div>
+        </div>       </div>
+        <div class="checkbox-container-container9">
         <label for="asma_familiar">Familiar con Asma:</label>
-          <select id="asma_familiar" name="asma_familiar" required><br><br>
-            <option value="Ninguno">Ninguno</option>
-            <option value="Madre">Madre</option>
-            <option value="Padre">Padre</option>
-            <option value="Abuela materna">Abuela materna</option>
-            <option value="Abuelo materno">Abuelo materno</option>
-            <option value="Abuela paterna">Abuela paterna</option>
-            <option value="Abuelo paterno">Abuelo paterno</option>
-        </select>
+        <div class="checkbox-container">
+            <div class="checkbox-column">
+                <input type="checkbox" id="ninguno" name="asma_familiar" value="Ninguno" checked>
+                <label for="ninguno">Ninguno</label><br>
+                
+                <input type="checkbox" id="madre" name="asma_familiar" value="Madre">
+                <label for="madre">Madre</label><br>
+                
+                <input type="checkbox" id="padre" name="asma_familiar" value="Padre">
+                <label for="padre">Padre</label><br>
+            </div>
+            <div class="checkbox-column">
+                <input type="checkbox" id="abuela_materna" name="asma_familiar" value="Abuela materna">
+                <label for="abuela_materna">Abuela materna</label><br>
+                
+                <input type="checkbox" id="abuelo_materno" name="asma_familiar" value="Abuelo materno">
+                <label for="abuelo_materno">Abuelo materno</label><br>
+                
+                <input type="checkbox" id="abuela_paterna" name="asma_familiar" value="Abuela paterna">
+                <label for="abuela_paterna">Abuela paterna</label><br>
+                
+                <input type="checkbox" id="abuelo_paterno" name="asma_familiar" value="Abuelo paterno">
+                <label for="abuelo_paterno">Abuelo paterno</label><br>
+            </div>
+        </div>
+    </div>
         <label for="otras">Familiar con otras condiciones:</label>
         <input type="text" id="otras" name="otras"><br><br>
     
@@ -142,9 +255,39 @@
         </div>
     </form>
     
-        </fieldset>
+ </fieldset>
 </div>
         </body>
-
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const containers = document.querySelectorAll('.checkbox-container-container1, .checkbox-container-container2, .checkbox-container-container3, .checkbox-container-container4, .checkbox-container-container5, .checkbox-container-container6, .checkbox-container-container7, .checkbox-container-container8, .checkbox-container-container9, .checkbox-container-container10, .checkbox-container-container11');
+        
+                containers.forEach(container => {
+                    const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.addEventListener('change', function() {
+                            const ningunoCheckbox = container.querySelector('input[value="Ninguno"]');
+                            const checkboxName = this.name;
+                            const otherCheckboxes = container.querySelectorAll(`input[type="checkbox"][name="${checkboxName}"]:not(#ninguno)`);
+        
+                            if (this.id === "ninguno" && this.checked) {
+                                otherCheckboxes.forEach(otherCheckbox => {
+                                    otherCheckbox.checked = false;
+                                });
+                            } else if (this.checked) {
+                                ningunoCheckbox.checked = false;
+                            }
+                        });
+        
+                        checkbox.addEventListener('click', function(event) {
+                            // Prevenir la propagación del evento al hacer clic en el label
+                            event.stopPropagation();
+                        });
+                    });
+                });
+            });
+        </script>
+        
+        
         </html>
         

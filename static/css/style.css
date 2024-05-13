@@ -18,7 +18,37 @@ body::before {
     filter: blur(8px); /* Aumentado el desenfoque para un efecto más pronunciado */
     opacity: .8;
 }
+.checkbox-container-container1,
+.checkbox-container-container2,
+.checkbox-container-container3,
+.checkbox-container-container4,
+.checkbox-container-container5,
+.checkbox-container-container6,
+.checkbox-container-container7,
+.checkbox-container-container8,
+.checkbox-container-container9,
+.checkbox-container-container10,
+.checkbox-container-container11
+{
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin-bottom: 10px;
+}
+.checkbox-container {
+    display: flex;
+    flex-wrap: wrap;
+}
 
+.checkbox-column {
+    flex: 1 1 50%; /* Divide en dos columnas */
+}
+
+/* Estilo básico para las casillas de verificación */
+.checkbox-container input[type="checkbox"] {
+    margin-right: 5px;
+}
 /* Estilos para elementos de navegación */
 .navbar {
     background-color: #333;
@@ -196,12 +226,6 @@ input[type="checkbox"]:focus {
     resize: none;
 }
 
-.tabla-responsiva {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-}
-
 /* Estilos para los labels */
 label {
     display: inline-block;
@@ -326,22 +350,7 @@ input[type="number"],
 }
 
 /* Estilos para la tabla */
-table {
-    width: 90%;
-    margin: 0 auto;
-    border: 2px solid #000000;
-    border-radius: 6px;
-    overflow: hidden;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    opacity: 1;
-    animation: fadeIn 0.5s ease-in-out;
-    transition: opacity 0.5s ease-in-out;
-}
+
 
 th, td {
     padding: 10px;
@@ -552,4 +561,53 @@ strong {
 
 .container1 select option:hover {
     background-color: #f0f0f0;
+}
+table {
+    width: 90%;
+    margin: 0 auto;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #fff;
+    opacity: 1;
+    animation: fadeIn 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Aplicar estilos a las celdas de la tabla */
+table th,
+table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+/* Estilo para la primera fila (encabezados) */
+table th {
+    background-color: #023300;
+    font-weight: bold;
+}
+
+/* Estilo para filas impares */
+table tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+/* Estilo para filas pares */
+table tr:nth-child(even) {
+    background-color: #eaeaea;
+}
+
+/* Animación de fadeIn */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }

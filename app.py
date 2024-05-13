@@ -305,12 +305,18 @@ def directorio_pacientes():
 def registro_antecedentes_familiares():
     if request.method == 'POST':
         id_paciente = request.form['id_paciente']
-        diabetes_mellitus_familiar = request.form['diabetes_mellitus_familiar']
-        sobrepeso_obesidad_familiar = request.form['sobrepeso_obesidad_familiar']
-        hipertension_familiar = request.form['hipertension_familiar']
-        litiasis_familiar = request.form['litiasis_familiar']
-        artritis_familiar = request.form['artritis_familiar']
-        asma_familiar = request.form['asma_familiar']
+        diabetes_mellitus_familiar = request.form.getlist('diabetes_mellitus_familiar')
+        diabetes_mellitus_familiar = ', '.join(diabetes_mellitus_familiar)
+        sobrepeso_obesidad_familiar =  request.form.getlist('sobrepeso_obesidad_familiar')
+        sobrepeso_obesidad_familiar = ', '.join(sobrepeso_obesidad_familiar)
+        hipertension_familiar =  request.form.getlist('hipertension_familiar')
+        hipertension_familiar = ', '.join(hipertension_familiar)
+        litiasis_familiar = request.form.getlist('litiasis_familiar')
+        litiasis_familiar = ', '.join(litiasis_familiar)
+        artritis_familiar = request.form.getlist('artritis_familiar')
+        artritis_familiar = ', '.join(artritis_familiar)
+        asma_familiar = request.form.getlist('asma_familiar')
+        asma_familiar = ', '.join(asma_familiar)
         otras = request.form['otras']
         cancer_familiar = request.form['cancer_familiar']
         tipo_cancer = request.form['tipo_cancer']
