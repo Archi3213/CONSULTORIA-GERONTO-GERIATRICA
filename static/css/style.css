@@ -44,6 +44,27 @@ body::before {
 .checkbox-column {
     flex: 1 1 50%; /* Divide en dos columnas */
 }
+textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box; /* Incluye el padding en el ancho total */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical; /* Permite redimensionar verticalmente */
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+textarea:focus {
+    border-color: #007bff; /* Cambia el borde al enfocar */
+    outline: none; /* Elimina el contorno al enfocar */
+}
+
+/* Estilo para el texto de la leyenda */
+label {
+    font-weight: bold;
+}
 
 /* Estilo básico para las casillas de verificación */
 .checkbox-container input[type="checkbox"] {
