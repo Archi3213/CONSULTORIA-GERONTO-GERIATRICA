@@ -9,6 +9,30 @@
 
     <title>Calendario</title>
 </head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.update-form').submit(function(event) {
+            event.preventDefault(); // Evita la recarga de la página al enviar el formulario
+            var form = $(this);
+            var url = form.attr('action');
+            var data = form.serialize(); // Obtener los datos del formulario
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: data,
+                success: function(response) {
+                    // Actualizar la página o realizar otras acciones según sea necesario
+                    console.log('Estado actualizado exitosamente');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al actualizar el estado:', error);
+                }
+            });
+        });
+    });
+</script>
 <body>
     <div class="navbar">
         <a href="/">Inicio</a>

@@ -52,6 +52,24 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS pacientes (
                     fecha_registro TEXT NOT NULL,
                     registrado_por TEXT NOT NULL
                 )''')
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS antecedentes_personales (
+        id_paciente  PRIMARY KEY,
+        padecimiento_actual TEXT,
+        medicamento TEXT,
+        discapacidad TEXT,
+        cirugia TEXT,
+        alergias TEXT,
+        consumo_alcohol TEXT,
+        tabaco TEXT,
+        suplementos TEXT,
+        cafeina TEXT,
+        observaciones TEXT,
+        FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
+
+    )
+''')
+#cursor.execute('DROP TABLE IF EXISTS antecedentes_personales')
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS usuarios (
                     username TEXT PRIMARY KEY,
@@ -87,7 +105,19 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS antecedentes_familiares (
                 )''')
 
 #cursor.execute('DROP TABLE IF EXISTS antecedentes_familiares')
-
+cursor.execute('''
+            CREATE TABLE IF NOT EXISTS evaluacion_clinica (
+                id_paciente PRIMARY KEY NOT NULL,
+                piel TEXT,
+                ojos TEXT,
+                unas TEXT,
+                cabello TEXT,
+                boca TEXT,
+                dientes TEXT,
+                observacion TEXT,
+                FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
+            )
+        ''')
 conexion.commit()
 cursor.close()
 
@@ -189,8 +219,7 @@ def registro_paciente():
 @app.route('/registro_exitoso')
 def registro_exitoso():
     id_paciente = request.args.get('id_paciente')
-    nombre_paciente = request.args.get('nombre_paciente')
-    return render_template('registro_exitoso.html', id_paciente=id_paciente, nombre_paciente=nombre_paciente)
+    return render_template('registro_exitoso.html', id_paciente=id_paciente)
 
 @app.route('/consultar', methods=['GET', 'POST'])
 @login_required
@@ -267,7 +296,6 @@ def historial_citas():
         pacientes = cursor.fetchall()
 
     return render_template('historial_citas.html', citas=citas_ordenadas, pacientes=pacientes)
-
 @app.route('/actualizar_estado', methods=['POST'])
 @login_required
 def actualizar_estado():
@@ -280,7 +308,13 @@ def actualizar_estado():
             cursor.execute("UPDATE citas SET estado = ? WHERE id_cita = ?", (nuevo_estado, id_cita))
             connection.commit()
 
-    return redirect(url_for('historial_citas'))
+    # Obtener la URL de la página anterior
+    prev_url = request.referrer
+    if prev_url and prev_url.endswith('/options'):
+        return redirect(prev_url)
+    else:
+        return redirect(url_for('historial_citas'))
+
 
 @app.route('/directorio_pacientes', methods=['GET', 'POST'])
 def directorio_pacientes():
@@ -368,23 +402,82 @@ def registro_antecedentes_familiares():
 def expediente():
     return render_template('expediente.html')
 
-@app.route('/registro_antecedentes_personales')
+@app.route('/registro_antecedentes_personales', methods=['GET', 'POST'])
 @login_required
 def registro_antecedentes_personales():
+    if request.method == 'POST':
+        # Obtener datos del formulario
+        id_paciente = request.form['id_paciente']
+        padecimiento = request.form['padecimiento']
+        tiempo_padecimiento = request.form['tiempo_padecimiento']
+        padecimiento_actual = f"{padecimiento} - {tiempo_padecimiento}"
+        medicacion = request.form['medicacion']
+        dosis = request.form['dosis']
+        medicamento = f"{medicacion} - {dosis}"
+        discapacidad = request.form.getlist('discapacidad')
+        discapacidad = ', '.join(discapacidad)
+        cirugia = request.form['cirugia']
+        alergias = request.form['alergias']
+        consumo_alcohol = request.form.get('consumo_alcohol', 'No')
+        tabaco = request.form.get('tabaco', 'No')
+        suplementos = request.form.get('suplementos', 'No')
+        cafeina = request.form.get('cafeina', 'No')
+        observaciones = request.form['observaciones']
+        
+        # Conexión a la base de datos y operación de inserción o actualización
+        with get_db_connection() as connection:
+            cursor = connection.cursor()
+            cursor.execute("""
+                INSERT OR REPLACE INTO antecedentes_personales 
+                (id_paciente, padecimiento_actual, medicamento, discapacidad, cirugia, alergias, consumo_alcohol, tabaco, suplementos, cafeina, observaciones) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,? , ?)
+            """, (id_paciente, padecimiento_actual, medicamento, discapacidad, cirugia, alergias, consumo_alcohol, tabaco, suplementos, cafeina, observaciones))
+            connection.commit()
+
+        # Redireccionar a alguna página después de guardar los datos
+        return redirect(url_for('registro_exitoso'))
+
+    # Obtener la lista de pacientes para mostrar en el formulario
     with get_db_connection() as connection:
         cursor = connection.cursor()
         cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
         pacientes = cursor.fetchall()
+        
     return render_template('registro_antecedentes_personales.html', pacientes=pacientes)
+
 
 @app.route('/evaluacion_clinica')
 @login_required
 def evaluacion_clinica():
+    if request.method == 'POST':
+        id_paciente = request.form['id_paciente']
+        piel = request.form['piel']
+        ojos = request.form['ojos']
+        unas = request.form['uñas']
+        cabello = request.form['cabello']
+        boca = request.form['boca']
+        dientes = request.form['dientes']
+        observacion = request.form['observacion']
+        
+        # Guardar los datos en la base de datos
+        with get_db_connection() as connection:
+            cursor = connection.cursor()
+            cursor.execute('''
+                INSERT INTO evaluacion_clinica (id_paciente, piel, ojos, unas, cabello, boca, dientes, observacion)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (id_paciente, piel, ojos, unas, cabello, boca, dientes, observacion))
+            connection.commit()
+            
+        # Redireccionar a una página de éxito o a donde sea necesario
+        return redirect(url_for('registro_exitoso'))
+    
     with get_db_connection() as connection:
         cursor = connection.cursor()
         cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
         pacientes = cursor.fetchall()
+        
     return render_template('evaluacion_clinica.html', pacientes=pacientes)
+
 @app.route('/evaluacion_dietetica')
 @login_required
 def evaluacion_dietetica():

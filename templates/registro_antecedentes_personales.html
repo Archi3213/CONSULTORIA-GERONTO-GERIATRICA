@@ -5,159 +5,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="icon" type="image/png" href="static\css\Imagen\_44109a07-adb5-4db9-90c0-8bac1621533a-removebg-preview.png">
-
     <title>Registro de Antecedentes Personales</title>
-
 </head>
 <body>
-      <div class="navbar">
-        <a href="/">Inicio</a>
-        <a href="/registro">Registro</a>
-        <a href="/consultar">Registro de consultas</a>
-        <a href="/options">Calendario</a>
-        <a href="/agendar_cita">Agendar Cita</a>
-        <a href="/historial_citas">Historial de Citas</a>
-        <a href="/directorio_pacientes">Directorio Pacientes</a>
-        <a href="/expediente">Expediente</a>
-        </div>
-<head>
-<title>Antecedentes Personales</title>
-</head>
-<div class="container1">
-<fieldset>
-    <body>
-    <legend>Antecedentes personales</legend>
-    <form action="/registro_antecedentes_personales" method="POST">
-        
-        <label for="id_paciente">Selecciona un paciente:</label>
-        <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
-        <datalist id="pacientes_list">
-            {% for paciente in pacientes %}
-            <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
-            {% endfor %}
-        </datalist><br><br>
-            <table>
-                <tr>
-                  <td><label for="padecimiento">Padecimiento Actual:</label></td>
-                  <td><input type="text" id="padecimiento" name="padecimiento"></td>
-                </tr>
-                <tr>
-                  <td><label for="tiempo_diagnostico">Tiempo de diagnóstico (en años):</label></td>
-                  <td><input type="number" id="tiempo_diagnostico" name="tiempo_diagnostico"></td>
-                </tr>
-              </table>
-
-      
-        <label for="otras_enfermedades">Otras enfermedades y tiempo de diagnostico:</label>
-        <input type="text" id="otras_enfermedades" name="otras_enfermedades" placeholder="Ingrese la enfermedad">
-        <input type="number" id="tiempo_diagnostico" name="tiempo_diagnostico" placeholder="Tiempo en meses"><br><br>
-        <input type="hidden" id="otras_enfermedades_tiempo" name="otras_enfermedades_tiempo">
-
-       
-    
-        <label for="medicamento">Nombre del medicamento y dosis:</label>
-        <input type="text" id="medicamento" name="medicamento" placeholder="Nombre del medicamento">
-        <input type="text" id="dosis" name="dosis" placeholder="Dosis del medicamento"><br><br>
-
-        <!-- Campo oculto para combinar datos en el servidor -->
-        <input type="hidden" id="medicamento_dosis" name="medicamento_dosis">
-
-        <div id="discapacidad">
-            <label>Discapacidad que posea el paciente</label>
-            <label for="discapacidad"></label>
-            <select id="discapacidad" name="discapacidad">
-            <option  value="NINGUNA ">NINGUNA </option> 
-            <option  value="ARTROPATIA">ARTROPATIA</option> 
-            <option  value="AUDITIVA">AUDITIVA</option> 
-            <option  value="AUDITIVA-MOTRIZ ">AUDITIVA-MOTRIZ </option> 
-            <option  value="VISUAL">VISUAL </option> 
-            <option  value="AUDITIVA-VISUAL">AUDITIVA-VISUAL</option> 
-            <option  value="VISUAL-MOTRIZ ">VISUAL-MOTRIZ</option> 
-            <option  value=" AUDITIVA-VISUAL"> AUDITIVA-VISUAL </option> 
-            <option  value="MOTRIZ ">MOTRIZ  </option> 
-        </select><br><br>
-    </div>
-        <div id="cirugia">
-            <label>Cirugía que posea</label>
-            <input type="text" id="cirugia" name="cirugia"><br><br>
-        </div>
-    
-        <div id="alergias">
-            <label>Alergias que posea</label>
-            <input type="text" id="alergias" name="alergias"><br><br>
-        </div>
-    
- <div class="checkbox-container-container1">
-        <h2>FACTORES DIGESTIVOS</h2>
-        <!-- Campos de factores digestivos -->
-<div class="checkbox-column">   
-    <label for="consumo_alcohol">Consumo Alcohol:</label>
-    <input type="checkbox" id="consumo_alcohol" name="consumo_alcohol" value="Si"><br>
-
-    <label for="tabaco">Tabaco:</label>
-    <input type="checkbox" id="tabaco" name="tabaco" value="Si"><br>
+<div class="navbar">
+    <a href="/">Inicio</a>
+    <a href="/registro">Registro</a>
+    <a href="/consultar">Registro de consultas</a>
+    <a href="/options">Calendario</a>
+    <a href="/agendar_cita">Agendar Cita</a>
+    <a href="/historial_citas">Historial de Citas</a>
+    <a href="/directorio_pacientes">Directorio Pacientes</a>
+    <a href="/expediente">Expediente</a>
 </div>
-<div class="checkbox-column">
-    <label for="suplementos">Suplementos:</label>
-    <input type="checkbox" id="suplementos" name="suplementos" value="Si"><br>
 
-    <label for="cafeina">Cafeína:</label>
-    <input type="checkbox" id="cafeina" name="cafeina" value="Si">
-</div></div>
-        <label for="observaciones">Observaciones:</label>
-        <textarea id="observaciones" name="observaciones"></textarea><br><br>
-    
-        <input type="submit" value="Guardar">
-    </form>
-            </fieldset>
+<div class="container1">
+    <fieldset>
+        <legend>Antecedentes personales</legend>
+        <form action="/registro_antecedentes_personales" method="POST">
+            <label for="id_paciente">Selecciona un paciente:</label>
+            <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
+            <datalist id="pacientes_list">
+                {% for paciente in pacientes %}
+                <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
+                {% endfor %}
+            </datalist><br><br>
+            <label for="padecimiento">Padecimiento Actual:</label>
+            <input type="text" id="padecimiento" name="padecimiento" placeholder="Ingrese el padecimiento">
+            <input type="number" id="tiempo_padecimiento" name="tiempo_padecimiento"
+                   placeholder="Tiempo en meses" min="0"><br><br>
+            <label for="medicacion">Nombre del medicamento y dosis:</label>
+            <input type="text" id="medicacion" name="medicacion" placeholder="Nombre del medicamento">
+            <input type="text" id="dosis" name="dosis" placeholder="Dosis del medicamento"><br><br>
+            <input type="hidden" id="dosis" name="dosis">
+            <div class="checkbox-container-container1">
+                <label for="discapacidad">discapacidad que posea el paciente:</label>
+                <div class="checkbox-container">
+                    <div class="checkbox-column">
+                        <input type="checkbox" id="ninguno" name="discapacidad" value="Ninguno" checked>
+                        <label for="ninguno">Ninguno</label><br>
+                        <input type="checkbox" id="artropatia" name="discapacidad" value="ARTROPATIA">
+                        <label for="artropatia">ARTROPATIA</label><br>
+                        <input type="checkbox" id="visual" name="discapacidad" value="VISUAL">
+                        <label for="visual">VISUAL</label><br>
+                    </div>
+                    <div class="checkbox-column">
+                        <input type="checkbox" id="auditiva" name="discapacidad" value="AUDITIVA">
+                        <label for="auditiva">AUDITIVA</label><br>
+                        <input type="checkbox" id="motriz" name="discapacidad" value="MOTRIZ">
+                        <label for="motriz">MOTRIZ</label><br>
+                    </div>
+                </div>
+            </div>
+            <div id="cirugia">
+                <label>Cirugía que posea</label>
+                <input type="text" id="cirugia" name="cirugia"><br><br>
+            </div>
+            <div id="alergias">
+                <label>Alergias que posea</label>
+                <input type="text" id="alergias" name="alergias"><br><br>
+            </div>
+                <h2>FACTORES DIGESTIVOS</h2>
+                <div class="checkbox-column">
+                    <label for="consumo_alcohol">Consumo Alcohol:</label>
+                    <input type="checkbox" id="consumo_alcohol" name="consumo_alcohol" value="Si"><br>
+                    <label for="tabaco">Tabaco:</label>
+                    <input type="checkbox" id="tabaco" name="tabaco" value="Si"><br>
+                </div>
+                <div class="checkbox-column">
+                    <label for="suplementos">Suplementos:</label>
+                    <input type="checkbox" id="suplementos" name="suplementos" value="Si"><br>
+                    <label for="cafeina">Cafeína:</label>
+                    <input type="checkbox" id="cafeina" name="cafeina" value="Si">
+                </div>
+            
+            <label for="observaciones">Observaciones:</label>
+            <textarea id="observaciones" name="observaciones"></textarea><br><br>
+            <input type="submit" value="Guardar">
+        </form>
+    </fieldset>
+</div>
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const containers = document.querySelectorAll('.checkbox-container-container1');
 
-    <script>
-        function agregarCampo() {
-            // Código para agregar más campos dinámicamente
-            // Por ejemplo:
-            const div = document.createElement('div');
-            div.innerHTML = `
-                <label>Otra cirugia</label>
-                <input type="text" name=cirugias"><br><br>
-            `;
-            document.getElementById('cirugias').appendChild(div);
-        } 
-        // Función para combinar los datos de enfermedades y tiempo antes de enviar el formulario
-        document.querySelector('form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Evitar el envío del formulario por defecto
+        containers.forEach(container => {
+            const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    const ningunoCheckbox = container.querySelector('input[value="Ninguno"]');
+                    const checkboxName = this.name;
+                    const otherCheckboxes = container.querySelectorAll(`input[type="checkbox"][name="${checkboxName}"]:not(#ninguno)`);
 
-            // Obtener los valores de los campos
-            const enfermedad = document.getElementById('otras_enfermedades').value;
-            const tiempo = document.getElementById('tiempo_diagnostico').value;
+                    if (this.id === "ninguno" && this.checked) {
+                        otherCheckboxes.forEach(otherCheckbox => {
+                            otherCheckbox.checked = false;
+                        });
+                    } else if (this.checked) {
+                        ningunoCheckbox.checked = false;
+                    }
+                });
 
-            // Combinar los valores en un solo dato separado por un caracter especial
-            const datosCombinados = `${enfermedad}|${tiempo}`;
-
-            // Asignar el valor combinado al campo oculto
-            document.getElementById('otras_enfermedades_tiempo').value = datosCombinados;
-
-            // Enviar el formulario
-            this.submit();
+                checkbox.addEventListener('click', function (event) {
+                    // Prevenir la propagación del evento al hacer clic en el label
+                    event.stopPropagation();
+                });
+            });
         });
-         // Función para combinar los datos de medicamento y dosis antes de enviar el formulario
-         document.querySelector('form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Evitar el envío del formulario por defecto
-
-            // Obtener los valores de los campos
-            const medicamento = document.getElementById('medicamento').value;
-            const dosis = document.getElementById('dosis').value;
-
-            // Combinar los valores en un solo dato separado por un caracter especial
-            const datosCombinados = `${medicamento}|${dosis}`;
-
-            // Asignar el valor combinado al campo oculto
-            document.getElementById('medicamento_dosis').value = datosCombinados;
-
-            // Enviar el formulario
-            this.submit();
-        });
-    </script>
-    </div>
-
-            </body>
-            </html>
+    });
+</script>
+</html>
