@@ -5,9 +5,10 @@ from operator import itemgetter
 from datetime import datetime
 from datetime import datetime, timedelta
 
-
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+
+import database
 
 def get_db_connection():
     return sqlite3.connect('nutricion_consulta.db')
@@ -29,97 +30,7 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-conexion = sqlite3.connect('nutricion_consulta.db')
-cursor = conexion.cursor()
 
-cursor.execute('''CREATE TABLE IF NOT EXISTS pacientes (
-                    id_paciente TEXT PRIMARY KEY,
-                    primer_apellido TEXT NOT NULL,
-                    segundo_apellido TEXT NOT NULL,
-                    nombres TEXT NOT NULL,
-                    fecha_nacimiento TEXT NOT NULL,
-                    religion TEXT NOT NULL,
-                    escolaridad TEXT NOT NULL,
-                    ocupacion TEXT NOT NULL,
-                    estado_civil TEXT NOT NULL,
-                    servicio_salud TEXT NOT NULL,
-                    celular TEXT NOT NULL,
-                    turno TEXT NOT NULL,
-                    genero TEXT NOT NULL,
-                    peso REAL NOT NULL,
-                    altura REAL NOT NULL,
-                    imc REAL NOT NULL,
-                    fecha_registro TEXT NOT NULL,
-                    registrado_por TEXT NOT NULL
-                )''')
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS antecedentes_personales (
-        id_paciente  PRIMARY KEY,
-        padecimiento_actual TEXT,
-        medicamento TEXT,
-        discapacidad TEXT,
-        cirugia TEXT,
-        alergias TEXT,
-        consumo_alcohol TEXT,
-        tabaco TEXT,
-        suplementos TEXT,
-        cafeina TEXT,
-        observaciones TEXT,
-        FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
-
-    )
-''')
-#cursor.execute('DROP TABLE IF EXISTS antecedentes_personales')
-
-cursor.execute('''CREATE TABLE IF NOT EXISTS usuarios (
-                    username TEXT PRIMARY KEY,
-                    password TEXT NOT NULL 
-                )''')
-hashed_password_matutino = hashlib.sha256(b'MATUTINO').hexdigest()
-hashed_password_vespertino = hashlib.sha256(b'VESPERTINO').hexdigest()
-cursor.execute("INSERT OR IGNORE INTO usuarios (username, password) VALUES (?, ?)", ('MATUTINO', hashed_password_matutino))
-cursor.execute("INSERT OR IGNORE INTO usuarios (username, password) VALUES (?, ?)", ('VESPERTINO', hashed_password_vespertino))
-cursor.execute('''CREATE TABLE IF NOT EXISTS citas (
-                    id_cita INTEGER PRIMARY KEY AUTOINCREMENT,
-                    id_paciente TEXT,
-                    fecha_consulta TEXT NOT NULL,
-                    hora_consulta TEXT NOT NULL, 
-                    observaciones TEXT,
-                    estado TEXT DEFAULT 'Pendiente',
-                    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
-                )''')
-
-cursor.execute('''CREATE TABLE IF NOT EXISTS antecedentes_familiares (
-                    id_paciente PRIMARY KEY NOT NULL,
-                    diabetes_mellitus_familiar TEXT,
-                    dislipidemias_familiar TEXT,
-                    sobrepeso_obesidad_familiar TEXT,
-                    cancer_tipo_familiar TEXT,
-                    hipertension_familiar TEXT,
-                    cardiopatias_familiar TEXT,
-                    litiasis_familiar TEXT,
-                    artritis_familiar TEXT,
-                    asma_familiar TEXT,
-                    otras TEXT,
-                    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
-                )''')
-
-#cursor.execute('DROP TABLE IF EXISTS antecedentes_familiares')
-cursor.execute('''
-            CREATE TABLE IF NOT EXISTS evaluacion_clinica (
-                id_paciente PRIMARY KEY NOT NULL,
-                piel TEXT,
-                ojos TEXT,
-                unas TEXT,
-                cabello TEXT,
-                boca TEXT,
-                dientes TEXT,
-                observacion TEXT,
-                FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
-            )
-        ''')
-conexion.commit()
-cursor.close()
 
 def login_required(f):
     @wraps(f)
@@ -446,7 +357,7 @@ def registro_antecedentes_personales():
     return render_template('registro_antecedentes_personales.html', pacientes=pacientes)
 
 
-@app.route('/evaluacion_clinica')
+@app.route('/evaluacion_clinica', methods=['GET', 'POST'])
 @login_required
 def evaluacion_clinica():
     if request.method == 'POST':
@@ -463,8 +374,8 @@ def evaluacion_clinica():
         with get_db_connection() as connection:
             cursor = connection.cursor()
             cursor.execute('''
-                INSERT INTO evaluacion_clinica (id_paciente, piel, ojos, unas, cabello, boca, dientes, observacion)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                   INSERT OR REPLACE INTO evaluacion_clinica (id_paciente, piel, ojos, unas, cabello, boca, dientes, observacion)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             ''', (id_paciente, piel, ojos, unas, cabello, boca, dientes, observacion))
             connection.commit()
             
@@ -478,13 +389,81 @@ def evaluacion_clinica():
         
     return render_template('evaluacion_clinica.html', pacientes=pacientes)
 
-@app.route('/evaluacion_dietetica')
+@app.route('/evaluacion_dietetica', methods=['GET', 'POST'])
 @login_required
 def evaluacion_dietetica():
+    if request.method == 'POST':
+        id_paciente = request.form['id_paciente']
+        quien_orientacion = request.form['quien_orientacion']
+        intolerancia_alimento = request.form['intolerancia_alimento']
+        alergia_alimentaria = request.form['alergia_alimentaria']
+        consumo_agua = float(request.form['consumo_agua'])
+        disminucion_apetito = request.form['disminucion_apetito']
+        motivo_apetito = request.form.get('motivo_apetito', '')
+        preferencia_alimentos = request.form['preferencia_alimentos']
+        desagradables_alimentos = request.form['desagradables_alimentos']
+        dinero_semanal = float(request.form['dinero_semanal'])
+        num_personas = int(request.form['num_personas'])
+        quien_prepara = request.form['quien_prepara']
+        desayuno_lugar = request.form.get('desayuno_lugar', '')
+        desayuno_horario = request.form.get('desayuno_horario', '')
+        colacion1_lugar = request.form.get('colacion1_lugar', '')
+        colacion1_horario = request.form.get('colacion1_horario', '')
+        almuerzo_lugar = request.form.get('almuerzo_lugar', '')
+        almuerzo_horario = request.form.get('almuerzo_horario', '')
+        colacion2_lugar = request.form.get('colacion2_lugar', '')
+        colacion2_horario = request.form.get('colacion2_horario', '')
+        cena_lugar = request.form.get('cena_lugar', '')
+        cena_horario = request.form.get('cena_horario', '')
+        frecuencia_cereales = int(request.form.get('frecuencia_cereales', 0))
+        tipo_cereales = request.form.get('tipo_cereales', '')
+        frecuencia_frutas = int(request.form.get('frecuencia_frutas', 0))
+        tipo_frutas = request.form.get('tipo_frutas', '')
+        frecuencia_verduras = int(request.form.get('frecuencia_verduras', 0))
+        tipo_verduras = request.form.get('tipo_verduras', '')
+        frecuencia_aoa = int(request.form.get('frecuencia_aoa', 0))
+        tipo_aoa = request.form.get('tipo_aoa', '')
+        frecuencia_leguminosas = int(request.form.get('frecuencia_leguminosas', 0))
+        tipo_leguminosas = request.form.get('tipo_leguminosas', '')
+        frecuencia_lacteos = int(request.form.get('frecuencia_lacteos', 0))
+        tipo_lacteos = request.form.get('tipo_lacteos', '')
+        frecuencia_grasas = int(request.form.get('frecuencia_grasas', 0))
+        tipo_grasas = request.form.get('tipo_grasas', '')
+        frecuencia_azucar = int(request.form.get('frecuencia_azucar', 0))
+        tipo_azucar = request.form.get('tipo_azucar', '')
+
+        # Conexión a la base de datos y operación de inserción o actualización
+        with get_db_connection() as connection:
+            cursor = connection.cursor()
+            cursor.execute('''
+                INSERT OR REPLACE INTO registro_dietetico (
+                    id_paciente, quien_orientacion, intolerancia_alimento, alergia_alimentaria, consumo_agua,
+                    disminucion_apetito, motivo_apetito, preferencia_alimentos, desagradables_alimentos, dinero_semanal,
+                    num_personas, quien_prepara, desayuno_lugar, desayuno_horario, colacion1_lugar, colacion1_horario,
+                    almuerzo_lugar, almuerzo_horario, colacion2_lugar, colacion2_horario, cena_lugar, cena_horario,
+                    frecuencia_cereales, tipo_cereales, frecuencia_frutas, tipo_frutas, frecuencia_verduras, tipo_verduras,
+                    frecuencia_aoa, tipo_aoa, frecuencia_leguminosas, tipo_leguminosas, frecuencia_lacteos, tipo_lacteos,
+                    frecuencia_grasas, tipo_grasas, frecuencia_azucar, tipo_azucar
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (
+                id_paciente, quien_orientacion, intolerancia_alimento, alergia_alimentaria, consumo_agua, disminucion_apetito,
+                motivo_apetito, preferencia_alimentos, desagradables_alimentos, dinero_semanal, num_personas, quien_prepara,
+                desayuno_lugar, desayuno_horario, colacion1_lugar, colacion1_horario, almuerzo_lugar, almuerzo_horario,
+                colacion2_lugar, colacion2_horario, cena_lugar, cena_horario, frecuencia_cereales, tipo_cereales,
+                frecuencia_frutas, tipo_frutas, frecuencia_verduras, tipo_verduras, frecuencia_aoa, tipo_aoa, frecuencia_leguminosas,
+                tipo_leguminosas, frecuencia_lacteos, tipo_lacteos, frecuencia_grasas, tipo_grasas, frecuencia_azucar, tipo_azucar
+            ))
+            connection.commit()
+
+        # Redireccionar a alguna página después de guardar los datos
+        return redirect(url_for('registro_exitoso'))
+
+    # Obtener la lista de pacientes para mostrar en el formulario
     with get_db_connection() as connection:
         cursor = connection.cursor()
         cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
         pacientes = cursor.fetchall()
+        
     return render_template('evaluacion_dietetica.html', pacientes=pacientes)
 @app.route('/evaluacion_antropometrica')
 @login_required
@@ -502,5 +481,13 @@ def evaluacion_bioquimica():
         cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
         pacientes = cursor.fetchall()
     return render_template('evaluacion_bioquimica.html', pacientes=pacientes)
+@app.route('/historial_nutricional')
+@login_required
+def historial_nutricional():
+    with get_db_connection() as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
+        pacientes = cursor.fetchall()
+    return render_template('historial_nutricional.html', pacientes=pacientes)
 if __name__ == '__main__':
     app.run(debug=True)
