@@ -19,160 +19,178 @@
         </div>
 
 <body>
-        <div class="container1">
-            <fieldset>
-
+    <div class="container1">
+        <fieldset>
             <form action="/evaluacion_dietetica" method="POST">
                 <h2>Evaluación Dietética</h2>
-        <label for="id_paciente">Selecciona un paciente:</label>
-        <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
-        <datalist id="pacientes_list">
-            {% for paciente in pacientes %}
-            <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
-            {% endfor %}
-        </datalist><br><br>
-       
-        <label for="quien_orientacion">¿De quién recibe orientacion alimentaria?</label>
-        <input type="text" id="quien_orientacion" name="quien_orientacion"required>
-        <br><br>
+                <label for="id_paciente">Selecciona un paciente:</label>
+                <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
+                <datalist id="pacientes_list">
+                    {% for paciente in pacientes %}
+                    <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
+                    {% endfor %}
+                </datalist><br><br>
 
-        <label for="intolerancia_alimento">Intolerancia a algún alimento</label>
-        <input type="text" id="intolerancia_alimento" name="intolerancia_alimento"required>
-        <br><br>
+                <label for="quien_orientacion">¿De quién recibe orientación alimentaria?</label>
+                <select type="text" id="quien_orientacion" name="quien_orientacion" required>
+                    <option value="NUTRIOLOGO" > Nutrilogo</option>
+                    <option value="DOCTOR" > Doctor</option>
+                    <option value="NADIE" > Nadie</option>
+                </select>
 
-        <label for="alergia_alimentaria">Alergia Alimentaria</label>
-        <input type="text" id="alergia_alimentaria" name="alergia_alimentaria"required>
-        <br><br>
+                <br><br>
 
-        <label for="consumo_agua">Consumo de agua al día en litros</label>
-        <input type="number" id="consumo_agua" name="consumo_agua" min=0 max= 10 required>
-        <br><br>
-        <label>
-            En los últimos tres meses ha disminuido su apetito
-            <input type="radio" id="si_apetito" name="disminucion_apetito" value="SI">
-            <span>SI</span>
-            <input type="radio" id="no_apetito" name="disminucion_apetito" value="NO"required>
-            <span>NO</span>
-        </label>
+                <label for="intolerancia_alimento">Intolerancia a algún alimento</label>
+                <input type="text" id="intolerancia_alimento" name="intolerancia_alimento" required>
+                <br><br>
 
-        <label for="motivo_apetito">¿Motivo?</label>
-        <input type="text" id="motivo_apetito" name="motivo_apetito">
-        <br><br>
+                <label for="alergia_alimentaria">Alergia Alimentaria</label>
+                <input type="text" id="alergia_alimentaria" name="alergia_alimentaria" required>
+                <br><br>
 
-        <label for="preferencia_alimentos">Alimentos de preferencia</label>
-        <textarea id="preferencia_alimentos" name="preferencia_alimentos"required></textarea>
-        <br><br>
+                <label for="consumo_agua">Consumo de agua al día en litros</label>
+                <input type="number" id="consumo_agua" name="consumo_agua" min="0" max="10" required>
+                <br><br>
 
-        <label for="desagradables_alimentos">Alimentos desagradables</label>
-        <textarea id="desagradables_alimentos" name="desagradables_alimentos"required></textarea>
-        <br><br>
+                <label>
+                    En los últimos tres meses ha disminuido su apetito
+                    <input type="radio" id="si_apetito" name="disminucion_apetito" value="SI">
+                    <span>SI</span>
+                    <input type="radio" id="no_apetito" name="disminucion_apetito" value="NO" required>
+                    <span>NO</span>
+                </label>
 
-        <label for="dinero_semanal">Dinero destinado a la alimentación semanal</label>
-        <input type="number" id="dinero_semanal" name="dinero_semanal" oninput="formatoPesosMexicanos(this)" min=0 >
-        <span id="dinero_semanal_display">0.00 MXN</span>
-        <br><br>
-        <label for="num_personas">No. Personas:</label>
-        <input type="number" id="num_personas" name="num_personas" min=0  required>
-        <br>
-        <label for="quien_prepara">¿Quién lo prepara?</label>
-        <input type="text" id="quien_prepara" name="quien_prepara"required>
-        <br><br>
-        <br><br>
-        <h2>DIETA HABITUAL</h2>
-        <h3>Entre semana</h3>
+                <label for="motivo_apetito">¿Motivo?</label>
+                <input type="text" id="motivo_apetito" name="motivo_apetito">
+                <br><br>
 
-        <table border="1">
-            <tr>
-                <th>Comida</th>
-                <th>Lugar</th>
-                <th>Horario</th>
-            </tr>
-            <tr>
-                <td>Desayuno</td>
-                <td><input type="text" id="desayuno_lugar" name="desayuno_lugar"></td>
-                <td><input type="time" id="desayuno_horario" name="desayuno_horario" ></td>
-            </tr>
-            <tr>
-                <td>Colación 1</td>
-                <td><input type="text" id="colacion1_lugar" name="colacion1_lugar"></td>
-                <td><input type="time" id="colacion1_horario" name="colacion1_horario"></td>
-            </tr>
-            <tr>
-                <td>Almuerzo</td>
-                <td><input type="text" id="almuerzo_lugar" name="almuerzo_lugar"></td>
-                <td><input type="time" id="almuerzo_horario" name="almuerzo_horario" >  </td>
-            </tr>
-            <tr>
-                <td>Colación 2</td>
-                <td><input type="text" id="colacion2_lugar" name="colacion2_lugar"></td>
-                <td><input type="time" id="colacion2_horario" name="colacion2_horario"></td>
-            </tr>
-            <tr>
-                <td>Cena</td>
-                <td><input type="text" id="cena_lugar" name="cena_lugar"></td>
-                <td><input type="time" id="cena_horario" name="cena_horario"></td>
-            </tr>
-        </table>
-    </form>
-    <h3>Frecuencia de Consumo a la semana(/7)</h3>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Grupo de alimentos</th>
-                <th>Frecuencia</th>
-                <th>Tipo</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>CEREALES</td>
-                <td><input type="number" id="frecuencia_cereales" name="frecuencia_cereales" min=0 max=7></td>
-                <td><textarea  type="text" id="tipo_cereales" name="tipo_cereales"> </textarea></td>
-             </tr>
+                <label for="preferencia_alimentos">Alimentos de preferencia</label>
+                <textarea id="preferencia_alimentos" name="preferencia_alimentos" required></textarea>
+                <br><br>
 
-            <tr>
-                <td>FRUTAS</td>
-                <td><input type="number" id="frecuencia_frutas" name="frecuencia_frutas"min=0 max=7></td>
-                <td><textarea type="text" id="tipo_frutas" name="tipo_frutas"></textarea></td>
-            </tr>
-            <tr>
-                <td>VERDURAS</td>
-                <td><input type="number" id="frecuencia_verduras" name="frecuencia_verduras" min=0 max=7></td>
-                <td><textarea type="text" id="tipo_verduras" name="tipo_verduras"></textarea></td>
-            </tr>
-            <tr>
-                <td>AOA (alimentos de origen animal)</td>
-                <td><input type="number" id="frecuencia_aoa" name="frecuencia_aoa" min=0 max=7></td>
-                <td><textarea type="text" id="tipo_aoa" name="tipo_aoa"></textarea></td>
-            </tr>
-            <tr>
-                <td>LEGUMINOSAS</td>
-                <td><input type="number" id="frecuencia_leguminosas" name="frecuencia_leguminosas" min=0 max=7></td>
-                <td><textarea type="text" id="tipo_leguminosas" name="tipo_leguminosas"></textarea></td>
-            </tr>
-            <tr>
-                <td>LÁCTEOS</td>
-                <td><input type="number" id="frecuencia_lacteos" name="frecuencia_lacteos" min=0 max=7></td>
-                <td><textarea type="text" id="tipo_lacteos" name="tipo_lacteos"></textarea></td>
-            </tr>
-            <tr>
-                <td>GRASAS</td>
-                <td><input type="number" id="frecuencia_grasas" name="frecuencia_grasas"min=0 max=7></td>
-                <td><textarea type="text" id="tipo_grasas" name="tipo_grasas"></textarea></td>
-            </tr>
-            <tr>
-                <td>AZÚCARES</td>
-                <td><input type="number" id="frecuencia_azucar" name="frecuencia_azucar"min=0 max=7></td>
-                <td><textarea type="text" id="tipo_azucar" name="tipo_azucar"></textarea></td>
-            </tr>
-        </tbody>
-    </table>
+                <label for="desagradables_alimentos">Alimentos desagradables</label>
+                <textarea id="desagradables_alimentos" name="desagradables_alimentos" required></textarea>
+                <br><br>
 
-    <br><br>
-    <input type="submit" value="Enviar"> 
-</fieldset>
-</div>
+                <label for="dinero_semanal">Dinero destinado para la comida en una semana</label>
+                <input type="number" id="dinero_semanal" name="dinero_semanal" min=0  required>
+                <br><br>
+
+                <label for="num_personas">Número de personas que viven en su casa</label>
+                <input type="number" id="num_personas" name="num_personas" min=0 required>
+                <br><br>
+
+                <label for="quien_prepara">¿Quién prepara los alimentos?</label>
+                <select type="text" id="quien_prepara" name="quien_prepara" required> 
+                    <option value="UNO MISMO" > Uno mismo</option>
+                    <option value="OTRO" >  Otro</option>
+                </select>
+                <br><br>
+
+                <h3>Información de Comidas</h3>
+                <table border="1">
+                    <tr>
+                        <th>Comida</th>
+                        <th>Lugar</th>
+                        <th>Horario</th>
+                    </tr>
+                    <tr>
+                        <td>Desayuno</td>
+                        <td><select type="text" id="desayuno_lugar" name="desayuno_lugar">
+                            <option value="EN CASA " > En casa</option>
+                            <option value="AFUERA" >  En exterior</option></select>
+                        </td>
+                        <td><input type="time" id="desayuno_horario" name="desayuno_horario"></td>
+                    </tr>
+                    <tr>
+                        <td>Primera colación</td>
+                        <td><select type="text" id="colacion1_lugar" name="colacion1_lugar">
+                            <option value="EN CASA " > En casa</option>
+                            <option value="AFUERA" >  En exterior</option></select>
+                        </td>
+                        <td><input type="time" id="colacion1_horario" name="colacion1_horario"></td>
+                    </tr>
+                    <tr>
+                        <td>Almuerzo</td>
+                        <td><select type="text" id="almuerzo_lugar" name="almuerzo_lugar">
+                            <option value="EN CASA " > En casa</option>
+                            <option value="AFUERA" >  En exterior</option></select></td>
+                        <td><input type="time" id="almuerzo_horario" name="almuerzo_horario"></td>
+                    </tr>
+                    <tr>
+                        <td>Segunda colación</td>
+                        <td><select type="text" id="colacion2_lugar" name="colacion2_lugar">
+                            <option value="EN CASA " > En casa</option>
+                            <option value="AFUERA" >  En exterior</option></select>
+                        </td>
+                        <td><input type="time" id="colacion2_horario" name="colacion2_horario"></td>
+                    </tr>
+                    <tr>
+                        <td>Cena</td>
+                        <td><select type="text" id="cena_lugar" name="cena_lugar">
+                            <option value="EN CASA " > En casa</option>
+                            <option value="AFUERA" >  En exterior</option></select>
+                        </td>
+                        <td><input type="time" id="cena_horario" name="cena_horario"></td>
+                    </tr>
+                </table>
+
+                <h3>Frecuencia de Consumo de Alimentos</h3>
+                <table border="1">
+                    <tr>
+                        <th>Alimento</th>
+                        <th>Veces a la semana</th>
+                        <th>Tipo</th>
+                    </tr>
+                    <tr>
+                        <td>Cereales</td>
+                        <td><input type="number" id="frecuencia_cereales" name="frecuencia_cereales" min="0" max="7"></td>
+                        <td><textarea type="text" id="tipo_cereales" name="tipo_cereales"> </textarea> </td>
+                    </tr>
+                    <tr>
+                        <td>Frutas</td>
+                        <td><input type="number" id="frecuencia_frutas" name="frecuencia_frutas" min="0" max="7"></td>
+                        <td><textarea type="text" id="tipo_frutas" name="tipo_frutas"> </textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Verduras</td>
+                        <td><input type="number" id="frecuencia_verduras" name="frecuencia_verduras" min="0" max="7"></td>
+                        <td><textarea type="text" id="tipo_verduras" name="tipo_verduras"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Alimentos de origen animal</td>
+                        <td><input type="number" id="frecuencia_aoa" name="frecuencia_aoa" min="0" max="7"></td>
+                        <td><textarea  type="text" id="tipo_aoa" name="tipo_aoa"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Leguminosas</td>
+                        <td><input type="number" id="frecuencia_leguminosas" name="frecuencia_leguminosas" min="0" max="7"></td>
+                        <td><textarea type="text" id="tipo_leguminosas" name="tipo_leguminosas"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Lácteos</td>
+                        <td><input type="number" id="frecuencia_lacteos" name="frecuencia_lacteos" min="0" max="7"></td>
+                        <td><textarea type="text" id="tipo_lacteos" name="tipo_lacteos"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Grasas</td>
+                        <td><input type="number" id="frecuencia_grasas" name="frecuencia_grasas" min="0" max="7"></td>
+                        <td><textarea type="text" id="tipo_grasas" name="tipo_grasas"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Azúcar</td>
+                        <td><input type="number" id="frecuencia_azucar" name="frecuencia_azucar" min="0" max="7"></td>
+                        <td><textarea  type="text" id="tipo_azucar" name="tipo_azucar"></textarea></td>
+                    </tr>
+                </table>
+            
+
+                <button type="submit">Guardar Evaluación</button>
+            </form>
+        </fieldset>
+    </div>
 </body>
+</html>
 <script>
     function formatoPesosMexicanos(input) {
         // Obtener el valor del input

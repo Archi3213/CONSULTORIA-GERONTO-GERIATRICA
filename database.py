@@ -132,6 +132,42 @@ cursor.execute('''
         FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
     )
 ''')
-
+cursor.execute('''CREATE TABLE IF NOT EXISTS evaluacion_antropometrica (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id_paciente INTEGER NOT NULL,
+            fecha TEXT NOT NULL,
+            peso REAL,
+            imc REAL,
+            grasa REAL,
+            musculo REAL,
+            grasa_visceral REAL,
+            cintura REAL,
+            cadera REAL,
+            cm_bc REAL,
+            pantorrilla REAL,
+            presion_arterial TEXT,
+            g_capilar REAL,
+            diagnostico_antropometrico TEXT,
+            plan_alimentacion TEXT,
+            observaciones TEXT,
+            FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
+        )''')
+cursor.execute('''CREATE TABLE IF NOT EXISTS evaluacion_bioquimica (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_paciente INTEGER NOT NULL,
+    fecha_hb_hto TEXT,
+    fecha_col_trig TEXT,
+    fecha_guca TEXT,
+    hb REAL,
+    hto REAL,
+    colesterol REAL,
+    trigliceridos REAL,
+    glucosa REAL,
+    urea REAL,
+    creatinina REAL,
+    acido_urico REAL,
+    otros TEXT,
+    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
+)''')
 conexion.commit()
 cursor.close()

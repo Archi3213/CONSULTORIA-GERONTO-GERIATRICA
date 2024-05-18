@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detalles del Paciente</title>
+</head>
+<body>
+    <h1>Detalles del Paciente</h1>
+    {% if paciente %}
+        <h2>Información Personal</h2>
+        <p>ID: {{ paciente.id_paciente }}</p>
+        <p>Nombre: {{ paciente.nombres }} {{ paciente.primer_apellido }} {{ paciente.segundo_apellido }}</p>
+        <p>Fecha de Nacimiento: {{ paciente.fecha_nacimiento }}</p>
+        <p>Religión: {{ paciente.religion }}</p>
+        <p>Escolaridad: {{ paciente.escolaridad }}</p>
+        <p>Ocupación: {{ paciente.ocupacion }}</p>
+        <p>Estado Civil: {{ paciente.estado_civil }}</p>
+        <p>Servicio de Salud: {{ paciente.servicio_salud }}</p>
+        <p>Celular: {{ paciente.celular }}</p>
+        <p>Turno: {{ paciente.turno }}</p>
+        <p>Género: {{ paciente.genero }}</p>
+        <p>Peso: {{ paciente.peso }} kg</p>
+        <p>Altura: {{ paciente.altura }} m</p>
+        <p>IMC: {{ paciente.imc }}</p>
+        <p>Fecha de Registro: {{ paciente.fecha_registro }}</p>
+        <p>Registrado por: {{ paciente.registrado_por }}</p>
+
+        <h2>Antecedentes Personales</h2>
+        {% if antecedentes_personales %}
+            <p>Padecimiento Actual: {{ antecedentes_personales.padecimiento_actual }}</p>
+            <p>Medicamento: {{ antecedentes_personales.medicamento }}</p>
+            <p>Discapacidad: {{ antecedentes_personales.discapacidad }}</p>
+            <p>Cirugía: {{ antecedentes_personales.cirugia }}</p>
+            <p>Alergias: {{ antecedentes_personales.alergias }}</p>
+            <p>Consumo de Alcohol: {{ antecedentes_personales.consumo_alcohol }}</p>
+            <p>Tabaco: {{ antecedentes_personales.tabaco }}</p>
+            <p>Suplementos: {{ antecedentes_personales.suplementos }}</p>
+            <p>Cafeína: {{ antecedentes_personales.cafeina }}</p>
+            <p>Observaciones: {{ antecedentes_personales.observaciones }}</p>
+        {% else %}
+            <p>No hay datos de antecedentes personales.</p>
+        {% endif %}
+
+        <h2>Antecedentes Familiares</h2>
+        {% if antecedentes_familiares %}
+            <p>Diabetes Mellitus: {{ antecedentes_familiares.diabetes_mellitus_familiar }}</p>
+            <p>Dislipidemias: {{ antecedentes_familiares.dislipidemias_familiar }}</p>
+            <p>Sobrepeso/Obesidad: {{ antecedentes_familiares.sobrepeso_obesidad_familiar }}</p>
+            <p>Cáncer: {{ antecedentes_familiares.cancer_tipo_familiar }}</p>
+            <p>Hipertensión: {{ antecedentes_familiares.hipertension_familiar }}</p>
+            <p>Cardiopatías: {{ antecedentes_familiares.cardiopatias_familiar }}</p>
+            <p>Litiasis: {{ antecedentes_familiares.litiasis_familiar }}</p>
+            <p>Artritis: {{ antecedentes_familiares.artritis_familiar }}</p>
+            <p>Asma: {{ antecedentes_familiares.asma_familiar }}</p>
+            <p>Otras: {{ antecedentes_familiares.otras }}</p>
+        {% else %}
+            <p>No hay datos de antecedentes familiares.</p>
+        {% endif %}
+
+        <h2>Citas</h2>
+        {% if citas %}
+            <ul>
+            {% for cita in citas %}
+                <li>Fecha: {{ cita.fecha_consulta }} | Hora: {{ cita.hora_consulta }} | Observaciones: {{ cita.observaciones }} | Estado: {{ cita.estado }}</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay citas registradas.</p>
+        {% endif %}
+
+        <h2>Evaluación Clínica</h2>
+        {% if evaluacion_clinica %}
+            <p>Piel: {{ evaluacion_clinica.piel }}</p>
+            <p>Ojos: {{ evaluacion_clinica.ojos }}</p>
+            <p>Uñas: {{ evaluacion_clinica.unas }}</p>
+            <p>Cabello: {{ evaluacion_clinica.cabello }}</p>
+            <p>Boca: {{ evaluacion_clinica.boca }}</p>
+            <p>Dientes: {{ evaluacion_clinica.dientes }}</p>
+            <p>Observación: {{ evaluacion_clinica.observacion }}</p>
+        {% else %}
+            <p>No hay datos de evaluación clínica.</p>
+        {% endif %}
+
+        <h2>Registro Dietético</h2>
+        {% if registro_dietetico %}
+            <p>¿Quién da la orientación?: {{ registro_dietetico.quien_orientacion }}</p>
+            <p>Intolerancia a Alimentos: {{ registro_dietetico.intolerancia_alimento }}</p>
+            <p>Alergia Alimentaria: {{ registro_dietetico.alergia_alimentaria }}</p>
+            <p>Consumo de Agua: {{ registro_dietetico.consumo_agua }} L</p>
+            <p>Disminución del Apetito: {{ registro_dietetico.disminucion_apetito }}</p>
+            <p>Motivo del Apetito: {{ registro_dietetico.motivo_apetito }}</p>
+            <p>Preferencia de Alimentos: {{ registro_dietetico.preferencia_alimentos }}</p>
+            <p>Desagradables: {{ registro_dietetico.desagradables_alimentos }}</p>
+            <p>Dinero Semanal: {{ registro_dietetico.dinero_semanal }} pesos</p>
+            <p>Número de Personas en Casa: {{ registro_dietetico.num_personas }}</p>
+            <p>¿Quién prepara los alimentos?: {{ registro_dietetico.quien_prepara }}</p>
+            <p>Desayuno - Lugar: {{ registro_dietetico.desayuno_lugar }}, Horario: {{ registro_dietetico.desayuno_horario }}</p>
+            <p>Colación 1 - Lugar: {{ registro_dietetico.colacion1_lugar }}, Horario: {{ registro_dietetico.colacion1_horario }}</p>
+            <p>Almuerzo - Lugar: {{ registro_dietetico.almuerzo_lugar }}, Horario: {{ registro_dietetico.almuerzo_horario }}</p>
+            <p>Colación 2 - Lugar: {{ registro_dietetico.colacion2_lugar }}, Horario: {{ registro_dietetico.colacion2_horario }}</p>
+            <p>Cena - Lugar: {{ registro_dietetico.cena_lugar }}, Horario: {{ registro_dietetico.cena_horario }}</p>
+            <p>Frecuencia de Cereales: {{ registro_dietetico.frecuencia_cereales }}, Tipo: {{ registro_dietetico.tipo_cereales }}</p>
+            <p>Frecuencia de Frutas: {{ registro_dietetico.frecuencia_frutas }}, Tipo: {{ registro_dietetico.tipo_frutas }}</p>
+            <p>Frecuencia de Verduras: {{ registro_dietetico.frecuencia_verduras }}, Tipo: {{ registro_dietetico.tipo_verduras }}</p>
+            <p>Frecuencia de AOA: {{ registro_dietetico.frecuencia_aoa }}, Tipo: {{ registro_dietetico.tipo_aoa }}</p>
+            <p>Frecuencia de Leguminosas: {{ registro_dietetico.frecuencia_leguminosas }}, Tipo: {{ registro_dietetico.tipo_leguminosas }}</p>
+            <p>Frecuencia de Lácteos: {{ registro_dietetico.frecuencia_lacteos }}, Tipo: {{ registro_dietetico.tipo_lacteos }}</p>
+            <p>Frecuencia de Grasas: {{ registro_dietetico.frecuencia_grasas }}, Tipo: {{ registro_dietetico.tipo_grasas }}</p>
+            <p>Frecuencia de Azúcar: {{ registro_dietetico.frecuencia_azucar }}, Tipo: {{ registro_dietetico.tipo_azucar }}</p>
+        {% else %}
+            <p>No hay datos de registro dietético.</p>
+        {% endif %}
+
+        <h2>Evaluación Antropométrica</h2>
+        {% if evaluacion_antropometrica %}
+            <ul>
+            {% for eval_ant in evaluacion_antropometrica %}
+                <li>Fecha: {{ eval_ant.fecha }} | Peso: {{ eval_ant.peso }} | IMC: {{ eval_ant.imc }} | Grasa: {{ eval_ant.grasa }} | Músculo: {{ eval_ant.musculo }} | Grasa Visceral: {{ eval_ant.grasa_visceral }} | Cintura: {{ eval_ant.cintura }} | Cadera: {{ eval_ant.cadera }} | CM BC: {{ eval_ant.cm_bc }} | Pantorrilla: {{ eval_ant.pantorrilla }} | Presión Arterial: {{ eval_ant.presion_arterial }} | G Capilar: {{ eval_ant.g_capilar }} | Diagnóstico Antropométrico: {{ eval_ant.diagnostico_antropometrico }} | Plan de Alimentación: {{ eval_ant.plan_alimentacion }} | Observaciones: {{ eval_ant.observaciones }}</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay datos de evaluación antropométrica.</p>
+        {% endif %}
+
+        <h2>Evaluación Bioquímica</h2>
+        {% if evaluacion_bioquimica %}
+            <ul>
+            {% for eval_bio in evaluacion_bioquimica %}
+                <li>Fecha HB/HTO: {{ eval_bio.fecha_hb_hto }} | Fecha Col/Trig: {{ eval_bio.fecha_col_trig }} | Fecha Gluca: {{ eval_bio.fecha_guca }} | HB: {{ eval_bio.hb }} | HTO: {{ eval_bio.hto }} | Colesterol: {{ eval_bio.colesterol }} | Triglicéridos: {{ eval_bio.trigliceridos }} | Glucosa: {{ eval_bio.glucosa }} | Urea: {{ eval_bio.urea }} | Creatinina: {{ eval_bio.creatinina }} | Ácido Úrico: {{ eval_bio.acido_urico }} | Otros: {{ eval_bio.otros }}</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay datos de evaluación bioquímica.</p>
+        {% endif %}
+    {% else %}
+        <p>No se encontró el paciente.</p>
+    {% endif %}
+</body>
+</html>
+

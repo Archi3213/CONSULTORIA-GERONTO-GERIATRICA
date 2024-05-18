@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Buscar Paciente</title>
+</head>
+<body>
+    <h1>Buscar Paciente</h1>
+    <form action="{{ url_for('detalles_paciente') }}" method="post">
+        <label for="id_paciente">ID del Paciente:</label>
+        <input type="text" id="id_paciente" name="id_paciente" required>
+        <input type="submit" value="Buscar">
+    </form>
+</body>
+</html>

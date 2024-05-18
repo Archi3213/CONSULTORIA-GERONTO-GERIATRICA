@@ -58,17 +58,14 @@
                         <p>ID Paciente: {{ cita[1] }}</p>
                         <p>Fecha Cita: {{ cita[2] }}</p>
                         <p>Hora Cita: {{ cita[3] }}</p>
-                        <p>{{ cita[5] }}</p>
-                        <!-- Agrega más detalles de la cita según tu estructura de datos -->
-                        <form action="/actualizar_estado" method="POST" class="update-form">
+                        <form action="/actualizar_estado" method="POST">
                             <input type="hidden" name="id_cita" value="{{ cita[0] }}">
-                            <label for="estado">Nuevo Estado:</label>
-                            <select name="estado" id="estado">
-                                <option value="Pendiente">Pendiente</option>
-                                <option value="Atendida">Atendida</option>
-                                <option value="Cancelada">Cancelada</option>
+                            <select name="estado">
+                                <option value="Pendiente" {% if cita[5] == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                                <option value="Atendida" {% if cita[5] == 'Atendida' %}selected{% endif %}>Atendida</option>
+                                <option value="Cancelada" {% if cita[5] == 'Cancelada' %}selected{% endif %}>Cancelada</option>
                             </select>
-                            <input type="submit" value="Actualizar Estado">
+                            <input type="submit" value="Actualizar">
                         </form>
                     </div>
                     {% endfor %}

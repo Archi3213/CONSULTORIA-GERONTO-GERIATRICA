@@ -432,7 +432,6 @@ def evaluacion_dietetica():
         frecuencia_azucar = int(request.form.get('frecuencia_azucar', 0))
         tipo_azucar = request.form.get('tipo_azucar', '')
 
-        # Conexión a la base de datos y operación de inserción o actualización
         with get_db_connection() as connection:
             cursor = connection.cursor()
             cursor.execute('''
@@ -444,7 +443,7 @@ def evaluacion_dietetica():
                     frecuencia_cereales, tipo_cereales, frecuencia_frutas, tipo_frutas, frecuencia_verduras, tipo_verduras,
                     frecuencia_aoa, tipo_aoa, frecuencia_leguminosas, tipo_leguminosas, frecuencia_lacteos, tipo_lacteos,
                     frecuencia_grasas, tipo_grasas, frecuencia_azucar, tipo_azucar
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''', (
                 id_paciente, quien_orientacion, intolerancia_alimento, alergia_alimentaria, consumo_agua, disminucion_apetito,
                 motivo_apetito, preferencia_alimentos, desagradables_alimentos, dinero_semanal, num_personas, quien_prepara,
@@ -455,39 +454,148 @@ def evaluacion_dietetica():
             ))
             connection.commit()
 
-        # Redireccionar a alguna página después de guardar los datos
         return redirect(url_for('registro_exitoso'))
 
-    # Obtener la lista de pacientes para mostrar en el formulario
     with get_db_connection() as connection:
         cursor = connection.cursor()
         cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
         pacientes = cursor.fetchall()
-        
+
     return render_template('evaluacion_dietetica.html', pacientes=pacientes)
-@app.route('/evaluacion_antropometrica')
+
+
+@app.route('/evaluacion_antropometrica', methods=['GET', 'POST'])
 @login_required
 def evaluacion_antropometrica():
+    if request.method == 'POST':
+        id_paciente = request.form['id_paciente']
+        fecha = request.form['fecha']
+        peso = request.form['peso']
+        imc = request.form['imc']
+        grasa = request.form['grasa']
+        musculo = request.form['musculo']
+        grasa_visceral = request.form['grasa_visceral']
+        cintura = request.form['cintura']
+        cadera = request.form['cadera']
+        cm_bc = request.form['cm_bc']
+        pantorrilla = request.form['pantorrilla']
+        presion_arterial = request.form['presion_arterial']
+        g_capilar = request.form['g_capilar']
+        diagnostico_antropometrico = request.form['diagnostico_antropometrico']
+        plan_alimentacion = request.form['plan_alimentacion']
+        observaciones = request.form['observaciones']
+
+        with get_db_connection() as connection:
+            cursor = connection.cursor()
+            cursor.execute('''INSERT INTO evaluacion_antropometrica (
+                    id_paciente, fecha, peso, imc, grasa, musculo, grasa_visceral,
+                    cintura, cadera, cm_bc, pantorrilla, presion_arterial, g_capilar,
+                    diagnostico_antropometrico, plan_alimentacion, observaciones
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (
+                    id_paciente, fecha, peso, imc, grasa, musculo, grasa_visceral,
+                    cintura, cadera, cm_bc, pantorrilla, presion_arterial, g_capilar,
+                    diagnostico_antropometrico, plan_alimentacion, observaciones
+                ))
+            connection.commit()
+        return redirect(url_for('registro_exitoso'))
+    
     with get_db_connection() as connection:
-        cursor = connection.cursor()
-        cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
-        pacientes = cursor.fetchall()
+            cursor = connection.cursor()
+            cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
+            pacientes = cursor.fetchall()
+    
     return render_template('evaluacion_antropometrica.html', pacientes=pacientes)
-@app.route('/evaluacion_bioquimica')
+
+@app.route('/evaluacion_bioquimica', methods=['GET', 'POST'])
 @login_required
 def evaluacion_bioquimica():
+    if request.method == 'POST':
+        id_paciente = request.form['id_paciente']
+        fecha_hb_hto = request.form['fecha_hb_hto']
+        fecha_col_trig = request.form['fecha_col_trig']
+        fecha_guca = request.form['fecha_guca']
+        hb = request.form['hb']
+        hto = request.form['hto']
+        colesterol = request.form['colesterol']
+        trigliceridos = request.form['trigliceridos']
+        glucosa = request.form['glucosa']
+        urea = request.form['urea']
+        creatinina = request.form['creatinina']
+        acido_urico = request.form['acido_urico']
+        otros = request.form['otros']
+
+        with get_db_connection() as connection:
+            cursor = connection.cursor()
+            cursor.execute('''INSERT INTO evaluacion_bioquimica (
+                    id_paciente, fecha_hb_hto, fecha_col_trig, fecha_guca, hb, hto, colesterol, 
+                    trigliceridos, glucosa, urea, creatinina, acido_urico, otros
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (
+                    id_paciente, fecha_hb_hto, fecha_col_trig, fecha_guca, hb, hto, colesterol, 
+                    trigliceridos, glucosa, urea, creatinina, acido_urico, otros
+                ))
+            connection.commit()
+        return redirect(url_for('registro_exitoso'))
+    
     with get_db_connection() as connection:
-        cursor = connection.cursor()
-        cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
-        pacientes = cursor.fetchall()
+            cursor = connection.cursor()
+            cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
+            pacientes = cursor.fetchall()
+    
     return render_template('evaluacion_bioquimica.html', pacientes=pacientes)
-@app.route('/historial_nutricional')
+
+def get_db_connection():
+    connection = sqlite3.connect('nutricion_consulta.db')
+    connection.row_factory = sqlite3.Row
+    return connection
+
+@app.route('/detalles_paciente', methods=['GET', 'POST'])
 @login_required
-def historial_nutricional():
-    with get_db_connection() as connection:
+def detalles_paciente():
+    if request.method == 'POST':
+        id_paciente = request.form['id_paciente']
+        
+        connection = get_db_connection()
         cursor = connection.cursor()
-        cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
-        pacientes = cursor.fetchall()
-    return render_template('historial_nutricional.html', pacientes=pacientes)
+        
+        # Obtener datos del paciente
+        cursor.execute('SELECT * FROM pacientes WHERE id_paciente = ?', (id_paciente,))
+        paciente = cursor.fetchone()
+        
+        # Obtener datos de antecedentes personales
+        cursor.execute('SELECT * FROM antecedentes_personales WHERE id_paciente = ?', (id_paciente,))
+        antecedentes_personales = cursor.fetchone()
+        
+        # Obtener datos de antecedentes familiares
+        cursor.execute('SELECT * FROM antecedentes_familiares WHERE id_paciente = ?', (id_paciente,))
+        antecedentes_familiares = cursor.fetchone()
+        
+        # Obtener datos de citas
+        cursor.execute('SELECT * FROM citas WHERE id_paciente = ?', (id_paciente,))
+        citas = cursor.fetchall()
+        
+        # Obtener datos de evaluación clínica
+        cursor.execute('SELECT * FROM evaluacion_clinica WHERE id_paciente = ?', (id_paciente,))
+        evaluacion_clinica = cursor.fetchone()
+        
+        # Obtener datos de registro dietético
+        cursor.execute('SELECT * FROM registro_dietetico WHERE id_paciente = ?', (id_paciente,))
+        registro_dietetico = cursor.fetchone()
+        
+        # Obtener datos de evaluación antropométrica
+        cursor.execute('SELECT * FROM evaluacion_antropometrica WHERE id_paciente = ?', (id_paciente,))
+        evaluacion_antropometrica = cursor.fetchall()
+        
+        # Obtener datos de evaluación bioquímica
+        cursor.execute('SELECT * FROM evaluacion_bioquimica WHERE id_paciente = ?', (id_paciente,))
+        evaluacion_bioquimica = cursor.fetchall()
+        
+        connection.close()
+        
+        return render_template('detalles_paciente.html', paciente=paciente, antecedentes_personales=antecedentes_personales,
+                               antecedentes_familiares=antecedentes_familiares, citas=citas, evaluacion_clinica=evaluacion_clinica,
+                               registro_dietetico=registro_dietetico, evaluacion_antropometrica=evaluacion_antropometrica,
+                               evaluacion_bioquimica=evaluacion_bioquimica)
+    return render_template('buscar_paciente.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
