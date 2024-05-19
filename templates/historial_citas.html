@@ -28,7 +28,7 @@
             <form action="{{ url_for('historial_citas') }}" method="post" class="filter-form">
 
             <label for="filtro_id">Filtrar por ID:</label>
-            <input type="text" id="filter_id" name="filter_text" list="pacientes_list" required>
+            <input type="text" id="filter_id" name="filter_text" list="pacientes_list">
             <datalist id="pacientes_list">
                 {% for paciente in pacientes %}
                 <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
@@ -57,10 +57,8 @@
                             <option value="Pendiente" {% if filter_estado == 'Pendiente' %} selected {% endif %}>Pendiente</option>
                             <option value="Realizada" {% if filter_estado == 'Realizada' %} selected {% endif %}>Realizada</option>
                             <input type="submit" value="Buscar">
-
                         </select>
                     </form>
-                    
                 </th>
             </tr>
             {% for cita in citas %}
