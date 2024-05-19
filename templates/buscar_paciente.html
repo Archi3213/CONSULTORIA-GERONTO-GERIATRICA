@@ -1,14 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/png" href="static\css\Imagen\_44109a07-adb5-4db9-90c0-8bac1621533a-removebg-preview.png">
     <title>Buscar Paciente</title>
 </head>
 <body>
+    <div class="navbar">
+        <a href="/">Inicio</a>
+        <a href="/registro">Registro</a>
+        <a href="/consultar">Registro de consultas</a>
+        <a href="/options">Calendario</a>
+        <a href="/agendar_cita">Agendar Cita</a>
+        <a href="/historial_citas">Historial de Citas</a>
+        <a href="/directorio_pacientes">Directorio Pacientes</a>
+        <a href="/expediente">Expediente</a>
+    </div>
+    <div class="container1">
     <h1>Buscar Paciente</h1>
     <form action="{{ url_for('detalles_paciente') }}" method="post">
-        <label for="id_paciente">ID del Paciente:</label>
-        <input type="text" id="id_paciente" name="id_paciente" required>
+        <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
+        <datalist id="pacientes_list">
+            {% for paciente in pacientes %}
+            <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
+            {% endfor %}
+        </datalist><br><br>
         <input type="submit" value="Buscar">
-    </form>
+    </form></div>
 </body>
 </html>

@@ -1,9 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
+   
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/png" href="static/css/Imagen/_44109a07-adb5-4db9-90c0-8bac1621533a-removebg-preview.png">
     <title>Detalles del Paciente</title>
 </head>
 <body>
+    <div class="navbar">
+        <a href="/">Inicio</a>
+        <a href="/registro">Registro</a>
+        <a href="/consultar">Registro de consultas</a>
+        <a href="/options">Calendario</a>
+        <a href="/agendar_cita">Agendar Cita</a>
+        <a href="/historial_citas">Historial de Citas</a>
+        <a href="/directorio_pacientes">Directorio Pacientes</a>
+        <a href="/expediente">Expediente</a>
+    </div>
+    <div class="container1">     
     <h1>Detalles del Paciente</h1>
     {% if paciente %}
         <h2>Información Personal</h2>
@@ -133,7 +147,7 @@
         {% endif %}
     {% else %}
         <p>No se encontró el paciente.</p>
-    {% endif %}
+    {% endif %} </div>
 </body>
 </html>
 

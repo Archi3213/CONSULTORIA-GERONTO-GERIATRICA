@@ -596,6 +596,14 @@ def detalles_paciente():
                                registro_dietetico=registro_dietetico, evaluacion_antropometrica=evaluacion_antropometrica,
                                evaluacion_bioquimica=evaluacion_bioquimica)
     return render_template('buscar_paciente.html')
-
+@app.route('/buscar_paciente')
+@login_required
+def buscar_paciente():
+    with get_db_connection() as connection:
+            cursor = connection.cursor()
+            cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
+            pacientes = cursor.fetchall()
+    
+    return render_template('buscar_paciente.html', pacientes=pacientes)
 if __name__ == '__main__':
     app.run(debug=True)
