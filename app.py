@@ -54,7 +54,7 @@ def login():
         conexion = sqlite3.connect('nutricion_consulta.db')
         cursor = conexion.cursor()
 
-        cursor.execute("SELECT * FROM usuarios WHERE username = ?", (username,))
+        cursor.execute("SELECT * FROM usuarios_nutricion WHERE username = ?", (username,))
         user = cursor.fetchone()
 
         cursor.close()
@@ -76,10 +76,10 @@ def options():
 
     with get_db_connection() as connection:
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM citas WHERE fecha_consulta = ?", (current_date,))
+        cursor.execute("SELECT * FROM citas_nutricion WHERE fecha_consulta = ?", (current_date,))
         citas_hoy = cursor.fetchall()
 
-        cursor.execute("SELECT * FROM citas WHERE fecha_consulta = ?", (tomorrow_date,))
+        cursor.execute("SELECT * FROM citas_nutricion WHERE fecha_consulta = ?", (tomorrow_date,))
         citas_manana = cursor.fetchall()
 
     return render_template('options.html', citas_hoy=citas_hoy, citas_manana=citas_manana)
@@ -163,7 +163,7 @@ def agendar_cita():
 
         with get_db_connection() as connection:
             cursor = connection.cursor()
-            cursor.execute('''INSERT INTO citas (id_paciente, fecha_consulta, hora_consulta, observaciones) 
+            cursor.execute('''INSERT INTO citas_nutricion (id_paciente, fecha_consulta, hora_consulta, observaciones) 
                             VALUES (?, ?, ?, ?)''', 
                             (id_paciente, fecha_consulta, hora_consulta, observaciones))
 
@@ -186,27 +186,27 @@ def historial_citas():
 
         if request.method == 'POST' and filter_text and filter_by:
             if filter_by == 'id_paciente':
-                cursor.execute("SELECT * FROM citas WHERE LOWER(id_paciente) LIKE LOWER(?)", ('%' + filter_text + '%',))
+                cursor.execute("SELECT * FROM citas_nutricion WHERE LOWER(id_paciente) LIKE LOWER(?)", ('%' + filter_text + '%',))
             elif filter_by == 'estado':
-                cursor.execute("SELECT * FROM citas WHERE LOWER(estado) = LOWER(?)", (filter_text, ))
+                cursor.execute("SELECT * FROM citas_nutricion WHERE LOWER(estado) = LOWER(?)", (filter_text, ))
             else:
-                cursor.execute("SELECT * FROM citas")
+                cursor.execute("SELECT * FROM citas_nutricion")
         else:
-            cursor.execute("SELECT * FROM citas")
+            cursor.execute("SELECT * FROM citas_nutricion")
 
-        citas = cursor.fetchall()
+        citas_nutricion = cursor.fetchall()
     with get_db_connection() as connection:
      cursor = connection.cursor()
     cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
     pacientes = cursor.fetchall()
-    citas_ordenadas = sorted(citas, key=itemgetter(0), reverse=True)
+    citas_ordenadas = sorted(citas_nutricion, key=itemgetter(0), reverse=True)
 
     with get_db_connection() as connection:
         cursor = connection.cursor()
         cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
         pacientes = cursor.fetchall()
 
-    return render_template('historial_citas.html', citas=citas_ordenadas, pacientes=pacientes)
+    return render_template('historial_citas.html', citas_nutricion=citas_ordenadas, pacientes=pacientes)
 @app.route('/actualizar_estado', methods=['POST'])
 @login_required
 def actualizar_estado():
@@ -216,7 +216,7 @@ def actualizar_estado():
 
         with get_db_connection() as connection:
             cursor = connection.cursor()
-            cursor.execute("UPDATE citas SET estado = ? WHERE id_cita = ?", (nuevo_estado, id_cita))
+            cursor.execute("UPDATE citas_nutricion SET estado = ? WHERE id_cita = ?", (nuevo_estado, id_cita))
             connection.commit()
 
     # Obtener la URL de la página anterior
@@ -339,7 +339,7 @@ def registro_antecedentes_personales():
         with get_db_connection() as connection:
             cursor = connection.cursor()
             cursor.execute("""
-                INSERT OR REPLACE INTO antecedentes_personales 
+                INSERT OR REPLACE INTO antecedentes_personales_nutricion 
                 (id_paciente, padecimiento_actual, medicamento, discapacidad, cirugia, alergias, consumo_alcohol, tabaco, suplementos, cafeina, observaciones) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,? , ?)
             """, (id_paciente, padecimiento_actual, medicamento, discapacidad, cirugia, alergias, consumo_alcohol, tabaco, suplementos, cafeina, observaciones))
@@ -562,16 +562,16 @@ def detalles_paciente():
         paciente = cursor.fetchone()
         
         # Obtener datos de antecedentes personales
-        cursor.execute('SELECT * FROM antecedentes_personales WHERE id_paciente = ?', (id_paciente,))
-        antecedentes_personales = cursor.fetchone()
+        cursor.execute('SELECT * FROM antecedentes_personales_nutricion WHERE id_paciente = ?', (id_paciente,))
+        antecedentes_personales_nutricion = cursor.fetchone()
         
         # Obtener datos de antecedentes familiares
         cursor.execute('SELECT * FROM antecedentes_familiares WHERE id_paciente = ?', (id_paciente,))
         antecedentes_familiares = cursor.fetchone()
         
         # Obtener datos de citas
-        cursor.execute('SELECT * FROM citas WHERE id_paciente = ?', (id_paciente,))
-        citas = cursor.fetchall()
+        cursor.execute('SELECT * FROM citas_nutricion WHERE id_paciente = ?', (id_paciente,))
+        citas_nutricion = cursor.fetchall()
         
         # Obtener datos de evaluación clínica
         cursor.execute('SELECT * FROM evaluacion_clinica WHERE id_paciente = ?', (id_paciente,))
@@ -591,8 +591,8 @@ def detalles_paciente():
         
         connection.close()
         
-        return render_template('detalles_paciente.html', paciente=paciente, antecedentes_personales=antecedentes_personales,
-                               antecedentes_familiares=antecedentes_familiares, citas=citas, evaluacion_clinica=evaluacion_clinica,
+        return render_template('detalles_paciente.html', paciente=paciente, antecedentes_personales_nutricion=antecedentes_personales_nutricion,
+                               antecedentes_familiares=antecedentes_familiares, citas_nutricion=citas_nutricion, evaluacion_clinica=evaluacion_clinica,
                                registro_dietetico=registro_dietetico, evaluacion_antropometrica=evaluacion_antropometrica,
                                evaluacion_bioquimica=evaluacion_bioquimica)
     return render_template('buscar_paciente.html')
@@ -606,4 +606,5 @@ def buscar_paciente():
     
     return render_template('buscar_paciente.html', pacientes=pacientes)
 if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
     app.run(debug=True)

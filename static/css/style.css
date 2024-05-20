@@ -456,7 +456,7 @@ strong {
 
 /* Estilos para el contenedor */
 .container1 {
-    max-width: 600px;
+    width: 600px;
     margin: 50px auto;
     padding: 40px;
     border: 2px solid #57f442;
@@ -622,6 +622,8 @@ table {
     opacity: 1;
     animation: fadeIn 0.5s ease-in-out;
     transition: opacity 0.5s ease-in-out;
+    text-size-adjust: 10%;
+
 }
 
 /* Aplicar estilos a las celdas de la tabla */
@@ -656,4 +658,234 @@ table tr:nth-child(even) {
     to {
         opacity: 1;
     }
+}
+.detalles_paciente {
+    font-family: Arial, sans-serif;
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 1200px;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+}
+
+/* Heading styles */
+.detalles_paciente h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.detalles_paciente h2 {
+    color: #555;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+    margin-top: 20px;
+}
+
+/* Section styles */
+.detalles_paciente .section {
+    margin-bottom: 20px;
+}
+
+/* Paragraph styles */
+.detalles_paciente p {
+    margin: 5px 0;
+    color: #444;
+}
+
+/* Table styles */
+.detalles_paciente .table {
+    overflow-x: auto;
+    margin-top: 10px;
+}
+
+.detalles_paciente table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.detalles_paciente table th, 
+.detalles_paciente table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.detalles_paciente table th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.detalles_paciente .table {
+    overflow-x: auto;
+    margin-top: 10px;
+}
+
+.detalles_paciente table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    table-layout: fixed; /* Ensures the table is fixed width */
+}
+
+.detalles_paciente table th, 
+.detalles_paciente table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    word-wrap: break-word; /* Ensures long text will wrap within the cell */
+}
+
+.detalles_paciente table th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+/* Print button styles */
+.detalles_paciente .print-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.detalles_paciente .print-button:hover {
+    background-color: #45a049;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .detalles_paciente {
+        padding: 10px;
+    }
+    
+    .detalles_paciente h1 {
+        font-size: 24px;
+    }
+    
+    .detalles_paciente h2 {
+        font-size: 20px;
+    }
+
+    .detalles_paciente p {
+        font-size: 14px;
+    }
+
+    .detalles_paciente .print-button {
+        font-size: 14px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .detalles_paciente {
+        width: 100%;
+        padding: 0;
+        box-shadow: none;
+        background-color: white;
+    }
+
+    .detalles_paciente .section {
+        page-break-inside: avoid; /* Prevents sections from being split across pages */
+    }
+
+    .detalles_paciente table {
+        width: 100%;
+        font-size: 10px; /* Adjusts font size for printing */
+    }
+
+    .detalles_paciente table th, 
+    .detalles_paciente table td {
+        padding: 4px; /* Adjusts padding for printing */
+    }
+
+    .detalles_paciente .print-button {
+        display: none; /* Hides the print button when printing */
+    }
+    .section {
+        max-width: 100%;
+        padding: 0;
+        box-shadow: none;
+        background-color: white;
+    }
+
+    .info-group {
+        page-break-inside: avoid;
+    }
+    .info-table td {
+        border: none;
+        padding: 4px;
+    }
+    .info-group p, .horizontal-table th, .horizontal-table td {
+        border: none;
+        padding: 4px;
+    }
+
+    .horizontal-table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .horizontal-table th, .horizontal-table td {
+        border: 1px solid black;
+    }
+}
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.info-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    vertical-align: top;
+}
+
+.info-table td:first-child {
+    font-weight: bold;
+    width: 30%;
+    background-color: #f2f2f2;
+}
+
+.info-group {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.info-group label {
+    flex-basis: 30%;
+    font-weight: bold;
+}
+
+.info-group span {
+    flex-basis: 65%;
+}
+.horizontal-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.horizontal-table th, .horizontal-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.horizontal-table th {
+    background-color: #f2f2f2;
 }

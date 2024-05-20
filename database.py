@@ -3,6 +3,7 @@ import hashlib
 conexion = sqlite3.connect('nutricion_consulta.db')
 cursor = conexion.cursor()
 
+
 cursor.execute('''CREATE TABLE IF NOT EXISTS pacientes (
                     id_paciente TEXT PRIMARY KEY,
                     primer_apellido TEXT NOT NULL,
@@ -24,7 +25,7 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS pacientes (
                     registrado_por TEXT NOT NULL
                 )''')
 cursor.execute('''
-    CREATE TABLE IF NOT EXISTS antecedentes_personales (
+    CREATE TABLE IF NOT EXISTS antecedentes_personales_nutricion (
         id_paciente  PRIMARY KEY,
         padecimiento_actual TEXT,
         medicamento TEXT,
@@ -42,15 +43,17 @@ cursor.execute('''
 ''')
 #cursor.execute('DROP TABLE IF EXISTS antecedentes_personales')
 
-cursor.execute('''CREATE TABLE IF NOT EXISTS usuarios (
-                    username TEXT PRIMARY KEY,
-                    password TEXT NOT NULL 
-                )''')
+#cursor.execute('''CREATE TABLE IF NOT EXISTS usuarios (
+                   # username TEXT PRIMARY KEY,
+                  #  password TEXT NOT NULL 
+             #   )''')
 hashed_password_matutino = hashlib.sha256(b'MATUTINO').hexdigest()
 hashed_password_vespertino = hashlib.sha256(b'VESPERTINO').hexdigest()
-cursor.execute("INSERT OR IGNORE INTO usuarios (username, password) VALUES (?, ?)", ('MATUTINO', hashed_password_matutino))
-cursor.execute("INSERT OR IGNORE INTO usuarios (username, password) VALUES (?, ?)", ('VESPERTINO', hashed_password_vespertino))
-cursor.execute('''CREATE TABLE IF NOT EXISTS citas (
+cursor.execute("INSERT OR IGNORE INTO usuarios_nutricion (username, password) VALUES (?, ?)", ('MATUTINO', hashed_password_matutino))
+cursor.execute("INSERT OR IGNORE INTO usuarios_nutricion (username, password) VALUES (?, ?)", ('VESPERTINO', hashed_password_vespertino))
+#cursor.execute('ALTER TABLE citas RENAME TO citas_nutricion')
+#conexion.commit()
+cursor.execute('''CREATE TABLE IF NOT EXISTS citas_nutricion (
                     id_cita INTEGER PRIMARY KEY AUTOINCREMENT,
                     id_paciente TEXT,
                     fecha_consulta TEXT NOT NULL,

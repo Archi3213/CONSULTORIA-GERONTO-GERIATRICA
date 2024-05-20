@@ -61,20 +61,20 @@
                     </form>
                 </th>
             </tr>
-            {% for cita in citas %}
+            {% for citas_nutricion in citas_nutricion %}
             <tr>
-                <td>{{ cita[0] }}</td>
-                <td>{{ cita[1] }}</td>
-                <td>{{ cita[2] }}</td>
-                <td>{{ cita[3] }}</td>
-                <td>{{ cita[4] }}</td>
+                <td>{{ citas_nutricion[0] }}</td>
+                <td>{{ citas_nutricion[1] }}</td>
+                <td>{{ citas_nutricion[2] }}</td>
+                <td>{{ citas_nutricion[3] }}</td>
+                <td>{{ citas_nutricion[4] }}</td>
                 <td>
                     <form action="/actualizar_estado" method="POST">
-                        <input type="hidden" name="id_cita" value="{{ cita[0] }}">
+                        <input type="hidden" name="id_cita" value="{{ citas_nutricion[0] }}">
                         <select name="estado">
-                            <option value="Pendiente" {% if cita[5] == 'Pendiente' %}selected{% endif %}>Pendiente</option>
-                            <option value="Atendida" {% if cita[5] == 'Atendida' %}selected{% endif %}>Atendida</option>
-                            <option value="Cancelada" {% if cita[5] == 'Cancelada' %}selected{% endif %}>Cancelada</option>
+                            <option value="Pendiente" {% if citas_nutricion[5] == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                            <option value="Atendida" {% if citas_nutricion[5] == 'Atendida' %}selected{% endif %}>Atendida</option>
+                            <option value="Cancelada" {% if citas_nutricion[5] == 'Cancelada' %}selected{% endif %}>Cancelada</option>
                         </select>
                         <input type="submit" value="Actualizar">
                     </form>
