@@ -66,6 +66,9 @@ label {
     font-weight: bold;
 }
 
+.navbar + h1, .navbar + .filter-container {
+    margin-top: 20px; /* Ajusta este valor según la cantidad de espacio que desees */
+}
 .button2 {
     display: inline-block;
     padding: 15px 30px;
@@ -537,7 +540,7 @@ strong {
 
 .filter-form label {
     margin-right: 10px;
-    color: #555;
+    color: #000000;
     font-weight: bold;
 
 }
@@ -888,4 +891,31 @@ table tr:nth-child(even) {
 
 .horizontal-table th {
     background-color: #f2f2f2;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    color: #007bff;
+    padding: 10px 15px;
+    text-decoration: none;
+    border: 1px solid #dee2e6;
+    margin: 0 5px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination a:hover {
+    background-color: #f8f9fa;
+    color: #0056b3;
+}
+
+.pagination a.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
 }

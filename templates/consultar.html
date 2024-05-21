@@ -6,9 +6,7 @@
     <title>Consulta de Pacientes</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="icon" type="image/png" href="static\css\Imagen\_44109a07-adb5-4db9-90c0-8bac1621533a-removebg-preview.png">
-
 </head>
-
 <body>
     <div class="navbar" id="navbar">
         <a href="/">Inicio</a>
@@ -23,9 +21,9 @@
     <br>      <br>   </br></br>
     <h1>Consulta de Pacientes</h1>
     <!-- Formulario de filtrado por apellidos -->
-    <div class="table-container"> 
+  
           
-    <table>
+
         <div class="filter-container">
             <!-- Formulario de filtrado por Nombre o Apellidos -->
             <form action="{{ url_for('consulta_paciente') }}" method="post" class="filter-form">
@@ -43,6 +41,8 @@
                 <input type="submit" value="Buscar">
             </form>
         </div>
+        <div class="table-container"> 
+            <table>
         <tr>
             <th>ID</th>
             <th>Nombre completo</th>
@@ -84,17 +84,6 @@
         {% endfor %}
     </table>
     </div>
-    <script>
-        const imcElements = document.querySelectorAll('.imc');
-        imcElements.forEach(element => {
-            element.addEventListener('mouseover', () => {
-                element.style.backgroundColor = '#ff8a65';
-            });
-            element.addEventListener('mouseout', () => {
-                element.style.backgroundColor = '#ff5722';
-            });
-        });
-    </script>
 </body>
 
 </html>
