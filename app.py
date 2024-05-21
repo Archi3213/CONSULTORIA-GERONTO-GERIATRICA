@@ -4,6 +4,7 @@ import hashlib, sqlite3
 from operator import itemgetter
 from datetime import datetime
 from datetime import datetime, timedelta
+import math
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -175,58 +176,58 @@ def agendar_cita():
         pacientes = cursor.fetchall()
 
     return render_template('agendar_cita.html', pacientes=pacientes)
+
 @app.route('/historial_citas', methods=['GET', 'POST'])
 @login_required
 def historial_citas():
     filter_text = request.form.get('filter_text')
     filter_by = request.form.get('filter_by')
+    page = request.args.get('page', 1, type=int)
+    per_page = 20
+
+    query = "SELECT * FROM citas_nutricion"
+    params = []
+
+    if request.method == 'POST' and filter_text and filter_by:
+        if filter_by == 'id_paciente':
+            query += " WHERE LOWER(id_paciente) LIKE LOWER(?)"
+            params.append('%' + filter_text + '%')
+        elif filter_by == 'estado':
+            query += " WHERE LOWER(estado) = LOWER(?)"
+            params.append(filter_text)
+        elif filter_by == 'fecha_consulta':
+            query += " WHERE fecha_consulta = ?"
+            params.append(filter_text)
 
     with get_db_connection() as connection:
         cursor = connection.cursor()
-
-        if request.method == 'POST' and filter_text and filter_by:
-            if filter_by == 'id_paciente':
-                cursor.execute("SELECT * FROM citas_nutricion WHERE LOWER(id_paciente) LIKE LOWER(?)", ('%' + filter_text + '%',))
-            elif filter_by == 'estado':
-                cursor.execute("SELECT * FROM citas_nutricion WHERE LOWER(estado) = LOWER(?)", (filter_text, ))
-            else:
-                cursor.execute("SELECT * FROM citas_nutricion")
-        else:
-            cursor.execute("SELECT * FROM citas_nutricion")
-
+        cursor.execute(query, params)
         citas_nutricion = cursor.fetchall()
-    with get_db_connection() as connection:
-     cursor = connection.cursor()
-    cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
-    pacientes = cursor.fetchall()
-    citas_ordenadas = sorted(citas_nutricion, key=itemgetter(0), reverse=True)
 
+    # Obtener lista de pacientes para el datalist
     with get_db_connection() as connection:
         cursor = connection.cursor()
         cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
         pacientes = cursor.fetchall()
 
-    return render_template('historial_citas.html', citas_nutricion=citas_ordenadas, pacientes=pacientes)
-@app.route('/actualizar_estado', methods=['POST'])
-@login_required
-def actualizar_estado():
-    if request.method == 'POST':
-        id_cita = request.form['id_cita']
-        nuevo_estado = request.form['estado']
+    # Ordenar por fecha de consulta (columna [2]) de más reciente a más antigua
+    citas_ordenadas = sorted(citas_nutricion, key=lambda x: x['fecha_consulta'], reverse=True)
 
-        with get_db_connection() as connection:
-            cursor = connection.cursor()
-            cursor.execute("UPDATE citas_nutricion SET estado = ? WHERE id_cita = ?", (nuevo_estado, id_cita))
-            connection.commit()
+    # Paginación
+    total_citas = len(citas_ordenadas)
+    total_pages = math.ceil(total_citas / per_page)
+    start = (page - 1) * per_page
+    end = start + per_page
+    citas_paginadas = citas_ordenadas[start:end]
 
-    # Obtener la URL de la página anterior
-    prev_url = request.referrer
-    if prev_url and prev_url.endswith('/options'):
-        return redirect(prev_url)
-    else:
-        return redirect(url_for('historial_citas'))
-
-
+    return render_template(
+        'historial_citas.html',
+        citas_nutricion=citas_paginadas,
+        pacientes=pacientes,
+        page=page,
+        total_pages=total_pages
+    )
+    
 @app.route('/directorio_pacientes', methods=['GET', 'POST'])
 def directorio_pacientes():
     with get_db_connection() as connection:
