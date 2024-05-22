@@ -66,8 +66,8 @@ def login():
             return redirect(url_for('options'))
         else:
             error = 'Usuario o contraseña incorrectos'
-            return render_template('login.html', error=error)
-    return render_template('login.html')
+            return render_template('nutricion/login.html', error=error)
+    return render_template('nutricion/login.html')
 
 @app.route('/options')
 @login_required
@@ -83,7 +83,7 @@ def options():
         cursor.execute("SELECT * FROM citas_nutricion WHERE fecha_consulta = ?", (tomorrow_date,))
         citas_manana = cursor.fetchall()
 
-    return render_template('options.html', citas_hoy=citas_hoy, citas_manana=citas_manana)
+    return render_template('nutricion/options.html', citas_hoy=citas_hoy, citas_manana=citas_manana)
 @app.route('/registro', methods=['GET', 'POST'])
 @login_required
 def registro_paciente():
@@ -123,15 +123,15 @@ def registro_paciente():
                                 (id_paciente, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, religion, escolaridad, ocupacion, estado_civil,  servicio_salud,  celular, turno, genero, peso, altura, imc, fecha_registro, registrado_por))
 
         if mensaje_error:
-            return render_template('registro.html', mensaje_error=mensaje_error)
+            return render_template('nutricion/registro.html', mensaje_error=mensaje_error)
         else:
-            return redirect(url_for('registro_exitoso', id_paciente=id_paciente, nombre_paciente=f"{nombres} {primer_apellido} {segundo_apellido}"))
+            return redirect(url_for('nutricion/registro_exitoso', id_paciente=id_paciente, nombre_paciente=f"{nombres} {primer_apellido} {segundo_apellido}"))
 
-    return render_template('registro.html')
+    return render_template('nutricion/registro.html')
 @app.route('/registro_exitoso')
 def registro_exitoso():
     id_paciente = request.args.get('id_paciente')
-    return render_template('registro_exitoso.html', id_paciente=id_paciente)
+    return render_template('nutricion/registro_exitoso.html', id_paciente=id_paciente)
 
 @app.route('/consultar', methods=['GET', 'POST'])
 @login_required
@@ -150,7 +150,7 @@ def consulta_paciente():
         elif filter_by == 'id_paciente':
             pacientes = [paciente for paciente in pacientes if filter_text.lower() in paciente[0].lower()]
 
-    return render_template('consultar.html', pacientes=pacientes)
+    return render_template('nutricion/consultar.html', pacientes=pacientes)
 
 
 @app.route('/agendar_cita', methods=['GET', 'POST'])
@@ -168,14 +168,14 @@ def agendar_cita():
                             VALUES (?, ?, ?, ?)''', 
                             (id_paciente, fecha_consulta, hora_consulta, observaciones))
 
-        return redirect(url_for('historial_citas'))
+        return redirect(url_for('nutricion/historial_citas'))
     
     with get_db_connection() as connection:
         cursor = connection.cursor()
         cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
         pacientes = cursor.fetchall()
 
-    return render_template('agendar_cita.html', pacientes=pacientes)
+    return render_template('nutricion/agendar_cita.html', pacientes=pacientes)
 
 @app.route('/historial_citas', methods=['GET', 'POST'])
 @login_required
@@ -221,30 +221,61 @@ def historial_citas():
     citas_paginadas = citas_ordenadas[start:end]
 
     return render_template(
-        'historial_citas.html',
+        'nutricion/historial_citas.html',
         citas_nutricion=citas_paginadas,
         pacientes=pacientes,
         page=page,
         total_pages=total_pages
     )
-    
+@app.route('/actualizar_estado', methods=['POST'])
+@login_required
+def actualizar_estado():
+    if request.method == 'POST':
+        id_cita = request.form['id_cita']
+        nuevo_estado = request.form['estado']
+
+        with get_db_connection() as connection:
+            cursor = connection.cursor()
+            cursor.execute("UPDATE citas_nutricion SET estado = ? WHERE id_cita = ?", (nuevo_estado, id_cita))
+            connection.commit()
+
+    return redirect(request.referrer or url_for('nutricion/historial_citas'))
 @app.route('/directorio_pacientes', methods=['GET', 'POST'])
 def directorio_pacientes():
-    with get_db_connection() as connection:
-        cursor = connection.cursor()
-        cursor.execute("SELECT * FROM pacientes")
-        pacientes = cursor.fetchall()
+    filter_text = ''
+    filter_by = ''
+
+    query = "SELECT * FROM pacientes"
+    params = ()
 
     if request.method == 'POST':
-        filter_text = request.form['filter_text']
-        filter_by = request.form['filter_by']
+        if 'filter_text' in request.form and 'filter_by' in request.form:
+            filter_text = request.form['filter_text']
+            filter_by = request.form['filter_by']
 
-        if filter_by == 'apellidos':
-            pacientes = [paciente for paciente in pacientes if filter_text.lower() in f"{paciente[1]} {paciente[2]} {paciente[3]} ".lower()]
-        elif filter_by == 'id_paciente':
-            pacientes = [paciente for paciente in pacientes if filter_text.lower() in paciente[0].lower()]
+            if filter_by == 'apellidos':
+                query += " WHERE LOWER(primer_apellido) LIKE ? OR LOWER(segundo_apellido) LIKE ? OR LOWER(nombres) LIKE ?"
+                params = (f"%{filter_text.lower()}%", f"%{filter_text.lower()}%", f"%{filter_text.lower()}%")
+            elif filter_by == 'id_paciente':
+                query += " WHERE LOWER(id_paciente) LIKE ?"
+                params = (f"%{filter_text.lower()}%",)
+        
+        if 'new_phone' in request.form and 'id_paciente' in request.form:
+            new_phone = request.form['new_phone']
+            id_paciente = request.form['id_paciente']
+            
+            with get_db_connection() as connection:
+                cursor = connection.cursor()
+                cursor.execute("UPDATE pacientes SET celular = ? WHERE id_paciente = ?", (new_phone, id_paciente))
+                connection.commit()
 
-    return render_template('directorio_pacientes.html', pacientes=pacientes)
+    with get_db_connection() as connection:
+        cursor = connection.cursor()
+        cursor.execute(query, params)
+        pacientes = cursor.fetchall()
+
+    return render_template('nutricion/directorio_pacientes.html', pacientes=pacientes)
+
 
 @app.route('/registro_antecedentes_familiares', methods=['GET', 'POST'])
 @login_required
@@ -308,11 +339,11 @@ def registro_antecedentes_familiares():
         cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
         pacientes = cursor.fetchall()
 
-    return render_template('registro_antecedentes_familiares.html', pacientes=pacientes)
+    return render_template('nutricion/registro_antecedentes_familiares.html', pacientes=pacientes)
 @app.route('/expediente')
 @login_required
 def expediente():
-    return render_template('expediente.html')
+    return render_template('nutricion/expediente.html')
 
 @app.route('/registro_antecedentes_personales', methods=['GET', 'POST'])
 @login_required
@@ -355,7 +386,7 @@ def registro_antecedentes_personales():
         cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
         pacientes = cursor.fetchall()
         
-    return render_template('registro_antecedentes_personales.html', pacientes=pacientes)
+    return render_template('nutricion/registro_antecedentes_personales.html', pacientes=pacientes)
 
 
 @app.route('/evaluacion_clinica', methods=['GET', 'POST'])
@@ -388,7 +419,7 @@ def evaluacion_clinica():
         cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
         pacientes = cursor.fetchall()
         
-    return render_template('evaluacion_clinica.html', pacientes=pacientes)
+    return render_template('nutricion/evaluacion_clinica.html', pacientes=pacientes)
 
 @app.route('/evaluacion_dietetica', methods=['GET', 'POST'])
 @login_required
@@ -462,7 +493,7 @@ def evaluacion_dietetica():
         cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
         pacientes = cursor.fetchall()
 
-    return render_template('evaluacion_dietetica.html', pacientes=pacientes)
+    return render_template('nutricion/evaluacion_dietetica.html', pacientes=pacientes)
 
 
 @app.route('/evaluacion_antropometrica', methods=['GET', 'POST'])
@@ -505,7 +536,7 @@ def evaluacion_antropometrica():
             cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
             pacientes = cursor.fetchall()
     
-    return render_template('evaluacion_antropometrica.html', pacientes=pacientes)
+    return render_template('nutricion/evaluacion_antropometrica.html', pacientes=pacientes)
 
 @app.route('/evaluacion_bioquimica', methods=['GET', 'POST'])
 @login_required
@@ -542,7 +573,7 @@ def evaluacion_bioquimica():
             cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
             pacientes = cursor.fetchall()
     
-    return render_template('evaluacion_bioquimica.html', pacientes=pacientes)
+    return render_template('nutricion/evaluacion_bioquimica.html', pacientes=pacientes)
 
 def get_db_connection():
     connection = sqlite3.connect('nutricion_consulta.db')
@@ -592,11 +623,11 @@ def detalles_paciente():
         
         connection.close()
         
-        return render_template('detalles_paciente.html', paciente=paciente, antecedentes_personales_nutricion=antecedentes_personales_nutricion,
+        return render_template('nutricion/detalles_paciente.html', paciente=paciente, antecedentes_personales_nutricion=antecedentes_personales_nutricion,
                                antecedentes_familiares=antecedentes_familiares, citas_nutricion=citas_nutricion, evaluacion_clinica=evaluacion_clinica,
                                registro_dietetico=registro_dietetico, evaluacion_antropometrica=evaluacion_antropometrica,
                                evaluacion_bioquimica=evaluacion_bioquimica)
-    return render_template('buscar_paciente.html')
+    return render_template('nutricion/buscar_paciente.html')
 @app.route('/buscar_paciente')
 @login_required
 def buscar_paciente():
@@ -605,7 +636,8 @@ def buscar_paciente():
             cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
             pacientes = cursor.fetchall()
     
-    return render_template('buscar_paciente.html', pacientes=pacientes)
+    return render_template('nutricion/buscar_paciente.html', pacientes=pacientes)
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
     app.run(debug=True)

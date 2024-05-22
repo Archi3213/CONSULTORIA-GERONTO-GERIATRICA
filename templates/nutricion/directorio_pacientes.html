@@ -52,7 +52,13 @@
         <tr>
             <td>{{ paciente[0] }}</td>
             <td>{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</td>
-            <td>{{ paciente[10] }}</td>
+            <td>
+                <form method="post" style="display:inline;">
+                    <input type="hidden" name="id_paciente" value="{{ paciente[0] }}">
+                    <input type="text" name="new_phone" value="{{ paciente[10] }}" pattern="[0-9]+" title="Ingrese al menos 10 dígitos numéricos" required minlength="10" maxlength="10">
+                    <button type="submit">Actualizar</button>
+                </form>
+            </td>
         </tr>
         {% endfor %}
     </table>
