@@ -84,6 +84,17 @@
         {% endfor %}
     </table>
     </div>
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="{{ url_for('consulta_paciente', page=page-1) }}">&laquo; Anterior</a>
+        {% endif %}
+        {% for p in range(1, total_pages + 1) %}
+            <a href="{{ url_for('consulta_paciente', page=p) }}" class="{{ 'active' if p == page else '' }}">{{ p }}</a>
+        {% endfor %}
+        {% if page < total_pages %}
+            <a href="{{ url_for('consulta_paciente', page=page+1) }}">Siguiente &raquo;</a>
+        {% endif %}
+    </div>
 </body>
 
 </html>

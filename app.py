@@ -136,21 +136,41 @@ def registro_exitoso():
 @app.route('/consultar', methods=['GET', 'POST'])
 @login_required
 def consulta_paciente():
-    with get_db_connection() as connection:
-        cursor = connection.cursor()
-        cursor.execute("SELECT * FROM pacientes")
-        pacientes = cursor.fetchall()
+    filter_text = ''
+    filter_by = ''
+    page = request.args.get('page', 1, type=int)
+    per_page = 20
+
+    query = "SELECT * FROM pacientes"
+    params = ()
 
     if request.method == 'POST':
-        filter_text = request.form['filter_text']
-        filter_by = request.form['filter_by']
+        if 'filter_text' in request.form and 'filter_by' in request.form:
+            filter_text = request.form['filter_text']
+            filter_by = request.form['filter_by']
 
-        if filter_by == 'apellidos':
-            pacientes = [paciente for paciente in pacientes if filter_text.lower() in f"{paciente[1]} {paciente[2]} {paciente[3]} ".lower()]
-        elif filter_by == 'id_paciente':
-            pacientes = [paciente for paciente in pacientes if filter_text.lower() in paciente[0].lower()]
+            if filter_by == 'apellidos':
+                query += " WHERE LOWER(primer_apellido) LIKE ? OR LOWER(segundo_apellido) LIKE ? OR LOWER(nombres) LIKE ?"
+                params = (f"%{filter_text.lower()}%", f"%{filter_text.lower()}%", f"%{filter_text.lower()}%")
+            elif filter_by == 'id_paciente':
+                query += " WHERE LOWER(id_paciente) LIKE ?"
+                params = (f"%{filter_text.lower()}%",)
 
-    return render_template('nutricion/consultar.html', pacientes=pacientes)
+    query += " LIMIT ? OFFSET ?"
+    params += (per_page, (page - 1) * per_page)
+
+    with get_db_connection() as connection:
+        cursor = connection.cursor()
+        cursor.execute(query, params)
+        pacientes = cursor.fetchall()
+
+        cursor.execute("SELECT COUNT(*) FROM pacientes")
+        total_pacientes = cursor.fetchone()[0]
+
+    total_pages = (total_pacientes + per_page - 1) // per_page
+
+    return render_template('nutricion/consultar.html', pacientes=pacientes, page=page, total_pages=total_pages)
+
 
 
 @app.route('/agendar_cita', methods=['GET', 'POST'])
@@ -168,7 +188,7 @@ def agendar_cita():
                             VALUES (?, ?, ?, ?)''', 
                             (id_paciente, fecha_consulta, hora_consulta, observaciones))
 
-        return redirect(url_for('nutricion/historial_citas'))
+        return redirect(url_for('historial_citas'))
     
     with get_db_connection() as connection:
         cursor = connection.cursor()
@@ -244,6 +264,8 @@ def actualizar_estado():
 def directorio_pacientes():
     filter_text = ''
     filter_by = ''
+    page = request.args.get('page', 1, type=int)
+    per_page = 20
 
     query = "SELECT * FROM pacientes"
     params = ()
@@ -269,12 +291,20 @@ def directorio_pacientes():
                 cursor.execute("UPDATE pacientes SET celular = ? WHERE id_paciente = ?", (new_phone, id_paciente))
                 connection.commit()
 
+    query += " LIMIT ? OFFSET ?"
+    params += (per_page, (page - 1) * per_page)
+
     with get_db_connection() as connection:
         cursor = connection.cursor()
         cursor.execute(query, params)
         pacientes = cursor.fetchall()
 
-    return render_template('nutricion/directorio_pacientes.html', pacientes=pacientes)
+        cursor.execute("SELECT COUNT(*) FROM pacientes")
+        total_pacientes = cursor.fetchone()[0]
+
+    total_pages = (total_pacientes + per_page - 1) // per_page
+
+    return render_template('nutricion/directorio_pacientes.html', pacientes=pacientes, page=page, total_pages=total_pages)
 
 
 @app.route('/registro_antecedentes_familiares', methods=['GET', 'POST'])
@@ -284,9 +314,9 @@ def registro_antecedentes_familiares():
         id_paciente = request.form['id_paciente']
         diabetes_mellitus_familiar = request.form.getlist('diabetes_mellitus_familiar')
         diabetes_mellitus_familiar = ', '.join(diabetes_mellitus_familiar)
-        sobrepeso_obesidad_familiar =  request.form.getlist('sobrepeso_obesidad_familiar')
+        sobrepeso_obesidad_familiar = request.form.getlist('sobrepeso_obesidad_familiar')
         sobrepeso_obesidad_familiar = ', '.join(sobrepeso_obesidad_familiar)
-        hipertension_familiar =  request.form.getlist('hipertension_familiar')
+        hipertension_familiar = request.form.getlist('hipertension_familiar')
         hipertension_familiar = ', '.join(hipertension_familiar)
         litiasis_familiar = request.form.getlist('litiasis_familiar')
         litiasis_familiar = ', '.join(litiasis_familiar)
@@ -298,9 +328,7 @@ def registro_antecedentes_familiares():
         cancer_familiar = request.form['cancer_familiar']
         tipo_cancer = request.form['tipo_cancer']
         cancer_tipo_familiar = f"{cancer_familiar} - {tipo_cancer}"
-        dislipidemias_con_familiar = request.form['dislipidemias_con_familiar']
-        tipo_dislipidemias = request.form['tipo_dislipidemias']
-        dislipidemias_familiar = f"{dislipidemias_con_familiar} - {tipo_dislipidemias}"
+        dislipidemias_familiar = request.form['tipo_dislipidemias']
         familiar_con_cardiopatias = request.form['familiar_con_cardiopatias']
         tipo_cardiopatias = request.form['tipo_cardiopatias']
         cardiopatias_familiar = f"{familiar_con_cardiopatias} - {tipo_cardiopatias}"
@@ -311,7 +339,7 @@ def registro_antecedentes_familiares():
             cursor.execute("SELECT id_paciente FROM antecedentes_familiares WHERE id_paciente = ?", (id_paciente,))
             if cursor.fetchone():
                 # Si existe, actualizar los datos en lugar de insertarlos
-                  cursor.execute("""UPDATE antecedentes_familiares SET diabetes_mellitus_familiar=?, 
+                cursor.execute("""UPDATE antecedentes_familiares SET diabetes_mellitus_familiar=?, 
                                   dislipidemias_familiar=?, sobrepeso_obesidad_familiar=?, 
                                   cancer_tipo_familiar=?, hipertension_familiar=?, otras=?, 
                                   cardiopatias_familiar=?, litiasis_familiar=?, artritis_familiar=?, 
@@ -340,6 +368,7 @@ def registro_antecedentes_familiares():
         pacientes = cursor.fetchall()
 
     return render_template('nutricion/registro_antecedentes_familiares.html', pacientes=pacientes)
+
 @app.route('/expediente')
 @login_required
 def expediente():

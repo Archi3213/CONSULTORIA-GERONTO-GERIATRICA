@@ -64,8 +64,9 @@
 
 <br><br>
 <div class="checkbox-container-container2">
+    <div class="checkbox-container-container2">
         <label for="dislipidemias_con_familiar">Familiar con Dislipidemias:</label>
-        <select id="dislipidemias_con_familiar" name="dislipidemias_con_familiar" required><br><br>
+        <select id="dislipidemias_con_familiar" name="dislipidemias_con_familiar" required>
             <option value="Ninguno">Ninguno</option>
             <option value="Madre">Madre</option>
             <option value="Padre">Padre</option>
@@ -74,8 +75,21 @@
             <option value="Abuela paterna">Abuela paterna</option>
             <option value="Abuelo paterno">Abuelo paterno</option>
         </select>
-        <input type="text" id="tipo_dislipidemias" name="tipo_dislipidemias" ><br><br>
-        <br><br>    
+        <br><br>
+        <label for="tipo_dislipidemias">Tipo de Dislipidemias:</label>
+        <select id="tipo_dislipidemias" name="tipo_dislipidemias">
+            <option value="Ninguno">Ninguno</option>
+            <option value="Hipercolesterolemia">Hipercolesterolemia</option>
+            <option value="Hipertrigliceridemia">Hipertrigliceridemia</option>
+            <option value="Hiperlipidemia combinada">Hiperlipidemia combinada</option>
+            <option value="Hiperlipidemia familiar">Hiperlipidemia familiar</option>
+            <option value="Disbetalipoproteinemia">Disbetalipoproteinemia</option>
+        </select>
+        <button type="button" onclick="addDislipidemia()">Añadir</button>
+        <br><br>
+        <div id="duplicated-dislipidemias" class="duplicated-selections"></div>
+        <br>
+    </div>
        </div>
         <div class="checkbox-container-container3">
         <label for="sobrepeso_obesidad_familiar">Familiar con  Sobrepeso/obesidad:</label>
@@ -159,8 +173,23 @@
             <option value="Abuela paterna">Abuela paterna</option>
             <option value="Abuelo paterno">Abuelo paterno</option>
         </select>
-        <input type="text" id="tipo_cardiopatias" name="tipo_cardiopatias" ><br><br>
 <br><br>
+<label for="tipo_cardiopatias">Tipo de Cardiopatías:</label>
+<select id="tipo_cardiopatias" name="tipo_cardiopatias">
+    <option value="Ninguno">Ninguno</option>
+    <option value="Cardiopatía isquémica">Cardiopatía isquémica</option>
+    <option value="Cardiopatía hipertensiva">Cardiopatía hipertensiva</option>
+    <option value="Cardiopatía reumática">Cardiopatía reumática</option>
+    <option value="Cardiomiopatía dilatada">Cardiomiopatía dilatada</option>
+    <option value="Cardiomiopatía hipertrófica">Cardiomiopatía hipertrófica</option>
+    <option value="Cardiomiopatía restrictiva">Cardiomiopatía restrictiva</option>
+    <option value="Insuficiencia cardíaca">Insuficiencia cardíaca</option>
+    <option value="Arritmia">Arritmia</option>
+    <option value="Valvulopatía">Valvulopatía</option>
+    <option value="Otra">Otra</option>
+</select>
+<br><br>
+
 </div>
 <div class="checkbox-container-container7"> 
         <label for="litiasis_familiar">Familiar con Litiasis:</label>
@@ -285,7 +314,33 @@
                 });
             });
         </script>
-        
+           <script>
+            function addDislipidemia() {
+                const familiarSelect = document.getElementById('dislipidemias_con_familiar');
+                const familiar = familiarSelect.value;
+    
+                const tipoSelect = document.getElementById('tipo_dislipidemias');
+                const tipo = tipoSelect.value;
+    
+                const duplicatedSelections = document.getElementById('duplicated-dislipidemias');
+                const newSelectionItem = document.createElement('div');
+                newSelectionItem.classList.add('selection-item');
+                newSelectionItem.textContent = `${familiar}: ${tipo}`;
+                duplicatedSelections.appendChild(newSelectionItem);
+    
+                // Añadir el valor seleccionado al input oculto
+                const hiddenInput = document.getElementById('tipo_dislipidemias_hidden');
+                if (hiddenInput.value) {
+                    hiddenInput.value += ` / ${familiar}: ${tipo}`;
+                } else {
+                    hiddenInput.value = `${familiar}: ${tipo}`;
+                }
+    
+                // Resetear los select para nueva entrada
+                familiarSelect.selectedIndex = 0;
+                tipoSelect.selectedIndex = 0;
+            }
+        </script>
         
         </html>
         
