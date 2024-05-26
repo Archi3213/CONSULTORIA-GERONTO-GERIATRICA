@@ -107,10 +107,10 @@
                 <label>Peso:</label> <span>{{ paciente.peso }} kg</span>
             </div>
             <div class="info-group">
-                <label>Altura:</label> <span>{{ paciente.altura }} m</span>
+                <label>Altura:</label> <span>{{ paciente.altura }} cm</span>
             </div>
             <div class="info-group">
-                <label>IMC:</label> <span>{{ paciente.imc }}</span>
+                <label>IMC:</label> <span>{{  '%.2f' %paciente.imc }}</span>
             </div>
             <div class="info-group">
                 <label>Fecha de Registro:</label> <span>{{ paciente.fecha_registro }}</span>

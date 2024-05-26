@@ -314,9 +314,9 @@ def registro_antecedentes_familiares():
         id_paciente = request.form['id_paciente']
         diabetes_mellitus_familiar = request.form.getlist('diabetes_mellitus_familiar')
         diabetes_mellitus_familiar = ', '.join(diabetes_mellitus_familiar)
-        sobrepeso_obesidad_familiar = request.form.getlist('sobrepeso_obesidad_familiar')
+        sobrepeso_obesidad_familiar =  request.form.getlist('sobrepeso_obesidad_familiar')
         sobrepeso_obesidad_familiar = ', '.join(sobrepeso_obesidad_familiar)
-        hipertension_familiar = request.form.getlist('hipertension_familiar')
+        hipertension_familiar =  request.form.getlist('hipertension_familiar')
         hipertension_familiar = ', '.join(hipertension_familiar)
         litiasis_familiar = request.form.getlist('litiasis_familiar')
         litiasis_familiar = ', '.join(litiasis_familiar)
@@ -328,7 +328,9 @@ def registro_antecedentes_familiares():
         cancer_familiar = request.form['cancer_familiar']
         tipo_cancer = request.form['tipo_cancer']
         cancer_tipo_familiar = f"{cancer_familiar} - {tipo_cancer}"
-        dislipidemias_familiar = request.form['tipo_dislipidemias']
+        dislipidemias_con_familiar = request.form['dislipidemias_con_familiar']
+        tipo_dislipidemias = request.form['tipo_dislipidemias']
+        dislipidemias_familiar = f"{dislipidemias_con_familiar} - {tipo_dislipidemias}"
         familiar_con_cardiopatias = request.form['familiar_con_cardiopatias']
         tipo_cardiopatias = request.form['tipo_cardiopatias']
         cardiopatias_familiar = f"{familiar_con_cardiopatias} - {tipo_cardiopatias}"
@@ -339,7 +341,7 @@ def registro_antecedentes_familiares():
             cursor.execute("SELECT id_paciente FROM antecedentes_familiares WHERE id_paciente = ?", (id_paciente,))
             if cursor.fetchone():
                 # Si existe, actualizar los datos en lugar de insertarlos
-                cursor.execute("""UPDATE antecedentes_familiares SET diabetes_mellitus_familiar=?, 
+                  cursor.execute("""UPDATE antecedentes_familiares SET diabetes_mellitus_familiar=?, 
                                   dislipidemias_familiar=?, sobrepeso_obesidad_familiar=?, 
                                   cancer_tipo_familiar=?, hipertension_familiar=?, otras=?, 
                                   cardiopatias_familiar=?, litiasis_familiar=?, artritis_familiar=?, 
@@ -368,7 +370,6 @@ def registro_antecedentes_familiares():
         pacientes = cursor.fetchall()
 
     return render_template('nutricion/registro_antecedentes_familiares.html', pacientes=pacientes)
-
 @app.route('/expediente')
 @login_required
 def expediente():
@@ -531,8 +532,7 @@ def evaluacion_antropometrica():
     if request.method == 'POST':
         id_paciente = request.form['id_paciente']
         fecha = request.form['fecha']
-        peso = request.form['peso']
-        imc = request.form['imc']
+        peso = float(request.form['peso'])
         grasa = request.form['grasa']
         musculo = request.form['musculo']
         grasa_visceral = request.form['grasa_visceral']
@@ -548,6 +548,16 @@ def evaluacion_antropometrica():
 
         with get_db_connection() as connection:
             cursor = connection.cursor()
+            cursor.execute("SELECT altura FROM pacientes WHERE id_paciente = ?", (id_paciente,))
+            altura = cursor.fetchone()
+            
+            if altura:
+                altura_en_metros = altura[0] / 100  # Convertir altura a metros
+                imc = peso / (altura_en_metros * altura_en_metros)
+                imc = round(imc, 2)  # Redondear a 2 decimales
+            else:
+                imc = None  # Manejar el caso donde no se encuentra la altura
+
             cursor.execute('''INSERT INTO evaluacion_antropometrica (
                     id_paciente, fecha, peso, imc, grasa, musculo, grasa_visceral,
                     cintura, cadera, cm_bc, pantorrilla, presion_arterial, g_capilar,
@@ -559,13 +569,14 @@ def evaluacion_antropometrica():
                 ))
             connection.commit()
         return redirect(url_for('registro_exitoso'))
-    
+
     with get_db_connection() as connection:
-            cursor = connection.cursor()
-            cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
-            pacientes = cursor.fetchall()
+        cursor = connection.cursor()
+        cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
+        pacientes = cursor.fetchall()
     
     return render_template('nutricion/evaluacion_antropometrica.html', pacientes=pacientes)
+
 
 @app.route('/evaluacion_bioquimica', methods=['GET', 'POST'])
 @login_required

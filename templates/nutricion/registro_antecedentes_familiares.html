@@ -85,10 +85,6 @@
             <option value="Hiperlipidemia familiar">Hiperlipidemia familiar</option>
             <option value="Disbetalipoproteinemia">Disbetalipoproteinemia</option>
         </select>
-        <button type="button" onclick="addDislipidemia()">Añadir</button>
-        <br><br>
-        <div id="duplicated-dislipidemias" class="duplicated-selections"></div>
-        <br>
     </div>
        </div>
         <div class="checkbox-container-container3">
@@ -313,33 +309,6 @@
                     });
                 });
             });
-        </script>
-           <script>
-            function addDislipidemia() {
-                const familiarSelect = document.getElementById('dislipidemias_con_familiar');
-                const familiar = familiarSelect.value;
-    
-                const tipoSelect = document.getElementById('tipo_dislipidemias');
-                const tipo = tipoSelect.value;
-    
-                const duplicatedSelections = document.getElementById('duplicated-dislipidemias');
-                const newSelectionItem = document.createElement('div');
-                newSelectionItem.classList.add('selection-item');
-                newSelectionItem.textContent = `${familiar}: ${tipo}`;
-                duplicatedSelections.appendChild(newSelectionItem);
-    
-                // Añadir el valor seleccionado al input oculto
-                const hiddenInput = document.getElementById('tipo_dislipidemias_hidden');
-                if (hiddenInput.value) {
-                    hiddenInput.value += ` / ${familiar}: ${tipo}`;
-                } else {
-                    hiddenInput.value = `${familiar}: ${tipo}`;
-                }
-    
-                // Resetear los select para nueva entrada
-                familiarSelect.selectedIndex = 0;
-                tipoSelect.selectedIndex = 0;
-            }
         </script>
         
         </html>
