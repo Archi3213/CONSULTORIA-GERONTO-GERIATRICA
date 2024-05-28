@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html lang="es">
-
+<html>
 <head>
-    <title>Agendar Cita</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/stylef.css') }}">
     <link rel="icon" type="image/png" href="static\css\Imagen\fisio_logo.png">
 
+    <title>Buscar Paciente</title>
 </head>
-
 <body>
-    <div class="navbar" id="navbar">
+    <div class="navbar">
         <a href="/">Inicio</a>
         <a href="/registro">Registro</a>
         <a href="/consultar">Registro de consultas</a>
@@ -18,24 +16,17 @@
         <a href="/historial_citas">Historial de Citas</a>
         <a href="/directorio_pacientes">Directorio Pacientes</a>
         <a href="/expediente">Expediente</a>
-        </div>
+    </div>
     <div class="container1">
-    <h1>Agendar Cita</h1>
-    <form method="POST" action="/agendar_cita">
-        <label for="id_paciente">Selecciona un paciente:</label>
+    <h1>Buscar Paciente</h1>
+    <form action="{{ url_for('detalles_paciente') }}" method="post">
         <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
         <datalist id="pacientes_list">
             {% for paciente in pacientes %}
             <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
             {% endfor %}
         </datalist><br><br>
-        <label for="fecha_consulta">Fecha de consulta:</label>
-        <input type="date" id="fecha_consulta" name="fecha_consulta" required><br><br>
-        <label for="hora_consulta">Hora de consulta:</label>
-        <input type="time" id="hora_consulta" name="hora_consulta" required><br><br>
-        <label for="observaciones">Observaciones:</label><br>
-        <textarea id="observaciones" name="observaciones" rows="4" cols="50"></textarea><br><br>
-        <input type="submit" value="Agendar Cita">
-    </form>
+        <input type="submit" value="Buscar">
+    </form></div>
 </body>
 </html>

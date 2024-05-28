@@ -66,7 +66,15 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS citas_nutricion (
                     estado TEXT DEFAULT 'Pendiente',
                     FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
                 )''')
-
+cursor.execute('''CREATE TABLE IF NOT EXISTS citas_fisioterapia (
+                    id_cita INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id_paciente TEXT,
+                    fecha_consulta TEXT NOT NULL,
+                    hora_consulta TEXT NOT NULL, 
+                    observaciones TEXT,
+                    estado TEXT DEFAULT 'Pendiente',
+                    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
+                )''')
 cursor.execute('''CREATE TABLE IF NOT EXISTS antecedentes_familiares (
                     id_paciente PRIMARY KEY NOT NULL,
                     diabetes_mellitus_familiar TEXT,

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ 
+    <title>Consulta de Pacientes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylef.css') }}">
+    <link rel="icon" type="image/png" href="static\css\Imagen\fisio_logo.png">
+
+</head>
+<body>
+    <div class="navbar" id="navbar">
+        <a href="/">Inicio</a>
+        <a href="/registro">Registro</a>
+        <a href="/consultar">Registro de consultas</a>
+        <a href="/agenda">Calendario</a>
+        <a href="/agendar_cita">Agendar Cita</a>
+        <a href="/historial_citas">Historial de Citas</a>
+        <a href="/directorio_pacientes">Directorio Pacientes</a>
+        <a href="/expediente">Expediente</a>
+        </div>
+    <br>      <br>   </br></br>
+    <h1>Consulta de Pacientes</h1>
+    <!-- Formulario de filtrado por apellidos -->
+  
+          
+
+        <div class="filter-container">
+            <!-- Formulario de filtrado por Nombre o Apellidos -->
+            <form action="{{ url_for('consulta_paciente') }}" method="post" class="filter-form">
+                <label for="filtro_apellidos">Filtrar por Nombre o Apellidos:</label>
+                <input type="text" id="filtro_apellidos" name="filter_text" placeholder="Ingrese nombre/apellidos..">
+                <input type="hidden" name="filter_by" value="apellidos">
+                <input type="submit" value="Buscar">
+            </form>
+            
+            <!-- Formulario de filtrado por ID -->
+            <form action="{{ url_for('consulta_paciente') }}" method="post" class="filter-form">
+                <label for="filtro_id">Filtrar por ID:</label>
+                <input type="text" id="filtro_id" name="filter_text" placeholder="Ingrese ID...">
+                <input type="hidden" name="filter_by" value="id_paciente">
+                <input type="submit" value="Buscar">
+            </form>
+        </div>
+        <div class="table-container"> 
+            <table>
+        <tr>
+            <th>ID</th>
+            <th>Nombre completo</th>
+            <th>Fecha de Nacimiento</th>
+            <th>Religión</th>
+            <th>Escolaridad</th>
+            <th>Ocupación</th>
+            <th>Estado Civil</th>
+        
+            <th>Servicio de Salud</th>
+           
+            <th>Turno</th>
+            <th>Género</th>
+            <th>Peso (kg)</th>
+            <th>Altura (cm)</th>
+            <th>IMC</th>
+            <th>Fecha de Registro</th>
+            <th>Registrado Por</th>
+        </tr>
+        {% for paciente in pacientes %}
+        <tr>
+            <td>{{ paciente[0] }}</td>
+            <td>{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</td>
+            <td>{{ paciente[4] }}</td>
+            <td>{{ paciente[5] }}</td>
+            <td>{{ paciente[6] }}</td>
+            <td>{{ paciente[7] }}</td>
+            <td>{{ paciente[8] }}</td>
+            <td>{{ paciente[9] }}</td>
+            <td>{{ paciente[11] }}</td>
+            <td>{{ paciente[12] }}</td>
+            <td>{{ paciente[13] }}</td>
+            <td>{{ paciente[14] }}</td>
+            <td>{{ '%.2f' % paciente[15] }}</td>
+            <td>{{ paciente[16] }}</td>
+            <td>{{ paciente[17] }}</td>
+
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="{{ url_for('consulta_paciente', page=page-1) }}">&laquo; Anterior</a>
+        {% endif %}
+        {% for p in range(1, total_pages + 1) %}
+            <a href="{{ url_for('consulta_paciente', page=p) }}" class="{{ 'active' if p == page else '' }}">{{ p }}</a>
+        {% endfor %}
+        {% if page < total_pages %}
+            <a href="{{ url_for('consulta_paciente', page=page+1) }}">Siguiente &raquo;</a>
+        {% endif %}
+    </div>
+</body>
+
+</html>
