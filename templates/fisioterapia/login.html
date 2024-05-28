@@ -2,26 +2,28 @@
 <html lang="es">
 
 <head>
-    <title>NUTRICION CONSULTAS</title>
+    <title>Consultas Fisioterapia Armonía</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="icon" type="image/png" href="static\css\Imagen\_44109a07-adb5-4db9-90c0-8bac1621533a-removebg-preview.png">
-
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='css/Imagen/_44109a07-adb5-4db9-90c0-8bac1621533a-removebg-preview.png') }}">
 </head>
 
 <body>
     <div class="container">
-        <h1>CONSULTAS NUTRICION ARMONIA</h1>
-        <img src="{{ url_for('static', filename='css/Imagen/_44109a07-adb5-4db9-90c0-8bac1621533a-removebg-preview.png') }}" alt="Logo de la página" class="logo_nutricion">
+        <h1>CONSULTAS FISIOTERAPIA ARMONIA</h1>
+        <img src="{{ url_for('static', filename='css/Imagen/fisio_logo.png') }}" alt="Logo de la página" class="logo_nutricion">
 
-        <h2>Inicio de sesión</h2>
+        <h2>Inicio de sesión - Fisioterapia</h2>
         <div class="form-group">
-            <form action="/login" method="post">
+            <form action="" method="post">
                 <label for="username">Usuario:</label>
                 <input type="text" id="username" name="username" required><br>
 
                 <label for="password">Contraseña:</label>
                 <input type="password" id="password" name="password" required><br>
-  
+
+                <!-- Campo de selección de área oculto -->
+                <input type="hidden" id="area" name="area" value="{{ area }}"><br>
+
                 <input type="submit" value="Iniciar Sesión">
             </form>
             {% if error %}

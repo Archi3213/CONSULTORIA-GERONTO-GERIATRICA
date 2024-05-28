@@ -31,23 +31,13 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-
-
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'username' not in session:
-            return redirect(url_for('login'))
-        return f(*args, **kwargs)
-    return decorated_function
 @app.route('/')
 def index():
     session.pop('username', None)  # Eliminar la clave 'username' de la sesión
-
     return render_template('index.html')
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
+@app.route('/login/<area>', methods=['GET', 'POST'])
+def login(area):
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -55,23 +45,26 @@ def login():
         conexion = sqlite3.connect('nutricion_consulta.db')
         cursor = conexion.cursor()
 
-        cursor.execute("SELECT * FROM usuarios_nutricion WHERE username = ?", (username,))
+        cursor.execute("SELECT * FROM usuarios WHERE username = ? AND tipo_usuario = ?", (username, area))
         user = cursor.fetchone()
 
         cursor.close()
         conexion.close()
 
-        if user and hashlib.sha256(password.encode()).hexdigest() == user[1]:
+        if user and verify_password(user[2], user[3], password):  # Verify password using stored hash and salt
             session['username'] = username
+            session['area'] = area
             return redirect(url_for('options'))
         else:
             error = 'Usuario o contraseña incorrectos'
-            return render_template('nutricion/login.html', error=error)
-    return render_template('nutricion/login.html')
+            return render_template(f'{area}/login.html', error=error)
+    return render_template(f'{area}/login.html')
 
-@app.route('/options')
+
+@app.route('/agenda')
 @login_required
 def options():
+    area = session.get('area')
     current_date = datetime.now().date()
     tomorrow_date = current_date + timedelta(days=1)
 
@@ -83,7 +76,7 @@ def options():
         cursor.execute("SELECT * FROM citas_nutricion WHERE fecha_consulta = ?", (tomorrow_date,))
         citas_manana = cursor.fetchall()
 
-    return render_template('nutricion/options.html', citas_hoy=citas_hoy, citas_manana=citas_manana)
+        return render_template(f'{area}/agenda.html', citas_hoy=citas_hoy, citas_manana=citas_manana)
 @app.route('/registro', methods=['GET', 'POST'])
 @login_required
 def registro_paciente():
@@ -125,7 +118,7 @@ def registro_paciente():
         if mensaje_error:
             return render_template('nutricion/registro.html', mensaje_error=mensaje_error)
         else:
-            return redirect(url_for('nutricion/registro_exitoso', id_paciente=id_paciente, nombre_paciente=f"{nombres} {primer_apellido} {segundo_apellido}"))
+            return redirect(url_for('registro_exitoso', id_paciente=id_paciente, nombre_paciente=f"{nombres} {primer_apellido} {segundo_apellido}"))
 
     return render_template('nutricion/registro.html')
 @app.route('/registro_exitoso')

@@ -23,11 +23,13 @@
 
 <body>
     <div class="container">
-        <img src="{{ url_for('static', filename='css/Imagen/_44109a07-adb5-4db9-90c0-8bac1621533a-removebg-preview.png') }}" alt="Logo de la página" class="logo">
-        <h1>CONSULTAS NUTRICIÓN ARMONÍA</h1>
-        <h2>Bienvenido al registro de consultas para pacientes de nutrición</h2>
-        <a href="/login" class="button btn-login">Iniciar Sesión</a>
-    </div>
+        <h1>Bienvenido</h1>
+        <p>Seleccione su área de ingreso:</p>
+        <div class="login-options">
+            <a href="/login/nutricion" class="button btn-login">Iniciar Sesión - Nutrición</a>
+            <a href="/login/fisioterapia" class="button btn-login">Iniciar Sesión - Fisioterapia</a>
+            <a href="/login/acomp_psicoemocional" class="button btn-login">Iniciar Sesión - Acompañamiento Psicoemocional</a>
+        </div>
 </body>
 
 </html>

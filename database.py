@@ -2,6 +2,19 @@ import sqlite3
 import hashlib
 conexion = sqlite3.connect('nutricion_consulta.db')
 cursor = conexion.cursor()
+def get_hashed_password(password, salt=None):
+    if not salt:
+        salt = hashlib.sha256(b'SALT').hexdigest()
+    hashed_password = hashlib.pbkdf2_hmac('sha256', password.encode(), salt.encode(), 100000)
+    return hashed_password.hex()
+
+#cursor.execute('''CREATE TABLE IF NOT EXISTS usuarios (
+    #id INTEGER PRIMARY KEY AUTOINCREMENT,
+   # username TEXT UNIQUE NOT NULL,
+   # password TEXT NOT NULL,
+   # salt TEXT NOT NULL,
+   # tipo_usuario TEXT NOT NULL
+#)''')
 
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS pacientes (
@@ -43,16 +56,7 @@ cursor.execute('''
 ''')
 #cursor.execute('DROP TABLE IF EXISTS antecedentes_personales')
 
-#cursor.execute('''CREATE TABLE IF NOT EXISTS usuarios (
-                   # username TEXT PRIMARY KEY,
-                  #  password TEXT NOT NULL 
-             #   )''')
-hashed_password_matutino = hashlib.sha256(b'MATUTINO').hexdigest()
-hashed_password_vespertino = hashlib.sha256(b'VESPERTINO').hexdigest()
-cursor.execute("INSERT OR IGNORE INTO usuarios_nutricion (username, password) VALUES (?, ?)", ('MATUTINO', hashed_password_matutino))
-cursor.execute("INSERT OR IGNORE INTO usuarios_nutricion (username, password) VALUES (?, ?)", ('VESPERTINO', hashed_password_vespertino))
-#cursor.execute('ALTER TABLE citas RENAME TO citas_nutricion')
-#conexion.commit()
+
 cursor.execute('''CREATE TABLE IF NOT EXISTS citas_nutricion (
                     id_cita INTEGER PRIMARY KEY AUTOINCREMENT,
                     id_paciente TEXT,
