@@ -281,6 +281,7 @@ def actualizar_estado():
     return redirect(request.referrer or url_for('historial_citas'))
 @app.route('/directorio_pacientes', methods=['GET', 'POST'])
 def directorio_pacientes():
+    area = session.get('area')
     filter_text = ''
     filter_by = ''
     page = request.args.get('page', 1, type=int)
@@ -323,7 +324,7 @@ def directorio_pacientes():
 
     total_pages = (total_pacientes + per_page - 1) // per_page
 
-    return render_template('nutricion/directorio_pacientes.html', pacientes=pacientes, page=page, total_pages=total_pages)
+    return render_template(f'{area}/directorio_pacientes.html', pacientes=pacientes, page=page, total_pages=total_pages)
 
 
 @app.route('/registro_antecedentes_familiares', methods=['GET', 'POST'])
@@ -392,7 +393,8 @@ def registro_antecedentes_familiares():
 @app.route('/expediente')
 @login_required
 def expediente():
-    return render_template('nutricion/expediente.html')
+    area = session.get('area')
+    return render_template(f'{area}/expediente.html')
 
 @app.route('/registro_antecedentes_personales', methods=['GET', 'POST'])
 @login_required
