@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylep.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='css/Imagen/_psico.png') }}">
+
+    <title>Calendario</title>
+</head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.update-form').submit(function(event) {
+            event.preventDefault(); // Evita la recarga de la página al enviar el formulario
+            var form = $(this);
+            var url = form.attr('action');
+            var data = form.serialize(); // Obtener los datos del formulario
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: data,
+                success: function(response) {
+                    // Actualizar la página o realizar otras acciones según sea necesario
+                    console.log('Estado actualizado exitosamente');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al actualizar el estado:', error);
+                }
+            });
+        });
+    });
+</script>
+<body>
+    <div class="navbar">
+        <a href="/">Inicio</a>
+        <a href="/registro">Registro</a>
+        <a href="/consultar">Registro de consultas</a>
+        <a href="/agenda">Calendario</a>
+        <a href="/agendar_cita">Agendar Cita</a>
+        <a href="/historial_citas">Historial de Citas</a>
+        <a href="/directorio_pacientes">Directorio Pacientes</a>
+        <a href="/expediente">Expediente</a>
+    </div>
+    <br>      <br> 
+    
+            <h1>CITAS AGENDADAS</h1>
+        
+            <div class="citas-container">
+                <div class="citas-hoy">
+                    <h2>Para Hoy</h2>
+                    {% if citas_hoy %}
+                    {% for cita in citas_hoy %}
+                    <div class="cita-agendada">
+                        <p>ID Cita: {{ cita[0] }}</p>
+                        <p>ID Paciente: {{ cita[1] }}</p>
+                        <p>Fecha Cita: {{ cita[2] }}</p>
+                        <p>Hora Cita: {{ cita[3] }}</p>
+                        <form action="/actualizar_estado" method="POST">
+                            <input type="hidden" name="id_cita" value="{{ cita[0] }}">
+                            <select name="estado">
+                                <option value="Pendiente" {% if cita[5] == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                                <option value="Atendida" {% if cita[5] == 'Atendida' %}selected{% endif %}>Atendida</option>
+                                <option value="Cancelada" {% if cita[5] == 'Cancelada' %}selected{% endif %}>Cancelada</option>
+                            </select>
+                            <input type="submit" value="Actualizar">
+                        </form>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p>No hay citas agendadas para hoy.</p>
+                    {% endif %}
+                </div>
+        
+                <div class="citas-mañana">
+                    <h2>Para Mañana</h2>
+                    {% if citas_manana %}
+                    {% for cita in citas_manana %}
+                    <div class="cita-agendada-mañana">
+                        <p>ID Cita: {{ cita[0] }}</p>
+                        <p>ID Paciente: {{ cita[1] }}</p>
+                        <p>Fecha Cita: {{ cita[2] }}</p>
+                        <p>Hora Cita: {{ cita[3] }}</p>
+                        <!-- Agrega más detalles de la cita según tu estructura de datos -->
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p>No hay citas agendadas para mañana.</p>
+                    {% endif %}
+                </div>
+        </div>
+</body>
+
+</html>

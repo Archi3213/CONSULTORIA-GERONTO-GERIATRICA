@@ -13,12 +13,11 @@ body::before {
     width: 100%;
     height: 100%;
     z-index: -1;
-    background-image: url('/static/css/Imagen/fondo_fisio.png');
+    background-image: url('/static/css/Imagen/fondo_psico.jpeg');
     background-size: cover; /* Cambiado a cover para que el fondo se ajuste al tamaño de la ventana */
     filter: blur(8px); /* Aumentado el desenfoque para un efecto más pronunciado */
     opacity: .8;
 }
-
 .checkbox-container-container1,
 .checkbox-container-container2,
 .checkbox-container-container3,
@@ -76,7 +75,7 @@ label {
     font-size: 20px;
     font-weight: bold;
     color: #fff;
-    background: linear-gradient(45deg, #007bff, #86fc25);
+    background: linear-gradient(45deg, #ff0088, #86fc25);
     border: none;
     border-radius: 50px;
     text-decoration: none;
@@ -86,7 +85,7 @@ label {
 }
 
 .button2:hover {
-    background: linear-gradient(45deg, #25fc30, #007bff);
+    background: linear-gradient(45deg, #25fc30, #ff0088);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 6px 20px rgba(0, 0, 0, 0.4) inset;
     transform: scale(1.1);
 }
@@ -145,23 +144,23 @@ label {
 
 /* Estilo para el enlace activo */
 .navbar a.active {
-    background-color: #007bff;
+    background-color: #ff0088;
     color: #fff;
-    border-color: #007bff;
+    border-color: #ff0088;
 }
 
 /* Estilo para el enlace activo en hover */
 .navbar a.active:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+    background-color: #ff0088;
+    border-color: #ff0088;
     box-shadow: none;
 }
 
 /* Estilo para el botón */
 .btn-login {
-    background-color: #007bff;
+    background-color: #ff0088;
     color: #fff;
-    border: 2px solid #007bff;
+    border: 2px solid #ff0088;
     border-radius: 5px;
     padding: 10px 20px;
     text-decoration: none;
@@ -170,8 +169,8 @@ label {
 }
 
 .btn-login:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+    background-color: #ff0088;
+    border-color: #af0c63;
 }
 
 /* Estilos para botones */
@@ -247,13 +246,13 @@ select {
     display: inline-block;
     padding: 10px 20px;
     border-radius: 5px;
-    background-color: #3367d6;
+    background-color: #ff0088;
     color: #fff;
     text-decoration: none;
     transition: background-color 0.3s ease;
 }
 .button:hover {
-    background-color: #0056b3;
+    background-color: #ff0088;
 }
 input[type="checkbox"] {
     transform: scale(1.5);
@@ -289,7 +288,7 @@ label {
     padding: 40px;
     border: 2px solid #002700;
     border-radius: 10px;
-    background: linear-gradient(to right, #dce35b, #3367d6);
+    background: linear-gradient(to right, #dce35b, #ff0088);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
 }
@@ -326,17 +325,17 @@ label {
 }
 
 .container input[type="submit"] {
-    background-color: #3367d6;
+    background-color: #ff0088;
     color: #fff;
 }
 /* Estilos para los botones */
 .container input[type="submit"]:hover,
 .add-button:hover {
-    background-color: #3367d6;
+    background-color: #ff0088;
 }
 
 .container input[type="submit"]:hover {
-    background-color: #3367d6;
+    background-color: #ff0088;
 }
 
 /* Estilos para mensajes */
@@ -354,7 +353,7 @@ label {
 }
 
 .success-message {
-    color: #3367d6;
+    color: #ff0088;
     background-color: #dff0d8;
 }
 
@@ -463,7 +462,7 @@ strong {
     width: 600px;
     margin: 50px auto;
     padding: 40px;
-    border: 2px solid #3367d6;
+    border: 2px solid #ff0088;
     border-radius: 10px;
     background-color: #f0f0f0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -514,7 +513,7 @@ strong {
     padding: 12px;
     border: none;
     border-radius: 6px;
-    background-color: #3367d6;
+    background-color: #ff0088;
     color: #fff;
     cursor: pointer;
     font-size: 16px;
@@ -522,7 +521,7 @@ strong {
 }
 
 .container1 input[type="submit"]:hover {
-    background-color: #3367d6;
+    background-color: #36d633;
 }
 
 /* Estilos para el contenedor de filtros */
@@ -565,7 +564,7 @@ strong {
 }
 
 .filter-form input[type="submit"] {
-    background-color: #3367d6;
+    background-color: #ff0088;
     color: #fff;
     border: none;
     cursor: pointer;
@@ -573,7 +572,7 @@ strong {
 }
 
 .filter-form input[type="submit"]:hover {
-    background-color: #3367d6;
+    background-color: #ff0088;
     
 }
 .container1 select {
@@ -644,7 +643,7 @@ table td {
 
 /* Estilo para la primera fila (encabezados) */
 table th {
-    background-color: #007bff;
+    background-color: #023300;
     font-weight: bold;
 }
 
@@ -759,7 +758,7 @@ table tr:nth-child(even) {
     width: 100%;
     padding: 10px;
     margin-top: 20px;
-    background-color: #007bff;
+    background-color: #ff0088;
     color: white;
     text-align: center;
     border: none;
@@ -905,7 +904,7 @@ table tr:nth-child(even) {
 }
 
 .pagination a {
-    color: #007bff;
+    color: #ff0088;
     padding: 10px 15px;
     text-decoration: none;
     border: 1px solid #dee2e6;
@@ -920,7 +919,11 @@ table tr:nth-child(even) {
 }
 
 .pagination a.active {
-    background-color: #007bff;
+    background-color: #ff0088;
     color: white;
-    border-color: #007bff;
+    border-color: #ff0088;
+}
+.logo {
+    width: 250px;  /* Ajusta este valor según el tamaño deseado */
+    height: auto;  /* Mantiene la proporción de la imagen */
 }

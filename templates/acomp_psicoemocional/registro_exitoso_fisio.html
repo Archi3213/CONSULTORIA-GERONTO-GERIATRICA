@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Registro Exitoso</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylep.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='css/Imagen/_psico.png') }}">
+
+
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">Inicio</a>
+        <a href="/registro">Registro</a>
+        <a href="/consultar">Registro de consultas</a>
+        <a href="/agenda">Calendario</a>
+        <a href="/agendar_cita">Agendar Cita</a>
+        <a href="/historial_citas">Historial de Citas</a>
+        <a href="/directorio_pacientes">Directorio Pacientes</a>
+        <a href="/expediente">Expediente</a>
+        </div>
+        <div class="container">
+            <div class="content">
+                <h1>¡Registro Exitoso!</h1>
+                <p>El paciente se ha registrado correctamente con el siguiente ID:</p>
+                <h2><strong></strong> {{ id_paciente }}</h2>
+            </div>
+        </div>
+</body>
+</html>

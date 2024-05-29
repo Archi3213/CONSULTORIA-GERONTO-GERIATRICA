@@ -31,7 +31,7 @@ body::before {
 
 /* Títulos */
 h1 {
-    font-size: 3em;
+    font-size: 2em;
     margin-bottom: 0.5em;
     animation: fadeIn 2s ease-in-out;
 }
@@ -49,12 +49,53 @@ p {
     gap: 1em;
 }
 
-.button {
+.button1
+ {
+    display: inline-block;
+    padding: 1em 2em;
+    font-size: 1.2em;
+    color: #fff;
+    background-color: rgba(7, 99, 0, 0.8);
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.3s;
+    animation: slideIn 1s ease-out forwards;
+}
+
+.button2
+ {
     display: inline-block;
     padding: 1em 2em;
     font-size: 1.2em;
     color: #fff;
     background-color: rgba(0, 128, 128, 0.8);
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.3s;
+    animation: slideIn 1s ease-out forwards;
+}
+.button3
+ {
+    display: inline-block;
+    padding: 1em 2em;
+    font-size: 1.2em;
+    color: #fff;
+    background-color: rgba(109, 0, 128, 0.8);
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.3s;
+    animation: slideIn 1s ease-out forwards;
+}
+.button4
+ {
+    display: inline-block;
+    padding: 1em 2em;
+    font-size: 1.2em;
+    color: #fff;
+    background-color: rgba(0, 0, 45, 0.8);
     border: none;
     border-radius: 5px;
     text-decoration: none;
@@ -92,4 +133,8 @@ p {
         opacity: 1;
         transform: translateX(0);
     }
+}
+.logo {
+    width: 250px;  /* Ajusta este valor según el tamaño deseado */
+    height: auto;  /* Mantiene la proporción de la imagen */
 }

@@ -57,7 +57,7 @@ textarea {
 }
 
 textarea:focus {
-    border-color: #007bff; /* Cambia el borde al enfocar */
+    border-color: #018727; /* Cambia el borde al enfocar */
     outline: none; /* Elimina el contorno al enfocar */
 }
 
@@ -144,23 +144,23 @@ label {
 
 /* Estilo para el enlace activo */
 .navbar a.active {
-    background-color: #007bff;
+    background-color: #045a02;
     color: #fff;
-    border-color: #007bff;
+    border-color: #018727;
 }
 
 /* Estilo para el enlace activo en hover */
 .navbar a.active:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+    background-color: #018727;
+    border-color: #025709;
     box-shadow: none;
 }
 
 /* Estilo para el botón */
 .btn-login {
-    background-color: #007bff;
+    background-color: #018727;
     color: #fff;
-    border: 2px solid #007bff;
+    border: 2px solid #013212;
     border-radius: 5px;
     padding: 10px 20px;
     text-decoration: none;
@@ -904,7 +904,7 @@ table tr:nth-child(even) {
 }
 
 .pagination a {
-    color: #007bff;
+    color: #018727;
     padding: 10px 15px;
     text-decoration: none;
     border: 1px solid #dee2e6;
@@ -919,7 +919,7 @@ table tr:nth-child(even) {
 }
 
 .pagination a.active {
-    background-color: #007bff;
+    background-color: #018727;
     color: white;
-    border-color: #007bff;
+    border-color: #33ff00;
 }

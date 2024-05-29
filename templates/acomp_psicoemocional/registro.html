@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Registro de Paciente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylep.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='css/Imagen/_psico.png') }}">
+
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">Inicio</a>
+        <a href="/registro">Registro</a>
+        <a href="/consultar">Registro de consultas</a>
+        <a href="/agenda">Calendario</a>
+        <a href="/agendar_cita">Agendar Cita</a>
+        <a href="/historial_citas">Historial de Citas</a>
+        <a href="/directorio_pacientes">Directorio Pacientes</a>
+        <a href="/expediente">Expediente</a>
+        </div>
+<div class="container1">
+    <h1>Registro de Paciente</h1>
+    <div class="form-group">
+        <form method="post" action="/registro">
+            {% if mensaje_error %}
+            <div class="alert alert-danger" role="alert">
+              {{ mensaje_error }}
+            </div>
+            {% endif %}
+            <label>Primer apellido:</label>
+            <input type="text" name="primer_apellido"required>
+            <label>Segundo apellido:</label>
+            <input type="text" name="segundo_apellido"required>
+            <label>Nombres:</label>
+            <input type="text" name="nombres"required>
+
+            <label>Fecha de Nacimiento:</label>
+            <input type="date" name="fecha_nacimiento"required>
+
+            <label for="celular"> Numero de celular:</label>
+            <input type="tel" id="celular" name="celular" pattern="[0-9]+" title="Ingrese al menos 10 dígitos numéricos" required minlength="10" maxlength="10"><br>
+
+         
+        <label>Escolaridad:</label>
+        <select name="escolaridad">
+            <option value="Ninguna"required>Ninguna</option>
+            <option value="Primaria"required>Primaria</option>
+            <option value="Secundaria"required>Secundaria</option>
+            <option value="Bachillerato"required>Bachillerato</option>
+            <option value="Carrera Tecnica"required>Carrera Tecnica</option>
+            <option value="Carrera Comercial"required>Carrera Comercial</option>
+            <option value="Licenciatura"required>Licenciatura</option>
+            <option value="Ingenieria"required>Ingenieria</option>
+            <option value="Doctorado"required>Doctorado</option>
+            <option value="Posdoctorado"required>Posdoctorado</option>
+            <option value="Master"required>Master</option>
+            <option value="Posgrado"required>Posgrado</option>
+            <option value="Maestria"required>Maestria </option>
+           
+        </select>
+
+        <label>Religion:</label>
+        <select name="religion">
+            <option value="ninguno"required>Ninguna</option>
+            <option value="catolico"required>Catolico</option>
+            <option value="evangelico"required>Evangelico</option>
+            <option value="protestante"required>Protestante</option>
+            <option value="judio"required>Judio</option>
+            <option value="budista"required>Budista</option>
+            <option value="islamico"required>Islamico</option>
+            <option value="otro"required>Otro</option>
+        </select>
+
+        <label>Ocupación:</label>
+        <input type="text" name="ocupacion"required>
+
+        <label>Estado civil:</label>
+         <select name="estado_civil">
+            <option value="soltero"required>Soltero</option>
+            <option value="casado"required>Casado</option>
+            <option value="divorciado"required>Divorciado</option>
+            <option value="viudo"required>Viudo</option>
+            <option value="union_libre"required>Union Libre</option>
+            <option value="otro"required>Otro</option>
+        </select>
+
+        <label>Servicio de salud con el que cuenta:</label>
+        <select name="servicio_salud">
+            <option value="ninguno"required>Ninguno</option>
+            <option value="imss"required>IMSS</option>
+            <option value="issste"required>ISSSTE</option>
+            <option value="otro"required>Otro</option>
+            <option value="sedena"required>SEDENA</option>
+            <option value="independiente"required>Independiente</option>
+        </select>
+        
+            <label>Turno:</label>
+            <select name="turno">
+                <option value="matutino"required>Matutino</option>
+                <option value="vespertino"required>Vespertino</option>
+            </select>
+
+            <label>Género:</label>
+            <input type="radio" name="genero" value="masculino"required>Masculino
+            <input type="radio" name="genero" value="femenino"required>Femenino
+            <input type="radio" name="genero" value="no_binario"required>No Binario
+            <br></br>
+            <label>Peso(kg):</label>
+            <input type="number,2" name="peso"required>
+
+            <label>Altura(cm):</label>
+            <input type="number" name="altura"required>
+
+            <label>Fecha de Registro:</label>
+            <input type="date" name="fecha_registro"required>
+
+            <label>Quién Registró:</label>
+            <input type="text" name="registrado_por"required>
+
+            <input type="submit" value="Registrar">
+
+        </form>
+        
+    </div>
+</body>
+</html>

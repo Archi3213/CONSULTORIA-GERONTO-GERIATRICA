@@ -3,8 +3,7 @@
 <head>
     <title>Historial de Citas</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/stylef.css') }}">
-    <link rel="icon" type="image/png" href="static\css\Imagen\fisio_logo.png">
-
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='css/Imagen/fisio_logo.png') }}">
 </head>
 <body>
     <div class="navbar">
@@ -17,7 +16,7 @@
         <a href="/directorio_pacientes">Directorio Pacientes</a>
         <a href="/expediente">Expediente</a>
     </div>
-    <br>      <br> 
+    <br><br>
     <h1>Historial de Citas</h1>
     <div class="filter-container">
         <form action="{{ url_for('historial_citas') }}" method="post" class="filter-form">
@@ -25,7 +24,7 @@
             <input type="text" id="filter_id" name="filter_text" list="pacientes_list">
             <datalist id="pacientes_list">
                 {% for paciente in pacientes %}
-                <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
+                <option value="{{ paciente['id_paciente'] }}">{{ paciente['primer_apellido'] }} {{ paciente['segundo_apellido'] }} {{ paciente['nombres'] }}</option>
                 {% endfor %}
             </datalist>
             <input type="hidden" name="filter_by" value="id_paciente">
@@ -61,20 +60,20 @@
             </tr>
         </thead>
         <tbody>
-            {% for cita in citas_nutricion %}
+            {% for cita in citas %}
             <tr>
-                <td>{{ cita[0] }}</td>
-                <td>{{ cita[1] }}</td>
-                <td>{{ cita[2] }}</td>
-                <td>{{ cita[3] }}</td>
-                <td>{{ cita[4] }}</td>
+                <td>{{ cita['id'] }}</td>
+                <td>{{ cita['id_paciente'] }}</td>
+                <td>{{ cita['fecha_consulta'] }}</td>
+                <td>{{ cita['hora_consulta'] }}</td>
+                <td>{{ cita['observaciones'] }}</td>
                 <td>
                     <form action="/actualizar_estado" method="POST">
-                        <input type="hidden" name="id_cita" value="{{ cita[0] }}">
+                        <input type="hidden" name="id_cita" value="{{ cita['id'] }}">
                         <select name="estado">
-                            <option value="Pendiente" {% if cita[5] == 'Pendiente' %}selected{% endif %}>Pendiente</option>
-                            <option value="Atendida" {% if cita[5] == 'Atendida' %}selected{% endif %}>Atendida</option>
-                            <option value="Cancelada" {% if cita[5] == 'Cancelada' %}selected{% endif %}>Cancelada</option>
+                            <option value="Pendiente" {% if cita['estado'] == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                            <option value="Atendida" {% if cita['estado'] == 'Atendida' %}selected{% endif %}>Atendida</option>
+                            <option value="Cancelada" {% if cita['estado'] == 'Cancelada' %}selected{% endif %}>Cancelada</option>
                         </select>
                         <input type="submit" value="Actualizar">
                     </form>

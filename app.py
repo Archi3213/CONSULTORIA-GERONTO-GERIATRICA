@@ -60,7 +60,6 @@ def login(area):
             return render_template(f'{area}/login.html', error=error)
     return render_template(f'{area}/login.html')
 
-
 @app.route('/agenda')
 @login_required
 def options():
@@ -68,15 +67,26 @@ def options():
     current_date = datetime.now().date()
     tomorrow_date = current_date + timedelta(days=1)
 
+    # Definimos el nombre de la tabla en función del área
+    if area == 'nutricion':
+        table_name = 'citas_nutricion'
+    elif area == 'fisioterapia':
+        table_name = 'citas_fisioterapia'
+    elif area == 'acomp_psicoemocional':
+        table_name = 'citas_acomp_psicoemocional'
+    else:
+        return "Área no válida", 400
+
     with get_db_connection() as connection:
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM citas_nutricion WHERE fecha_consulta = ?", (current_date,))
+        cursor.execute(f"SELECT * FROM {table_name} WHERE fecha_consulta = ?", (current_date,))
         citas_hoy = cursor.fetchall()
 
-        cursor.execute("SELECT * FROM citas_nutricion WHERE fecha_consulta = ?", (tomorrow_date,))
+        cursor.execute(f"SELECT * FROM {table_name} WHERE fecha_consulta = ?", (tomorrow_date,))
         citas_manana = cursor.fetchall()
 
         return render_template(f'{area}/agenda.html', citas_hoy=citas_hoy, citas_manana=citas_manana)
+
 @app.route('/registro', methods=['GET', 'POST'])
 @login_required
 def registro_paciente():
@@ -104,31 +114,37 @@ def registro_paciente():
         altura_metros = altura / 100
         imc = peso / (altura_metros ** 2)
 
+        area = session.get('area')
+    
+
         with get_db_connection() as connection:
             cursor = connection.cursor()
-            cursor.execute("SELECT id_paciente FROM pacientes WHERE id_paciente = ?", (id_paciente,))
+            cursor.execute(f"SELECT id_paciente FROM pacientes WHERE id_paciente = ?", (id_paciente,))
             if cursor.fetchone():
                 mensaje_error = "El ID del paciente ya existe en la base de datos"
-                id_paciente = f"{primer_apellido[:2].upper()}{segundo_apellido[:2].upper()}{nombres[:2].upper()}{fecha_nacimiento.replace('-', '')}"
             else:
-                cursor.execute('''INSERT INTO pacientes (id_paciente, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, religion, escolaridad, ocupacion, estado_civil, servicio_salud, celular, turno, genero, peso, altura, imc, fecha_registro, registrado_por) 
-                                VALUES (?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?, ?)''', 
-                                (id_paciente, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, religion, escolaridad, ocupacion, estado_civil,  servicio_salud,  celular, turno, genero, peso, altura, imc, fecha_registro, registrado_por))
+                cursor.execute(f'''INSERT INTO pacientes (id_paciente, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, religion, escolaridad, ocupacion, estado_civil, servicio_salud, celular, turno, genero, peso, altura, imc, fecha_registro, registrado_por) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
+                                (id_paciente, primer_apellido, segundo_apellido, nombres, fecha_nacimiento, religion, escolaridad, ocupacion, estado_civil, servicio_salud, celular, turno, genero, peso, altura, imc, fecha_registro, registrado_por))
 
         if mensaje_error:
-            return render_template('nutricion/registro.html', mensaje_error=mensaje_error)
+            return render_template(f'{area}/registro.html', mensaje_error=mensaje_error)
         else:
-            return redirect(url_for('registro_exitoso', id_paciente=id_paciente, nombre_paciente=f"{nombres} {primer_apellido} {segundo_apellido}"))
+            return redirect(url_for(f'{area}registro_exitoso', id_paciente=id_paciente, nombre_paciente=f"{nombres} {primer_apellido} {segundo_apellido}"))
 
-    return render_template('nutricion/registro.html')
+    area = session.get('area')
+    return render_template(f'{area}/registro.html')
+
 @app.route('/registro_exitoso')
 def registro_exitoso():
+    area = session.get('area')
     id_paciente = request.args.get('id_paciente')
     return render_template('nutricion/registro_exitoso.html', id_paciente=id_paciente)
 
 @app.route('/consultar', methods=['GET', 'POST'])
 @login_required
 def consulta_paciente():
+    area = session.get('area')  # Obtener el área de la sesión
     filter_text = ''
     filter_by = ''
     page = request.args.get('page', 1, type=int)
@@ -162,13 +178,15 @@ def consulta_paciente():
 
     total_pages = (total_pacientes + per_page - 1) // per_page
 
-    return render_template('nutricion/consultar.html', pacientes=pacientes, page=page, total_pages=total_pages)
-
+    return render_template(f'{area}/consultar.html', pacientes=pacientes, page=page, total_pages=total_pages)
 
 
 @app.route('/agendar_cita', methods=['GET', 'POST'])
 @login_required
 def agendar_cita():
+    area = session.get('area', 'nutricion')  # Obtener el área de la sesión, por defecto 'nutricion'
+    tabla_citas = f'citas_{area}'
+
     if request.method == 'POST':
         id_paciente = request.form['id_paciente']
         fecha_consulta = request.form['fecha_consulta']
@@ -177,9 +195,9 @@ def agendar_cita():
 
         with get_db_connection() as connection:
             cursor = connection.cursor()
-            cursor.execute('''INSERT INTO citas_nutricion (id_paciente, fecha_consulta, hora_consulta, observaciones) 
-                            VALUES (?, ?, ?, ?)''', 
-                            (id_paciente, fecha_consulta, hora_consulta, observaciones))
+            query = f'''INSERT INTO {tabla_citas} (id_paciente, fecha_consulta, hora_consulta, observaciones) 
+                        VALUES (?, ?, ?, ?)'''
+            cursor.execute(query, (id_paciente, fecha_consulta, hora_consulta, observaciones))
 
         return redirect(url_for('historial_citas'))
     
@@ -188,17 +206,20 @@ def agendar_cita():
         cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
         pacientes = cursor.fetchall()
 
-    return render_template('nutricion/agendar_cita.html', pacientes=pacientes)
+    return render_template(f'{area}/agendar_cita.html', pacientes=pacientes)
 
 @app.route('/historial_citas', methods=['GET', 'POST'])
 @login_required
 def historial_citas():
+    area = session.get('area')  # Obtener el área de la sesión, por defecto 'nutricion'
+    tabla_citas = f'citas_{area}'
+
     filter_text = request.form.get('filter_text')
     filter_by = request.form.get('filter_by')
     page = request.args.get('page', 1, type=int)
     per_page = 20
 
-    query = "SELECT * FROM citas_nutricion"
+    query = f"SELECT * FROM {tabla_citas}"
     params = []
 
     if request.method == 'POST' and filter_text and filter_by:
@@ -213,18 +234,20 @@ def historial_citas():
             params.append(filter_text)
 
     with get_db_connection() as connection:
+        connection.row_factory = sqlite3.Row  # Permite el acceso a las columnas por nombre
         cursor = connection.cursor()
         cursor.execute(query, params)
-        citas_nutricion = cursor.fetchall()
+        citas_area = cursor.fetchall()
 
     # Obtener lista de pacientes para el datalist
     with get_db_connection() as connection:
+        connection.row_factory = sqlite3.Row  # Permite el acceso a las columnas por nombre
         cursor = connection.cursor()
         cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
         pacientes = cursor.fetchall()
 
-    # Ordenar por fecha de consulta (columna [2]) de más reciente a más antigua
-    citas_ordenadas = sorted(citas_nutricion, key=lambda x: x['fecha_consulta'], reverse=True)
+    # Ordenar por fecha de consulta de más reciente a más antigua
+    citas_ordenadas = sorted(citas_area, key=lambda x: x['fecha_consulta'], reverse=True)
 
     # Paginación
     total_citas = len(citas_ordenadas)
@@ -234,8 +257,8 @@ def historial_citas():
     citas_paginadas = citas_ordenadas[start:end]
 
     return render_template(
-        'nutricion/historial_citas.html',
-        citas_nutricion=citas_paginadas,
+        f'{area}/historial_citas.html',
+        citas=citas_paginadas,
         pacientes=pacientes,
         page=page,
         total_pages=total_pages
@@ -247,12 +270,15 @@ def actualizar_estado():
         id_cita = request.form['id_cita']
         nuevo_estado = request.form['estado']
 
+        area = session.get('area')
+        tabla_citas = f"citas_{area}"
+
         with get_db_connection() as connection:
             cursor = connection.cursor()
-            cursor.execute("UPDATE citas_nutricion SET estado = ? WHERE id_cita = ?", (nuevo_estado, id_cita))
+            cursor.execute(f"UPDATE {tabla_citas} SET estado = ? WHERE id_cita = ?", (nuevo_estado, id_cita))
             connection.commit()
 
-    return redirect(request.referrer or url_for('nutricion/historial_citas'))
+    return redirect(request.referrer or url_for('historial_citas'))
 @app.route('/directorio_pacientes', methods=['GET', 'POST'])
 def directorio_pacientes():
     filter_text = ''

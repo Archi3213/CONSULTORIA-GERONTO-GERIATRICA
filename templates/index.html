@@ -4,17 +4,19 @@
 <head>
     <title>Consultas Fisioterapia Armonía</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleg.css') }}">
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='css/Imagen/_44109a07-adb5-4db9-90c0-8bac1621533a-removebg-preview.png') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='css/Imagen/logo_envjeciendo.png') }}">
 </head>
 
 <body>
     <div class="container">
-        <h1 class="fade-in">Bienvenido</h1>
-        <p class="fade-in">Seleccione su área de ingreso:</p>
+        <p class="fade-in">
+            <img src="{{ url_for('static', filename='css/Imagen/logo_envjeciendo.png') }}" alt="Logo de la página" class="logo">
+            <br>Seleccione su área de ingreso:</p>
         <div class="login-options">
-            <a href="/login/nutricion" class="button btn-login slide-in">Iniciar Sesión - Nutrición</a>
-            <a href="/login/fisioterapia" class="button btn-login slide-in">Iniciar Sesión - Fisioterapia</a>
-            <a href="/login/acomp_psicoemocional" class="button btn-login slide-in">Iniciar Sesión - Acompañamiento Psicoemocional</a>
+            <a href="/login/nutricion" class="button1 btn-login slide-in"> Nutrición</a>
+            <a href="/login/fisioterapia" class="button2 btn-login slide-in"> Fisioterapia</a>
+            <a href="/login/acomp_psicoemocional" class="button3 btn-login slide-in">Acompañamiento Psicoemocional</a>
+            <a href="/login/estadisticas" class="button4 btn-login slide-in">Estadisticas para coordinacion</a>
         </div>
     </div>
 </body>
