@@ -15,7 +15,20 @@ def get_hashed_password(password, salt=None):
    # salt TEXT NOT NULL,
    # tipo_usuario TEXT NOT NULL
 #)''')
+#username = 'coordinacion'
+#password = 'coordinacion'
+#salt = hashlib.sha256(b'SALT').hexdigest()  # Puedes cambiar 'SALT' por cualquier cadena que desees usar como sal
+#hashed_password = get_hashed_password(password, salt)
+#tipo_usuario = 'coordinacion'
 
+# Insertar el nuevo usuario en la tabla usuarios
+#cursor.execute('''
+#INSERT INTO usuarios (username, password, salt, tipo_usuario)
+#VALUES (?, ?, ?, ?)
+#''', (username, hashed_password, salt, tipo_usuario))
+
+# Confirmar la transacción
+conexion.commit()
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS pacientes (
                     id_paciente TEXT PRIMARY KEY,
@@ -67,6 +80,15 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS citas_nutricion (
                     FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
                 )''')
 cursor.execute('''CREATE TABLE IF NOT EXISTS citas_fisioterapia (
+                    id_cita INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id_paciente TEXT,
+                    fecha_consulta TEXT NOT NULL,
+                    hora_consulta TEXT NOT NULL, 
+                    observaciones TEXT,
+                    estado TEXT DEFAULT 'Pendiente',
+                    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
+                )''')
+cursor.execute('''CREATE TABLE IF NOT EXISTS citas_acomp_psicoemocional (
                     id_cita INTEGER PRIMARY KEY AUTOINCREMENT,
                     id_paciente TEXT,
                     fecha_consulta TEXT NOT NULL,

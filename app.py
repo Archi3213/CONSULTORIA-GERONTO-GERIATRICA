@@ -67,25 +67,39 @@ def options():
     current_date = datetime.now().date()
     tomorrow_date = current_date + timedelta(days=1)
 
-    # Definimos el nombre de la tabla en función del área
-    if area == 'nutricion':
-        table_name = 'citas_nutricion'
-    elif area == 'fisioterapia':
-        table_name = 'citas_fisioterapia'
-    elif area == 'acomp_psicoemocional':
-        table_name = 'citas_acomp_psicoemocional'
-    else:
-        return "Área no válida", 400
+    citas_hoy = []
+    citas_manana = []
+
+    # Definimos las tablas y áreas correspondientes
+    tablas_areas = {
+        'nutricion': 'citas_nutricion',
+        'fisioterapia': 'citas_fisioterapia',
+        'acomp_psicoemocional': 'citas_acomp_psicoemocional'
+    }
 
     with get_db_connection() as connection:
         cursor = connection.cursor()
-        cursor.execute(f"SELECT * FROM {table_name} WHERE fecha_consulta = ?", (current_date,))
-        citas_hoy = cursor.fetchall()
 
-        cursor.execute(f"SELECT * FROM {table_name} WHERE fecha_consulta = ?", (tomorrow_date,))
-        citas_manana = cursor.fetchall()
+        if area == 'coordinacion':
+            # Consultar todas las citas de todas las áreas
+            for area_name, table_name in tablas_areas.items():
+                cursor.execute(f"SELECT *, '{area_name.capitalize()}' as area FROM {table_name} WHERE fecha_consulta = ?", (current_date,))
+                citas_hoy.extend(cursor.fetchall())
 
-        return render_template(f'{area}/agenda.html', citas_hoy=citas_hoy, citas_manana=citas_manana)
+                cursor.execute(f"SELECT *, '{area_name.capitalize()}' as area FROM {table_name} WHERE fecha_consulta = ?", (tomorrow_date,))
+                citas_manana.extend(cursor.fetchall())
+        elif area in tablas_areas:
+            # Consultar citas solo del área específica
+            table_name = tablas_areas[area]
+            cursor.execute(f"SELECT *, '{area.capitalize()}' as area FROM {table_name} WHERE fecha_consulta = ?", (current_date,))
+            citas_hoy = cursor.fetchall()
+
+            cursor.execute(f"SELECT *, '{area.capitalize()}' as area FROM {table_name} WHERE fecha_consulta = ?", (tomorrow_date,))
+            citas_manana = cursor.fetchall()
+        else:
+            return "Área no válida", 400
+
+    return render_template(f'{area}/agenda.html', citas_hoy=citas_hoy, citas_manana=citas_manana)
 
 @app.route('/registro', methods=['GET', 'POST'])
 @login_required
@@ -646,7 +660,8 @@ def get_db_connection():
 def detalles_paciente():
     if request.method == 'POST':
         id_paciente = request.form['id_paciente']
-        
+        area = session.get('area')
+
         connection = get_db_connection()
         cursor = connection.cursor()
         
@@ -663,8 +678,8 @@ def detalles_paciente():
         antecedentes_familiares = cursor.fetchone()
         
         # Obtener datos de citas
-        cursor.execute('SELECT * FROM citas_nutricion WHERE id_paciente = ?', (id_paciente,))
-        citas_nutricion = cursor.fetchall()
+        cursor.execute(f'SELECT * FROM citas_{area} WHERE id_paciente = ?', (id_paciente,))
+        citas = cursor.fetchall()
         
         # Obtener datos de evaluación clínica
         cursor.execute('SELECT * FROM evaluacion_clinica WHERE id_paciente = ?', (id_paciente,))
@@ -684,20 +699,21 @@ def detalles_paciente():
         
         connection.close()
         
-        return render_template('nutricion/detalles_paciente.html', paciente=paciente, antecedentes_personales_nutricion=antecedentes_personales_nutricion,
-                               antecedentes_familiares=antecedentes_familiares, citas_nutricion=citas_nutricion, evaluacion_clinica=evaluacion_clinica,
+        return render_template(f'{area}/detalles_paciente.html', paciente=paciente, antecedentes_personales_nutricion=antecedentes_personales_nutricion,
+                               antecedentes_familiares=antecedentes_familiares, citas=citas, evaluacion_clinica=evaluacion_clinica,
                                registro_dietetico=registro_dietetico, evaluacion_antropometrica=evaluacion_antropometrica,
                                evaluacion_bioquimica=evaluacion_bioquimica)
-    return render_template('nutricion/buscar_paciente.html')
+    return render_template(f'{area}/buscar_paciente.html')
 @app.route('/buscar_paciente')
 @login_required
 def buscar_paciente():
+    area = session.get('area')
     with get_db_connection() as connection:
             cursor = connection.cursor()
             cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
             pacientes = cursor.fetchall()
     
-    return render_template('nutricion/buscar_paciente.html', pacientes=pacientes)
+    return render_template(f'{area}/buscar_paciente.html', pacientes=pacientes)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
