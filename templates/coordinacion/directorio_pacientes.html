@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  
+    <title>Directorio de Pacientes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_est.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='css/Imagen/estadistica_logo.png') }}">
+
+
+</head>
+
+<body>
+    <!-- Barra de navegación -->
+    <div class="navbar" id="navbar">
+        <a href="/">Inicio</a>
+        <a href="/registro">Registro</a>
+        <a href="/consultar">Registro de consultas</a>
+        <a href="/agenda">Calendario</a>
+        <a href="/agendar_cita">Agendar Cita</a>
+        <a href="/historial_citas">Historial de Citas</a>
+        <a href="/directorio_pacientes">Directorio Pacientes</a>
+        <a href="/expediente">Expediente</a>
+        </div>
+<br>      <br> 
+    <!-- Contenido principal -->
+    <h1>Directorio de Pacientes</h1>
+    <div class="filter-container">
+    <!-- Formulario de filtrado por nombre o apellidos -->
+    <form action="{{ url_for('directorio_pacientes') }}" method="post" class="filter-form">
+        <label for="filtro_apellidos">Filtrar por Nombre o Apellidos:</label>
+        <input type="text" id="filtro_apellidos" name="filter_text" placeholder="Ingrese nombre/apellidos..">
+        <input type="hidden" name="filter_by" value="apellidos">
+        <input type="submit" value="Buscar">
+    </form>
+
+    <!-- Formulario de filtrado por ID -->
+    <form action="{{ url_for('directorio_pacientes') }}" method="post" class="filter-form">
+        <label for="filtro_id">Filtrar por ID:</label>
+        <input type="text" id="filtro_id" name="filter_text" placeholder="Ingrese ID...">
+        <input type="hidden" name="filter_by" value="id_paciente">
+        <input type="submit" value="Buscar">
+    </form>
+    </div>
+    <!-- Tabla de pacientes -->
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Número de Teléfono</th>
+        </tr>
+        {% for paciente in pacientes %}
+        <tr>
+            <td>{{ paciente[0] }}</td>
+            <td>{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</td>
+            <td>
+                <form method="post" style="display:inline;">
+                    <input type="hidden" name="id_paciente" value="{{ paciente[0] }}">
+                    <input type="text" name="new_phone" value="{{ paciente[10] }}" pattern="[0-9]+" title="Ingrese al menos 10 dígitos numéricos" required minlength="10" maxlength="10">
+                    <button type="submit">Actualizar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="{{ url_for('directorio_pacientes', page=page-1) }}">&laquo; Anterior</a>
+        {% endif %}
+        {% for p in range(1, total_pages + 1) %}
+            <a href="{{ url_for('directorio_pacientes', page=p) }}" class="{{ 'active' if p == page else '' }}">{{ p }}</a>
+        {% endfor %}
+        {% if page < total_pages %}
+            <a href="{{ url_for('directorio_pacientes', page=page+1) }}">Siguiente &raquo;</a>
+        {% endif %}
+    </div>
+</body>
+</html>

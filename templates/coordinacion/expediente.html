@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+   
+    <title>Expedientes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_est.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='css/Imagen/estadistica_logo.png') }}">
+
+
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="/">Inicio</a>
+        <a href="/registro">Registro</a>
+        <a href="/consultar">Registro de consultas</a>
+        <a href="/agenda">Calendario</a>
+        <a href="/agendar_cita">Agendar Cita</a>
+        <a href="/historial_citas">Historial de Citas</a>
+        <a href="/directorio_pacientes">Directorio Pacientes</a>
+        <a href="/expediente">Expediente</a>
+    </div>
+    <br>      <br> <br>      <br> 
+    <div class="content_exp">
+        
+        <a href="/estadisticas_registro" class="button2">Antecedentes Familiares</a>
+        <a href="/registro_antecedentes_personales"class="button2">Antecedentes personales</a>
+        <a href="/evaluacion_clinica"class="button2">Evaluacion Clinica</a>
+        <a href="/buscar_paciente"class="button2"> Historial del paciente </a>
+        
+       
+    </div>
+</body>
+
+</html>

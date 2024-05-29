@@ -1,13 +1,19 @@
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, session
 import hashlib, sqlite3
+import pandas as pd
 from operator import itemgetter
 from datetime import datetime
 from datetime import datetime, timedelta
 import math
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
+import matplotlib
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+matplotlib.use('Agg')
 
 import database
 
@@ -144,7 +150,7 @@ def registro_paciente():
         if mensaje_error:
             return render_template(f'{area}/registro.html', mensaje_error=mensaje_error)
         else:
-            return redirect(url_for(f'{area}registro_exitoso', id_paciente=id_paciente, nombre_paciente=f"{nombres} {primer_apellido} {segundo_apellido}"))
+            return redirect(url_for('registro_exitoso', id_paciente=id_paciente, nombre_paciente=f"{nombres} {primer_apellido} {segundo_apellido}"))
 
     area = session.get('area')
     return render_template(f'{area}/registro.html')
@@ -199,59 +205,98 @@ def consulta_paciente():
 @login_required
 def agendar_cita():
     area = session.get('area', 'nutricion')  # Obtener el área de la sesión, por defecto 'nutricion'
-    tabla_citas = f'citas_{area}'
+    tablas_areas = {
+        'nutricion': 'citas_nutricion',
+        'fisioterapia': 'citas_fisioterapia',
+        'acomp_psicoemocional': 'citas_acomp_psicoemocional'
+    }
 
     if request.method == 'POST':
         id_paciente = request.form['id_paciente']
         fecha_consulta = request.form['fecha_consulta']
         hora_consulta = request.form['hora_consulta']
         observaciones = request.form['observaciones']
+        
+        # Seleccionar la tabla de citas basada en el área seleccionada por la coordinación o la sesión actual
+        if area == 'coordinacion':
+            area_seleccionada = request.form['area']
+            tabla_citas = tablas_areas[area_seleccionada]
+        else:
+            tabla_citas = tablas_areas[area]
 
         with get_db_connection() as connection:
             cursor = connection.cursor()
             query = f'''INSERT INTO {tabla_citas} (id_paciente, fecha_consulta, hora_consulta, observaciones) 
                         VALUES (?, ?, ?, ?)'''
             cursor.execute(query, (id_paciente, fecha_consulta, hora_consulta, observaciones))
+            connection.commit()
 
         return redirect(url_for('historial_citas'))
-    
+
     with get_db_connection() as connection:
         cursor = connection.cursor()
         cursor.execute("SELECT id_paciente, primer_apellido, segundo_apellido, nombres FROM pacientes")
         pacientes = cursor.fetchall()
 
-    return render_template(f'{area}/agendar_cita.html', pacientes=pacientes)
+    return render_template(f'{area}/agendar_cita.html', pacientes=pacientes, area=area)
 
 @app.route('/historial_citas', methods=['GET', 'POST'])
 @login_required
 def historial_citas():
-    area = session.get('area')  # Obtener el área de la sesión, por defecto 'nutricion'
-    tabla_citas = f'citas_{area}'
+    area = session.get('area')  # Obtener el área de la sesión
+    tablas_areas = {
+        'nutricion': 'citas_nutricion',
+        'fisioterapia': 'citas_fisioterapia',
+        'acomp_psicoemocional': 'citas_acomp_psicoemocional'
+    }
 
     filter_text = request.form.get('filter_text')
     filter_by = request.form.get('filter_by')
     page = request.args.get('page', 1, type=int)
     per_page = 20
 
-    query = f"SELECT * FROM {tabla_citas}"
-    params = []
-
-    if request.method == 'POST' and filter_text and filter_by:
-        if filter_by == 'id_paciente':
-            query += " WHERE LOWER(id_paciente) LIKE LOWER(?)"
-            params.append('%' + filter_text + '%')
-        elif filter_by == 'estado':
-            query += " WHERE LOWER(estado) = LOWER(?)"
-            params.append(filter_text)
-        elif filter_by == 'fecha_consulta':
-            query += " WHERE fecha_consulta = ?"
-            params.append(filter_text)
+    citas_area = []
 
     with get_db_connection() as connection:
         connection.row_factory = sqlite3.Row  # Permite el acceso a las columnas por nombre
         cursor = connection.cursor()
-        cursor.execute(query, params)
-        citas_area = cursor.fetchall()
+
+        if area == 'coordinacion':
+            for area_name, tabla_citas in tablas_areas.items():
+                query = f"SELECT *, '{area_name}' as area FROM {tabla_citas}"
+                params = []
+
+                if request.method == 'POST' and filter_text and filter_by:
+                    if filter_by == 'id_paciente':
+                        query += " WHERE LOWER(id_paciente) LIKE LOWER(?)"
+                        params.append('%' + filter_text + '%')
+                    elif filter_by == 'estado':
+                        query += " WHERE LOWER(estado) = LOWER(?)"
+                        params.append(filter_text)
+                    elif filter_by == 'fecha_consulta':
+                        query += " WHERE fecha_consulta = ?"
+                        params.append(filter_text)
+
+                cursor.execute(query, params)
+                citas_area.extend(cursor.fetchall())
+        else:
+            tabla_citas = tablas_areas.get(area, 'citas_nutricion')
+            query = f"SELECT * FROM {tabla_citas}"
+            params = []
+
+            if request.method == 'POST' and filter_text and filter_by:
+                if filter_by == 'id_paciente':
+                    query += " WHERE LOWER(id_paciente) LIKE LOWER(?)"
+                    params.append('%' + filter_text + '%')
+                elif filter_by == 'estado':
+                    query += " WHERE LOWER(estado) = LOWER(?)"
+                    params.append(filter_text)
+                elif filter_by == 'fecha_consulta':
+                    query += " WHERE fecha_consulta = ?"
+                    params.append(filter_text)
+
+            cursor.execute(query, params)
+            citas_area = cursor.fetchall()
 
     # Obtener lista de pacientes para el datalist
     with get_db_connection() as connection:
@@ -271,12 +316,14 @@ def historial_citas():
     citas_paginadas = citas_ordenadas[start:end]
 
     return render_template(
-        f'{area}/historial_citas.html',
+        f'{area}/historial_citas.html',  # Puedes ajustar esta ruta si es necesario
         citas=citas_paginadas,
         pacientes=pacientes,
         page=page,
-        total_pages=total_pages
+        total_pages=total_pages,
+        area=area  # Pasar el área actual al template
     )
+
 @app.route('/actualizar_estado', methods=['POST'])
 @login_required
 def actualizar_estado():
@@ -714,6 +761,66 @@ def buscar_paciente():
             pacientes = cursor.fetchall()
     
     return render_template(f'{area}/buscar_paciente.html', pacientes=pacientes)
+def obtener_estadisticas():
+    conexion = get_db_connection()
+    query = "SELECT * FROM pacientes"
+    pacientes_df = pd.read_sql_query(query, conexion)
+    
+    pacientes_df['fecha_nacimiento'] = pd.to_datetime(pacientes_df['fecha_nacimiento'], format="%Y-%m-%d")
+    pacientes_df['edad'] = pacientes_df['fecha_nacimiento'].apply(lambda x: (datetime.now() - x).days // 365)
+
+    estadisticas = {
+        'total_pacientes': len(pacientes_df),
+        'promedio_edad': pacientes_df['edad'].mean(),
+        'promedio_peso': pacientes_df['peso'].mean(),
+        'promedio_altura': pacientes_df['altura'].mean(),
+        'promedio_imc': pacientes_df['imc'].mean(),
+        'distribucion_genero': pacientes_df['genero'].value_counts().to_dict(),
+        'distribucion_escolaridad': pacientes_df['escolaridad'].value_counts().to_dict(),
+        'distribucion_ocupacion': pacientes_df['ocupacion'].value_counts().to_dict(),
+        'distribucion_estado_civil': pacientes_df['estado_civil'].value_counts().to_dict(),
+        'distribucion_servicio_salud': pacientes_df['servicio_salud'].value_counts().to_dict(),
+    }
+    
+    conexion.close()
+    return estadisticas
+
+def generar_grafico(data, titulo):
+    fig, ax = plt.subplots()
+    ax.bar(data.keys(), data.values())
+    ax.set_title(titulo)
+    ax.set_xticklabels(data.keys(), rotation=45, ha="right")
+    plt.tight_layout()
+
+    img = BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    img_base64 = base64.b64encode(img.getvalue()).decode('utf-8')
+    plt.close(fig)
+    return img_base64
+
+@app.route('/estadisticas_registro')
+@login_required
+def estadisticas_registro():
+    area = session.get('area', 'nutricion')  
+    estadisticas = obtener_estadisticas()
+    
+    grafico_genero = generar_grafico(estadisticas['distribucion_genero'], 'Distribución por Género')
+    grafico_escolaridad = generar_grafico(estadisticas['distribucion_escolaridad'], 'Distribución por Escolaridad')
+    grafico_ocupacion = generar_grafico(estadisticas['distribucion_ocupacion'], 'Distribución por Ocupación')
+    grafico_estado_civil = generar_grafico(estadisticas['distribucion_estado_civil'], 'Distribución por Estado Civil')
+    grafico_servicio_salud = generar_grafico(estadisticas['distribucion_servicio_salud'], 'Distribución por Servicio de Salud')
+
+    return render_template(
+        f'{area}/estadisticas_registro.html',
+        estadisticas=estadisticas,
+        grafico_genero=grafico_genero,
+        grafico_escolaridad=grafico_escolaridad,
+        grafico_ocupacion=grafico_ocupacion,
+        grafico_estado_civil=grafico_estado_civil,
+        grafico_servicio_salud=grafico_servicio_salud,
+        area=area
+    )
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
