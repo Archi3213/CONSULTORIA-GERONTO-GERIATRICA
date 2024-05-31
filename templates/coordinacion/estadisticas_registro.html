@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-   
-    <title>Estadisticas Registro</title>
+    <meta charset="UTF-8">
+    <title>Estadísticas Registro</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style_est.css') }}">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='css/Imagen/estadistica_logo.png') }}">
+    <style>
 
-
+    </style>
 </head>
-
-<body>
+<body class="body_estats">
     <div class="navbar">
         <a href="/">Inicio</a>
         <a href="/registro">Registro</a>
@@ -21,68 +20,86 @@
         <a href="/directorio_pacientes">Directorio Pacientes</a>
         <a href="/expediente">Expediente</a>
     </div>
-    <h1>Estadísticas de Registro</h1>
-    <div>
-        <h2>Resumen General</h2>
-        <p>Total de Pacientes: {{ estadisticas['total_pacientes'] }}</p>
-        <p>Promedio de Edad: {{ estadisticas['promedio_edad'] | round(2) }} años</p>
-        <p>Promedio de Peso: {{ estadisticas['promedio_peso'] | round(2) }} kg</p>
-        <p>Promedio de Altura: {{ estadisticas['promedio_altura'] | round(2) }} m</p>
-        <p>Promedio de IMC: {{ estadisticas['promedio_imc'] | round(2) }}</p>
+    <div class="container_estats">
+        <h1>Estadísticas de Registro</h1>
+        <div class="section_estats">
+            <div class="data_estats">
+                <h2>Resumen General</h2>
+                <p>Total de Pacientes: {{ estadisticas['total_pacientes'] }}</p>
+                <p>Promedio de Edad: {{ estadisticas['promedio_edad'] | round(2) }} años</p>
+                <p>Promedio de Peso: {{ estadisticas['promedio_peso'] | round(2) }} kg</p>
+                <p>Promedio de Altura: {{ estadisticas['promedio_altura'] | round(2) }} m</p>
+                <p>Promedio de IMC: {{ estadisticas['promedio_imc'] | round(2) }}</p>
+            </div>
+        </div>
+        <div class="section_estats">
+            <div class="data_estats">
+                <h2>Distribución por Género</h2>
+                <ul>
+                    {% for genero, count in estadisticas['distribucion_genero'].items() %}
+                    <li>{{ genero }}: {{ count }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="chart_estats">
+                <img src="data:image/png;base64,{{ grafico_genero }}" alt="Distribución por Género">
+            </div>
+        </div>
+        <div class="section_estats">
+            <div class="data_estats">
+                <h2>Distribución por Escolaridad</h2>
+                <ul>
+                    {% for escolaridad, count in estadisticas['distribucion_escolaridad'].items() %}
+                    <li>{{ escolaridad }}: {{ count }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="chart_estats">
+                <img src="data:image/png;base64,{{ grafico_escolaridad }}" alt="Distribución por Escolaridad">
+            </div>
+        </div>
+        <div class="section_estats">
+            <div class="data_estats">
+                <h2>Distribución por Ocupación</h2>
+                <ul>
+                    {% for ocupacion, count in estadisticas['distribucion_ocupacion'].items() %}
+                    <li>{{ ocupacion }}: {{ count }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="chart_estats">
+                <img src="data:image/png;base64,{{ grafico_ocupacion }}" alt="Distribución por Ocupación">
+            </div>
+        </div>
+        <div class="section_estats">
+            <div class="data_estats">
+                <h2>Distribución por Estado Civil</h2>
+                <ul>
+                    {% for estado_civil, count in estadisticas['distribucion_estado_civil'].items() %}
+                    <li>{{ estado_civil }}: {{ count }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="chart_estats">
+                <img src="data:image/png;base64,{{ grafico_estado_civil }}" alt="Distribución por Estado Civil">
+            </div>
+        </div>
+        <div class="section_estats">
+            <div class="data_estats">
+                <h2>Distribución por Servicio de Salud</h2>
+                <ul>
+                    {% for servicio_salud, count in estadisticas['distribucion_servicio_salud'].items() %}
+                    <li>{{ servicio_salud }}: {{ count }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="chart_estats">
+                <img src="data:image/png;base64,{{ grafico_servicio_salud }}" alt="Distribución por Servicio de Salud">
+            </div>
+        </div>
     </div>
-    <div>
-        <h2>Distribución por Género</h2>
-        <ul>
-            {% for genero, count in estadisticas['distribucion_genero'].items() %}
-            <li>{{ genero }}: {{ count }}</li>
-            {% endfor %}
-            <img src="data:image/png;base64,{{ grafico_genero }}" alt="Distribución por Género">
-
-        </ul>
-    </div>
-    <div>
-        <h2>Distribución por Escolaridad</h2>
-        <ul>
-            {% for escolaridad, count in estadisticas['distribucion_escolaridad'].items() %}
-            <li>{{ escolaridad }}: {{ count }}</li>
-
-            {% endfor %}
-            <img src="data:image/png;base64,{{ grafico_escolaridad }}" alt="Distribución por Escolaridad">
-
-        </ul>
-    </div>
-    <div>
-        <h2>Distribución por Ocupación</h2>
-        <ul>
-            {% for ocupacion, count in estadisticas['distribucion_ocupacion'].items() %}
-            <li>{{ ocupacion }}: {{ count }}</li>
-
-            {% endfor %}
-            <img src="data:image/png;base64,{{ grafico_ocupacion }}" alt="Distribución por Ocupación">
-
-        </ul>
-    </div>
-    <div>
-        <h2>Distribución por Estado Civil</h2>
-        <ul>
-            {% for estado_civil, count in estadisticas['distribucion_estado_civil'].items() %}
-            <li>{{ estado_civil }}: {{ count }}</li>
-
-            {% endfor %}
-            <img src="data:image/png;base64,{{ grafico_estado_civil }}" alt="Distribución por Estado Civil">
-
-        </ul>
-    </div>
-    <div>
-        <h2>Distribución por Servicio de Salud</h2>
-        <ul>
-            {% for servicio_salud, count in estadisticas['distribucion_servicio_salud'].items() %}
-            <li>{{ servicio_salud }}: {{ count }}</li>
-
-            {% endfor %}
-            <img src="data:image/png;base64,{{ grafico_servicio_salud }}" alt="Distribución por Servicio de Salud">
-
-        </ul>
+    <div class="print-button_estats">
+        <button onclick="window.print()">Imprimir en PDF</button>
     </div>
 </body>
 </html>

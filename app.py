@@ -18,7 +18,7 @@ matplotlib.use('Agg')
 import database
 
 def get_db_connection():
-    return sqlite3.connect('nutricion_consulta.db')
+    return sqlite3.connect('gero_data.db')
 
 def get_hashed_password(password, salt=None):
     if not salt:
@@ -48,7 +48,7 @@ def login(area):
         username = request.form['username']
         password = request.form['password']
 
-        conexion = sqlite3.connect('nutricion_consulta.db')
+        conexion = sqlite3.connect('gero_data.db')
         cursor = conexion.cursor()
 
         cursor.execute("SELECT * FROM usuarios WHERE username = ? AND tipo_usuario = ?", (username, area))
@@ -698,7 +698,7 @@ def evaluacion_bioquimica():
     return render_template('nutricion/evaluacion_bioquimica.html', pacientes=pacientes)
 
 def get_db_connection():
-    connection = sqlite3.connect('nutricion_consulta.db')
+    connection = sqlite3.connect('gero_data.db')
     connection.row_factory = sqlite3.Row
     return connection
 
@@ -725,8 +725,18 @@ def detalles_paciente():
         antecedentes_familiares = cursor.fetchone()
         
         # Obtener datos de citas
-        cursor.execute(f'SELECT * FROM citas_{area} WHERE id_paciente = ?', (id_paciente,))
-        citas = cursor.fetchall()
+        if area == 'coordinacion':
+            citas_nutricion = cursor.execute('SELECT * FROM citas_nutricion WHERE id_paciente = ?', (id_paciente,)).fetchall()
+            citas_fisioterapia = cursor.execute('SELECT * FROM citas_fisioterapia WHERE id_paciente = ?', (id_paciente,)).fetchall()
+            citas_acomp_psicoemocional = cursor.execute('SELECT * FROM citas_acomp_psicoemocional WHERE id_paciente = ?', (id_paciente,)).fetchall()
+            citas = {
+                'nutricion': citas_nutricion,
+                'fisioterapia': citas_fisioterapia,
+                'acomp_psicoemocional': citas_acomp_psicoemocional,
+            }
+        else:
+            cursor.execute(f'SELECT * FROM citas_{area} WHERE id_paciente = ?', (id_paciente,))
+            citas = cursor.fetchall()
         
         # Obtener datos de evaluación clínica
         cursor.execute('SELECT * FROM evaluacion_clinica WHERE id_paciente = ?', (id_paciente,))
@@ -745,12 +755,20 @@ def detalles_paciente():
         evaluacion_bioquimica = cursor.fetchall()
         
         connection.close()
-        
-        return render_template(f'{area}/detalles_paciente.html', paciente=paciente, antecedentes_personales_nutricion=antecedentes_personales_nutricion,
-                               antecedentes_familiares=antecedentes_familiares, citas=citas, evaluacion_clinica=evaluacion_clinica,
-                               registro_dietetico=registro_dietetico, evaluacion_antropometrica=evaluacion_antropometrica,
-                               evaluacion_bioquimica=evaluacion_bioquimica)
+
+        if area == 'coordinacion':
+            return render_template(f'{area}/detalles_paciente.html', paciente=paciente, antecedentes_personales_nutricion=antecedentes_personales_nutricion,
+                                   antecedentes_familiares=antecedentes_familiares, citas_nutricion=citas['nutricion'],
+                                   citas_fisioterapia=citas['fisioterapia'], citas_acomp_psicoemocional=citas['acomp_psicoemocional'], evaluacion_clinica=evaluacion_clinica,
+                                   registro_dietetico=registro_dietetico, evaluacion_antropometrica=evaluacion_antropometrica,
+                                   evaluacion_bioquimica=evaluacion_bioquimica)
+        else:
+            return render_template(f'{area}/detalles_paciente.html', paciente=paciente, antecedentes_personales_nutricion=antecedentes_personales_nutricion,
+                                   antecedentes_familiares=antecedentes_familiares, citas=citas, evaluacion_clinica=evaluacion_clinica,
+                                   registro_dietetico=registro_dietetico, evaluacion_antropometrica=evaluacion_antropometrica,
+                                   evaluacion_bioquimica=evaluacion_bioquimica)
     return render_template(f'{area}/buscar_paciente.html')
+
 @app.route('/buscar_paciente')
 @login_required
 def buscar_paciente():

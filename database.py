@@ -1,6 +1,6 @@
 import sqlite3
 import hashlib
-conexion = sqlite3.connect('nutricion_consulta.db')
+conexion = sqlite3.connect('gero_data.db')
 cursor = conexion.cursor()
 def get_hashed_password(password, salt=None):
     if not salt:
@@ -50,6 +50,25 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS pacientes (
                     fecha_registro TEXT NOT NULL,
                     registrado_por TEXT NOT NULL
                 )''')
+
+cursor.execute('''CREATE TABLE IF NOT EXISTS citas_fisioterapia (
+                    id_cita INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id_paciente TEXT,
+                    fecha_consulta TEXT NOT NULL,
+                    hora_consulta TEXT NOT NULL, 
+                    observaciones TEXT,
+                    estado TEXT DEFAULT 'Pendiente',
+                    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
+                )''')
+cursor.execute('''CREATE TABLE IF NOT EXISTS citas_acomp_psicoemocional (
+                    id_cita INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id_paciente TEXT,
+                    fecha_consulta TEXT NOT NULL,
+                    hora_consulta TEXT NOT NULL, 
+                    observaciones TEXT,
+                    estado TEXT DEFAULT 'Pendiente',
+                    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
+                )''')
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS antecedentes_personales_nutricion (
         id_paciente  PRIMARY KEY,
@@ -71,24 +90,6 @@ cursor.execute('''
 
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS citas_nutricion (
-                    id_cita INTEGER PRIMARY KEY AUTOINCREMENT,
-                    id_paciente TEXT,
-                    fecha_consulta TEXT NOT NULL,
-                    hora_consulta TEXT NOT NULL, 
-                    observaciones TEXT,
-                    estado TEXT DEFAULT 'Pendiente',
-                    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
-                )''')
-cursor.execute('''CREATE TABLE IF NOT EXISTS citas_fisioterapia (
-                    id_cita INTEGER PRIMARY KEY AUTOINCREMENT,
-                    id_paciente TEXT,
-                    fecha_consulta TEXT NOT NULL,
-                    hora_consulta TEXT NOT NULL, 
-                    observaciones TEXT,
-                    estado TEXT DEFAULT 'Pendiente',
-                    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
-                )''')
-cursor.execute('''CREATE TABLE IF NOT EXISTS citas_acomp_psicoemocional (
                     id_cita INTEGER PRIMARY KEY AUTOINCREMENT,
                     id_paciente TEXT,
                     fecha_consulta TEXT NOT NULL,

@@ -330,8 +330,8 @@
         
         <!-- Citas -->
         <div class="section">
-            <h2>Citas</h2>
-            {% if citas %}
+            <h2>Citas de Nutrición</h2>
+            {% if citas_nutricion %}
                 <div class="table">
                     <table border="1">
                         <thead>
@@ -343,12 +343,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                        {% for citas in citas %}
+                        {% for cita in citas_nutricion %}
                             <tr>
-                                <td>{{ citas.fecha_consulta }}</td>
-                                <td>{{ citas.hora_consulta }}</td>
-                                <td>{{ citas.observaciones }}</td>
-                                <td>{{ citas.estado }}</td>
+                                <td>{{ cita.fecha_consulta }}</td>
+                                <td>{{ cita.hora_consulta }}</td>
+                                <td>{{ cita.observaciones }}</td>
+                                <td>{{ cita.estado }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -358,6 +358,68 @@
                 <p>No hay citas registradas.</p>
             {% endif %}
         </div>
+        
+        <div class="section">
+            <h2>Citas de Fisioterapia</h2>
+            {% if citas_fisioterapia %}
+                <div class="table">
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>Fecha Consulta</th>
+                                <th>Hora Consulta</th>
+                                <th>Observaciones</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for cita in citas_fisioterapia %}
+                            <tr>
+                                <td>{{ cita.fecha_consulta }}</td>
+                                <td>{{ cita.hora_consulta }}</td>
+                                <td>{{ cita.observaciones }}</td>
+                                <td>{{ cita.estado }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p>No hay citas registradas.</p>
+            {% endif %}
+        </div>
+        
+        <div class="section">
+            <h2>Citas de Acompañamiento Psicoemocional</h2>
+            {% if citas_acomp_psicoemocional %}
+                <div class="table">
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>Fecha Consulta</th>
+                                <th>Hora Consulta</th>
+                                <th>Observaciones</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for cita in citas_acomp_psicoemocional %}
+                            <tr>
+                                <td>{{ cita.fecha_consulta }}</td>
+                                <td>{{ cita.hora_consulta }}</td>
+                                <td>{{ cita.observaciones }}</td>
+                                <td>{{ cita.estado }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p>No hay citas registradas.</p>
+            {% endif %}
+        </div>
+        
+
         <div class="section">
             <h2>Evaluación Antropométrica</h2>
             <div class="table">
