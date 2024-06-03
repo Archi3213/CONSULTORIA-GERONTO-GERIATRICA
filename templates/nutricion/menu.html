@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/png" href="static\css\Imagen\fisio_logo.png">
+    <title>Menú Nutricional</title>
+    <style>
+        .menu-container {
+            display: flex;
+            flex-wrap: nowrap;
+        }
+        .menu-column {
+            flex: 1;
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+        .menu-column h2 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar" id="navbar">
+        <a href="/">Inicio</a>
+        <a href="/registro">Registro</a>
+        <a href="/consultar">Registro de consultas</a>
+        <a href="/agenda">Calendario</a>
+        <a href="/agendar_cita">Agendar Cita</a>
+        <a href="/historial_citas">Historial de Citas</a>
+        <a href="/directorio_pacientes">Directorio Pacientes</a>
+        <a href="/expediente">Expediente</a>
+        </div>
+        <b></b>
+        <h1>Crear Menú</h1>
+        <form method="POST">
+            
+            <label for="id_paciente">Selecciona un paciente:</label>
+            <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
+            <datalist id="pacientes_list">
+                {% for paciente in pacientes %}
+                <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
+                {% endfor %}
+            </datalist><br><br>
+            
+            <div class="menu-container">
+                {% for dia in range(1, 6) %}
+                <div class="menu-column">
+                    <h2>Día {{ dia }}</h2>
+                    {% for comida in ['desayuno', 'colacion_1', 'almuerzo', 'colacion_2', 'cena'] %}
+                        <label for="{{ comida }}_ingredientes_{{ dia }}">{{ comida | capitalize }}:</label>
+                        <input type="text" name="{{ comida }}_ingredientes_{{ dia }}" placeholder="Ingrese ingredientes separados por comas">
+                        <br>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+            
+            <br>
+            <button type="submit">Crear Menú</button>
+        </form>
+    </body>
+    </html>
