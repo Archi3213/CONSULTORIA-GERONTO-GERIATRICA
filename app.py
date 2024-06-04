@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 import hashlib, sqlite3
 import pandas as pd
 from operator import itemgetter
@@ -839,27 +839,80 @@ def estadisticas_registro():
         grafico_servicio_salud=grafico_servicio_salud,
         area=area
     )
-def get_ingredients():
-    # Conectar a la base de datos
+def get_db_connection():
     conn = sqlite3.connect('gero_data.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
+def execute_query(query, values):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(query, values)
+    conn.commit()
+    conn.close()
+
+def get_ingredients():
+    conn = get_db_connection()
     cursor = conn.cursor()
     
-    # Obtener todos los ingredientes
-    cursor.execute("SELECT alimento FROM ingredientes")
+    cursor.execute("SELECT alimento, grupo, unidad, gramos, kcal, hco, lipidos, proteinas, azucar FROM ingredientes")
     ingredients = cursor.fetchall()
     
-    # Cerrar la conexión
     conn.close()
     
-    # Retornar los ingredientes en una lista
-    return [ingredient[0] for ingredient in ingredients]
-
-@app.route('/menu')
+    ingredients_list = [
+        {
+            'alimento': ingredient[0],
+            'grupo': ingredient[1],
+            'unidad': ingredient[2],
+            'gramos': ingredient[3],
+            'kcal': ingredient[4],
+            'hco': ingredient[5],
+            'lipidos': ingredient[6],
+            'proteinas': ingredient[7],
+            'azucar': ingredient[8]
+        } for ingredient in ingredients
+    ]
+    return ingredients_list
+    
+@app.route('/menu', methods=['GET', 'POST'])
 def menu():
-    ingredients = get_ingredients()
-    # Aquí también debes obtener los pacientes de tu base de datos
-    # pacientes = get_pacientes()  # Esta es una función que debes definir para obtener los pacientes
-    return render_template('nutricion/menu.html', ingredients=ingredients)
+    if request.method == 'POST':
+        data = request.form.to_dict()
+        id_paciente = data.get('id_paciente')
+        
+        # Extraer los platillos e ingredientes de cada día y comida
+        menu_data = {}
+        for dia in range(1, 6):
+            for comida in ['desayuno', 'colacion1', 'almuerzo', 'colacion2', 'cena']:
+                platillo_key = f'platillo_{comida}_dia{dia}'
+                ingredientes_key = f'ingredientes_{comida}_dia{dia}'
+                menu_data[platillo_key] = data.get(platillo_key)
+                ingredientes = []
+                for i in range(1, 11):
+                    ingrediente = data.get(f'{comida}_ingredientes_{dia}_{i}')
+                    cantidad = data.get(f'{comida}_cantidad_{dia}_{i}')
+                    if ingrediente and cantidad:
+                        ingredientes.append(f'{cantidad} {ingrediente}')
+                menu_data[ingredientes_key] = ', '.join(ingredientes)
+        
+        # Construir la consulta SQL
+        columns = ', '.join(menu_data.keys())
+        placeholders = ', '.join(['?'] * len(menu_data))
+        query = f'INSERT INTO menus (id_paciente, {columns}) VALUES (?, {placeholders})'
+        values = [id_paciente] + list(menu_data.values())
 
+        # Ejecutar la consulta
+        try:
+            execute_query(query, values)
+            flash('Menú creado exitosamente.')
+        except Exception as e:
+            flash(f'Error al crear el menú: {e}')
+        return redirect(url_for('menu'))
+
+    # Obtener la lista de pacientes e ingredientes para el formulario
+    pacientes = get_db_connection().execute('SELECT id_paciente, nombres, primer_apellido, segundo_apellido FROM pacientes').fetchall()
+    ingredients = get_db_connection().execute('SELECT * FROM ingredientes').fetchall()
+    return render_template('nutricion/menu.html', pacientes=pacientes, ingredients=ingredients)
 if __name__ == '__main__':
     app.run(debug=True)
