@@ -207,44 +207,20 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS evaluacion_bioquimica (
     otros TEXT,
     FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
 )''')
-cursor.execute('''
-        CREATE TABLE IF NOT EXISTS platillos (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nombre TEXT,
-            calorias REAL,
-            carbohidratos REAL,
-            proteinas REAL,
-            grasas REAL,
-            minerales REAL
-        )
-    ''')
-cursor.execute('''
-        CREATE TABLE IF NOT EXISTS menus (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            id_paciente INTEGER,
-            FOREIGN KEY(id_paciente) REFERENCES pacientes(id)
-        )
-    ''')
-cursor.execute('''
-        CREATE TABLE IF NOT EXISTS menus (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            id_paciente INTEGER,
-            FOREIGN KEY(id_paciente) REFERENCES pacientes(id)
-        )
-    ''')
-    
-    # Tabla de detalles del menú
-cursor.execute('''
-        CREATE TABLE IF NOT EXISTS detalles_menu (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            id_menu INTEGER,
-            dia INTEGER,
-            comida TEXT,
-            id_platillo INTEGER,
-            FOREIGN KEY(id_menu) REFERENCES menus(id),
-            FOREIGN KEY(id_platillo) REFERENCES platillos(id)
-        )
-    ''')
+cursor.execute('''CREATE TABLE IF NOT EXISTS ingredientes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    alimento TEXT NOT NULL,
+    grupo TEXT NOT NULL,
+    equivalente INTEGER NOT NULL,
+    cantidad REAL NOT NULL,
+    unidad TEXT NOT NULL,
+    gramos REAL NOT NULL,
+    kcal REAL NOT NULL,
+    hco REAL NOT NULL,
+    lipidos REAL NOT NULL,
+    proteinas REAL NOT NULL,
+    azucar REAL NOT NULL
+)''')
 
 conexion.commit()
 cursor.close()

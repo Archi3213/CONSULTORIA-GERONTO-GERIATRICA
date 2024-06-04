@@ -10,8 +10,6 @@ import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
 import matplotlib
-import requests
-import random
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -841,104 +839,27 @@ def estadisticas_registro():
         grafico_servicio_salud=grafico_servicio_salud,
         area=area
     )
-EDAMAM_APP_ID = '126c3d70'
-EDAMAM_APP_KEY = 'efebc644c05b6aff69303d0a2bebf5a2'
+def get_ingredients():
+    # Conectar a la base de datos
+    conn = sqlite3.connect('gero_data.db')
+    cursor = conn.cursor()
+    
+    # Obtener todos los ingredientes
+    cursor.execute("SELECT alimento FROM ingredientes")
+    ingredients = cursor.fetchall()
+    
+    # Cerrar la conexión
+    conn.close()
+    
+    # Retornar los ingredientes en una lista
+    return [ingredient[0] for ingredient in ingredients]
 
-# Agregar platillos predefinidos
-def obtener_platillos():
-    connection = sqlite3.connect('gero_data.db')
-    cursor = connection.cursor()
-    cursor.execute('SELECT * FROM platillos')
-    platillos = cursor.fetchall()
-    connection.close()
-    return platillos
-
-# Obtener pacientes
-def obtener_pacientes():
-    connection = sqlite3.connect('gero_data.db')
-    cursor = connection.cursor()
-    cursor.execute('SELECT * FROM pacientes')
-    pacientes = cursor.fetchall()
-    connection.close()
-    return pacientes
-
-# Crear un menú
-def crear_menu(id_paciente):
-    connection = sqlite3.connect('gero_data.db')
-    cursor = connection.cursor()
-    cursor.execute('INSERT INTO menus (id_paciente) VALUES (?)', (id_paciente,))
-    connection.commit()
-    menu_id = cursor.lastrowid
-    connection.close()
-    return menu_id
-
-# Agregar un platillo al menú
-def agregar_platillo_al_menu(id_menu, dia, comida, id_platillo):
-    connection = sqlite3.connect('gero_data.db')
-    cursor = connection.cursor()
-    cursor.execute('''
-        INSERT INTO detalles_menu (id_menu, dia, comida, id_platillo)
-        VALUES (?, ?, ?, ?)
-    ''', (id_menu, dia, comida, id_platillo))
-    connection.commit()
-    connection.close()
-
-# Consultar API de nutrición y obtener datos de ingredientes
-def obtener_datos_ingrediente(ingrediente):
-    url = f"https://api.spoonacular.com/food/ingredients/search?query={ingrediente}&apiKey=YOUR_API_KEY"
-    response = requests.get(url)
-    data = response.json()
-    return data['results'][0] if data['results'] else None
-
-@app.route('/menu', methods=['GET', 'POST'])
+@app.route('/menu')
 def menu():
-    if request.method == 'POST':
-        id_paciente = request.form['id_paciente']
-        id_menu = crear_menu(id_paciente)
-        
-        for dia in range(1, 6):
-            for comida in ['desayuno', 'colacion_1', 'almuerzo', 'colacion_2', 'cena']:
-                ingredientes = request.form.getlist(f'{comida}_ingredientes_{dia}')
-                
-                if ingredientes:
-                    calorias_total = carbohidratos_total = proteinas_total = grasas_total = minerales_total = 0
-                    
-                    for ingrediente in ingredientes:
-                        datos_ingrediente = obtener_datos_ingrediente(ingrediente)
-                        if datos_ingrediente:
-                            calorias_total += datos_ingrediente['calories']
-                            carbohidratos_total += datos_ingrediente['carbs']
-                            proteinas_total += datos_ingrediente['protein']
-                            grasas_total += datos_ingrediente['fat']
-                            minerales_total += datos_ingrediente['minerals']
-                    
-                    nombre_platillo = f"{comida.capitalize()} del día {dia}"
-                    connection = sqlite3.connect('nutricion.db')
-                    cursor = connection.cursor()
-                    cursor.execute('''
-                        INSERT INTO platillos (nombre, calorias, carbohidratos, proteinas, grasas, minerales)
-                        VALUES (?, ?, ?, ?, ?, ?)
-                    ''', (nombre_platillo, calorias_total, carbohidratos_total, proteinas_total, grasas_total, minerales_total))
-                    connection.commit()
-                    id_platillo = cursor.lastrowid
-                    connection.close()
-                    
-                    agregar_platillo_al_menu(id_menu, dia, comida, id_platillo)
-
-        return redirect(url_for('ver_menu', id_menu=id_menu))
-
-    pacientes = obtener_pacientes()
-    return render_template('nutricion/menu.html', pacientes=pacientes)
-
-@app.route('/ver_menu/<int:id_menu>')
-def ver_menu(id_menu):
-    connection = sqlite3.connect('gero_data.db')
-    cursor = connection.cursor()
-    cursor.execute('SELECT * FROM detalles_menu WHERE id_menu = ?', (id_menu,))
-    detalles_menu = cursor.fetchall()
-    connection.close()
-    return render_template('ver_menu.html', detalles_menu=detalles_menu)
+    ingredients = get_ingredients()
+    # Aquí también debes obtener los pacientes de tu base de datos
+    # pacientes = get_pacientes()  # Esta es una función que debes definir para obtener los pacientes
+    return render_template('nutricion/menu.html', ingredients=ingredients)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
     app.run(debug=True)

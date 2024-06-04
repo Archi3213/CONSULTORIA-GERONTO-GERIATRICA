@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="icon" type="image/png" href="static\css\Imagen\fisio_logo.png">
+    <link rel="icon" type="image/png" href="static/css/Imagen/fisio_logo.png">
     <title>Menú Nutricional</title>
     <style>
         .menu-container {
@@ -22,6 +22,14 @@
         .menu-column h2 {
             text-align: center;
         }
+        .ingredient-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .ingredient-row input {
+            margin-right: 5px;
+        }
     </style>
 </head>
 <body>
@@ -34,34 +42,54 @@
         <a href="/historial_citas">Historial de Citas</a>
         <a href="/directorio_pacientes">Directorio Pacientes</a>
         <a href="/expediente">Expediente</a>
-        </div>
-        <b></b>
-        <h1>Crear Menú</h1>
-        <form method="POST">
-            
-            <label for="id_paciente">Selecciona un paciente:</label>
-            <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
-            <datalist id="pacientes_list">
-                {% for paciente in pacientes %}
-                <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
-                {% endfor %}
-            </datalist><br><br>
-            
-            <div class="menu-container">
-                {% for dia in range(1, 6) %}
-                <div class="menu-column">
-                    <h2>Día {{ dia }}</h2>
-                    {% for comida in ['desayuno', 'colacion_1', 'almuerzo', 'colacion_2', 'cena'] %}
-                        <label for="{{ comida }}_ingredientes_{{ dia }}">{{ comida | capitalize }}:</label>
-                        <input type="text" name="{{ comida }}_ingredientes_{{ dia }}" placeholder="Ingrese ingredientes separados por comas">
-                        <br>
-                    {% endfor %}
-                </div>
+    </div>
+    <h1>Crear Menú</h1>
+    <form method="POST">
+        <label for="id_paciente">Selecciona un paciente:</label>
+        <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
+        <datalist id="pacientes_list">
+            {% for paciente in pacientes %}
+            <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
+            {% endfor %}
+        </datalist><br><br>
+        
+        <div class="menu-container">
+            {% for dia in range(1, 6) %}
+            <div class="menu-column">
+                <h2>Día {{ dia }}</h2>
+                {% for comida in ['desayuno', 'colacion_1', 'almuerzo', 'colacion_2', 'cena'] %}
+                    <label for="{{ comida }}_platillo_{{ dia }}">{{ comida | capitalize }} - Nombre del Platillo:</label>
+                    <input type="text" name="{{ comida }}_platillo_{{ dia }}" placeholder="Nombre del platillo" required>
+                    <br>
+                    <label for="{{ comida }}_ingredientes_{{ dia }}">{{ comida | capitalize }} - Ingredientes:</label>
+                    {% if comida.startswith('colacion') %}
+                        {% for i in range(1, 6) %}
+                            <div class="ingredient-row">
+                                <input type="number" name="{{ comida }}_cantidad_{{ dia }}_{{ i }}" placeholder="Cantidad" step="0.01" min="0" required>
+                                <input type="text" name="{{ comida }}_ingredientes_{{ dia }}_{{ i }}" list="ingredients_list" placeholder="Ingrese ingrediente {{ i }}">
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {% for i in range(1, 11) %}
+                            <div class="ingredient-row">
+                                <input type="number" name="{{ comida }}_cantidad_{{ dia }}_{{ i }}" placeholder="Cantidad" step="0.1" min="0" required>
+                                <input type="text" name="{{ comida }}_ingredientes_{{ dia }}_{{ i }}" list="ingredients_list" placeholder="Ingrese ingrediente {{ i }}">
+                            </div>
+                        {% endfor %}
+                    {% endif %}
                 {% endfor %}
             </div>
-            
-            <br>
-            <button type="submit">Crear Menú</button>
-        </form>
-    </body>
-    </html>
+            {% endfor %}
+        </div>
+        
+        <datalist id="ingredients_list">
+            {% for ingredient in ingredients %}
+            <option value="{{ ingredient }}">
+            {% endfor %}
+        </datalist>
+        
+        <br>
+        <button type="submit">Crear Menú</button>
+    </form>
+</body>
+</html>
