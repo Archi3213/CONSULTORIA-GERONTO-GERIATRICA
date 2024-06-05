@@ -874,6 +874,7 @@ def get_ingredients():
         } for ingredient in ingredients
     ]
     return ingredients_list
+<<<<<<< HEAD
 
 def execute_query(query, params=()):
     conn = get_db_connection()
@@ -884,12 +885,18 @@ def execute_query(query, params=()):
 
 @app.route('/crear_menu', methods=['GET', 'POST'])
 def crear_menu():
+=======
+    
+@app.route('/menu', methods=['GET', 'POST'])
+def menu():
+>>>>>>> b7121ceec5f5e3d51551c066f99053f4be35e05a
     if request.method == 'POST':
         data = request.form.to_dict()
         id_paciente = data.get('id_paciente')
         
         # Extraer los platillos e ingredientes de cada día y comida
         menu_data = {}
+<<<<<<< HEAD
         menus_data = []
         
         for dia in range(1, 6):
@@ -897,12 +904,20 @@ def crear_menu():
                 platillo_key = f'{comida}_platillo_{dia}'
                 ingredientes_key = f'{comida}_ingredientes_{dia}'
                 platillo = data.get(platillo_key)
+=======
+        for dia in range(1, 6):
+            for comida in ['desayuno', 'colacion1', 'almuerzo', 'colacion2', 'cena']:
+                platillo_key = f'platillo_{comida}_dia{dia}'
+                ingredientes_key = f'ingredientes_{comida}_dia{dia}'
+                menu_data[platillo_key] = data.get(platillo_key)
+>>>>>>> b7121ceec5f5e3d51551c066f99053f4be35e05a
                 ingredientes = []
                 for i in range(1, 11):
                     ingrediente = data.get(f'{comida}_ingredientes_{dia}_{i}')
                     cantidad = data.get(f'{comida}_cantidad_{dia}_{i}')
                     if ingrediente and cantidad:
                         ingredientes.append(f'{cantidad} {ingrediente}')
+<<<<<<< HEAD
                 ingredientes_comb = ', '.join(ingredientes)
                 
                 menus_data.append((id_paciente, dia, comida, platillo, ingredientes_comb))
@@ -948,6 +963,27 @@ def crear_menu():
     conn.close()
     
     return render_template('nutricion/crear_menu.html', pacientes=pacientes, ingredients=ingredients)
+=======
+                menu_data[ingredientes_key] = ', '.join(ingredientes)
+        
+        # Construir la consulta SQL
+        columns = ', '.join(menu_data.keys())
+        placeholders = ', '.join(['?'] * len(menu_data))
+        query = f'INSERT INTO menus (id_paciente, {columns}) VALUES (?, {placeholders})'
+        values = [id_paciente] + list(menu_data.values())
+>>>>>>> b7121ceec5f5e3d51551c066f99053f4be35e05a
 
+        # Ejecutar la consulta
+        try:
+            execute_query(query, values)
+            flash('Menú creado exitosamente.')
+        except Exception as e:
+            flash(f'Error al crear el menú: {e}')
+        return redirect(url_for('menu'))
+
+    # Obtener la lista de pacientes e ingredientes para el formulario
+    pacientes = get_db_connection().execute('SELECT id_paciente, nombres, primer_apellido, segundo_apellido FROM pacientes').fetchall()
+    ingredients = get_db_connection().execute('SELECT * FROM ingredientes').fetchall()
+    return render_template('nutricion/menu.html', pacientes=pacientes, ingredients=ingredients)
 if __name__ == '__main__':
     app.run(debug=True)
