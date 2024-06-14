@@ -7,38 +7,83 @@
     <link rel="icon" type="image/png" href="static/css/Imagen/fisio_logo.png">
     <title>Menú Nutricional</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
         .menu-container {
             display: flex;
-            flex-wrap: nowrap;
+            justify-content: space-around;
+            flex-wrap: wrap;
         }
         .menu-column {
-            flex: 1;
+            background-color: #e9e9e9;
+            border: 1px solid #ccc;
+            border-radius: 8px;
             margin: 10px;
             padding: 10px;
-            border: 1px solid #ccc;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-        }
-        .menu-column h2 {
-            text-align: center;
+            width: calc(20% - 20px);
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
         }
         .ingredient-row {
             display: flex;
-            align-items: center;
-            margin-bottom: 5px;
+            justify-content: space-between;
+            margin: 5px 0;
         }
-        .ingredient-row input {
-            margin-right: 5px;
+        input[type="text"], input[type="number"], datalist {
+            width: calc(50% - 10px);
+            margin: 5px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
-        .ingredient-info {
-            margin-left: 5px;
-            font-size: 0.9em;
-            color: #666;
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
         }
         .day-totals {
+            background-color: #d9edf7;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
             margin-top: 10px;
-            font-weight: bold;
-            color: #333;
         }
     </style>
 </head>
@@ -53,42 +98,64 @@
         <a href="/directorio_pacientes">Directorio Pacientes</a>
         <a href="/expediente">Expediente</a>
     </div>
-    <title>Crear Menú</title>
-</head>
-<body>
-    <form method="POST" action="/crear_menu">
-        <label for="id_paciente">Paciente:</label>
-        <select name="id_paciente" id="id_paciente">
+    <h1>Crear Menú</h1>
+    <form method="POST">
+        <label for="id_paciente">Selecciona un paciente:</label>
+        <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
+        <datalist id="pacientes_list">
             {% for paciente in pacientes %}
-            <option value="{{ paciente.id_paciente }}">{{ paciente.nombres }} {{ paciente.primer_apellido }} {{ paciente.segundo_apellido }}</option>
+            <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
             {% endfor %}
-        </select>
-
-        {% for dia in range(1, 6) %}
-            <h3>Día {{ dia }}</h3>
-            {% for comida in ['desayuno', 'colacion1', 'almuerzo', 'colacion2', 'cena'] %}
-                <h4>{{ comida.capitalize() }}</h4>
-                <label for="{{ comida }}_platillo_dia{{ dia }}">Platillo:</label>
-                <input type="text" name="{{ comida }}_platillo_dia{{ dia }}" id="{{ comida }}_platillo_dia{{ dia }}">
-                
-                {% for i in range(1, 6) %}
-                    <label for="{{ comida }}_ingredientes_dia{{ dia }}_{{ i }}">Ingrediente {{ i }}:</label>
-                    <input type="text" name="{{ comida }}_ingredientes_dia{{ dia }}_{{ i }}" id="{{ comida }}_ingredientes_dia{{ dia }}_{{ i }}">
-                    <label for="{{ comida }}_cantidad_dia{{ dia }}_{{ i }}">Cantidad {{ i }}:</label>
-                    <input type="text" name="{{ comida }}_cantidad_dia{{ dia }}_{{ i }}" id="{{ comida }}_cantidad_dia{{ dia }}_{{ i }}">
+        </datalist>
+        <br><br>
+    
+        <div class="menu-container">
+            {% for dia in range(1, 6) %}
+            <div class="menu-column" id="menu_column_{{ dia }}">
+                <h2>Día {{ dia }}</h2>
+                {% for comida in ['desayuno', 'colacion1', 'almuerzo', 'colacion2', 'cena'] %}
+                    <label for="{{ comida }}_platillo_{{ dia }}">{{ comida | capitalize }}:</label>
+                    <input type="text" name="{{ comida }}_platillo_{{ dia }}" placeholder="Nombre del platillo" >
+                    <br>
+                    <label for="{{ comida }}_ingredientes_{{ dia }}">{{ comida | capitalize }} - Ingredientes:</label>
+                    {% if comida.startswith('colacion') %}
+                        {% for i in range(1, 6) %}
+                            <div class="ingredient-row">
+                                <input type="number" name="{{ comida }}_cantidad_{{ dia }}_{{ i }}" placeholder="Cantidad" step="0.01" min="0" oninput="updateIngredientInfo(this)" >
+                                <input type="text" name="{{ comida }}_ingredientes_{{ dia }}_{{ i }}" list="ingredients_list" placeholder="Ingrese ingrediente {{ i }}" oninput="updateIngredientInfo(this)" >
+                                <span class="ingredient-info" id="{{ comida }}_info_{{ dia }}_{{ i }}"></span>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {% for i in range(1, 11) %}
+                            <div class="ingredient-row">
+                                <input type="number" name="{{ comida }}_cantidad_{{ dia }}_{{ i }}" placeholder="Cantidad" step="0.01" min="0" oninput="updateIngredientInfo(this)" >
+                                <input type="text" name="{{ comida }}_ingredientes_{{ dia }}_{{ i }}" list="ingredients_list" placeholder="Ingrese ingrediente {{ i }}" oninput="updateIngredientInfo(this)" >
+                                <span class="ingredient-info" id="{{ comida }}_info_{{ dia }}_{{ i }}"></span>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
                 {% endfor %}
+                <div class="day-totals" id="day_totals_{{ dia }}">
+                    Proteínas: 0g, Lípidos: 0g, Kcal: 0, HCO: 0g, Azúcar: 0g
+                </div>
+            </div>
             {% endfor %}
-            <label for="total_proteinas_dia{{ dia }}">Total Proteínas:</label>
-            <input type="text" name="total_proteinas_dia{{ dia }}" id="total_proteinas_dia{{ dia }}">
-            <label for="total_lipidos_dia{{ dia }}">Total Lípidos:</label>
-            <input type="text" name="total_lipidos_dia{{ dia }}" id="total_lipidos_dia{{ dia }}">
-            <label for="total_kcal_dia{{ dia }}">Total Kcal:</label>
-            <input type="text" name="total_kcal_dia{{ dia }}" id="total_kcal_dia{{ dia }}">
-            <label for="total_azucar_dia{{ dia }}">Total Azúcar:</label>
-            <input type="text" name="total_azucar_dia{{ dia }}" id="total_azucar_dia{{ dia }}">
-        {% endfor %}
+        </div>
         
-        <button type="submit">Guardar Menú</button>
+        <datalist id="ingredients_list">
+            {% for ingredient in ingredients %}
+            <option value="{{ ingredient['alimento'] }}" data-group="{{ ingredient['grupo'] }}" data-unit="{{ ingredient['unidad'] }}" data-grams="{{ ingredient['gramos'] }}" data-kcal="{{ ingredient['kcal'] }}" data-hco="{{ ingredient['hco'] }}" data-lipidos="{{ ingredient['lipidos'] }}" data-proteinas="{{ ingredient['proteinas'] }}" data-azucar="{{ ingredient['azucar'] }}">
+            {% endfor %}
+        </datalist>
+    
+        <input type="hidden" name="total_proteinas" id="total_proteinas">
+        <input type="hidden" name="total_lipidos" id="total_lipidos">
+        <input type="hidden" name="total_kcal" id="total_kcal">
+        <input type="hidden" name="total_azucar" id="total_azucar">
+        
+        <br>
+        <button type="submit">Crear Menú</button>
     </form>
     
     <script>
@@ -121,22 +188,37 @@
                 }
             }
         }
-    
+        
         function updateDayTotals(column, kcal, hco, lipidos, proteinas, azucar) {
-            let totalsDiv = column.querySelector('.day-totals');
-            let totals = totalsDiv.textContent.match(/[\d\.]+/g).map(parseFloat);
-            totals[0] += proteinas;
-            totals[1] += lipidos;
-            totals[2] += kcal;
-            totals[3] += hco;
-            totals[4] += azucar;
-            totalsDiv.textContent = `Proteínas: ${totals[0].toFixed(2)}g, Lípidos: ${totals[1].toFixed(2)}g, Kcal: ${totals[2].toFixed(2)}, HCO: ${totals[3].toFixed(2)}g, Azúcar: ${totals[4].toFixed(2)}g`;
+            const dayId = column.id.split('_').pop();
+            const totalsDiv = document.getElementById(`day_totals_${dayId}`);
+            const totals = {
+                kcal: 0,
+                hco: 0,
+                lipidos: 0,
+                proteinas: 0,
+                azucar: 0
+            };
             
-            // Actualizar los campos ocultos con los totales
-            document.getElementById('total_proteinas').value = totals[0].toFixed(2);
-            document.getElementById('total_lipidos').value = totals[1].toFixed(2);
-            document.getElementById('total_kcal').value = totals[2].toFixed(2);
-            document.getElementById('total_azucar').value = totals[4].toFixed(2);
+            column.querySelectorAll('.ingredient-info').forEach(info => {
+                if (info.textContent) {
+                    const quantity = parseFloat(info.closest('.ingredient-row').querySelector('input[type="number"]').value) || 0;
+                    const grams = parseFloat(info.textContent.split('Gramos: ')[1]) || 0;
+                    totals.kcal += kcal * quantity;
+                    totals.hco += hco * quantity;
+                    totals.lipidos += lipidos * quantity;
+                    totals.proteinas += proteinas * quantity;
+                    totals.azucar += azucar * quantity;
+                }
+            });
+    
+            totalsDiv.setAttribute('data-kcal', totals.kcal);
+            totalsDiv.setAttribute('data-hco', totals.hco);
+            totalsDiv.setAttribute('data-lipidos', totals.lipidos);
+            totalsDiv.setAttribute('data-proteinas', totals.proteinas);
+            totalsDiv.setAttribute('data-azucar', totals.azucar);
+    
+            totalsDiv.textContent = `Proteínas: ${totals.proteinas.toFixed(2)}g, Lípidos: ${totals.lipidos.toFixed(2)}g, Kcal: ${totals.kcal.toFixed(2)}, HCO: ${totals.hco.toFixed(2)}g, Azúcar: ${totals.azucar.toFixed(2)}g`;
         }
     </script>
 </body>

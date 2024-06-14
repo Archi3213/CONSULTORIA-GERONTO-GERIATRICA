@@ -923,3 +923,36 @@ table tr:nth-child(even) {
     color: white;
     border-color: #33ff00;
 }
+.menu-container {
+    display: flex;
+    flex-wrap: nowrap;
+}
+.menu-column {
+    flex: 1;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+.menu-column h2 {
+    text-align: center;
+}
+.ingredient-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.ingredient-row input {
+    margin-right: 5px;
+}
+.ingredient-info {
+    margin-left: 5px;
+    font-size: 0.9em;
+    color: #666;
+}
+.day-totals {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #333;
+}

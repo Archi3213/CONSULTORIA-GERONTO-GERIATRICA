@@ -839,10 +839,6 @@ def estadisticas_registro():
         grafico_servicio_salud=grafico_servicio_salud,
         area=area
     )
-def get_db_connection():
-    conn = sqlite3.connect('gero_data.db')
-    conn.row_factory = sqlite3.Row
-    return conn
 
 def execute_query(query, values):
     conn = get_db_connection()
@@ -850,140 +846,84 @@ def execute_query(query, values):
     cursor.execute(query, values)
     conn.commit()
     conn.close()
-
-def get_ingredients():
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    
-    cursor.execute("SELECT alimento, grupo, unidad, gramos, kcal, hco, lipidos, proteinas, azucar FROM ingredientes")
-    ingredients = cursor.fetchall()
-    
-    conn.close()
-    
-    ingredients_list = [
-        {
-            'alimento': ingredient[0],
-            'grupo': ingredient[1],
-            'unidad': ingredient[2],
-            'gramos': ingredient[3],
-            'kcal': ingredient[4],
-            'hco': ingredient[5],
-            'lipidos': ingredient[6],
-            'proteinas': ingredient[7],
-            'azucar': ingredient[8]
-        } for ingredient in ingredients
-    ]
-    return ingredients_list
-<<<<<<< HEAD
-
-def execute_query(query, params=()):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute(query, params)
-    conn.commit()
-    conn.close()
-
+#menu creacion
 @app.route('/crear_menu', methods=['GET', 'POST'])
 def crear_menu():
-=======
-    
-@app.route('/menu', methods=['GET', 'POST'])
-def menu():
->>>>>>> b7121ceec5f5e3d51551c066f99053f4be35e05a
+    daily_totals = {dia: {'kcal': 0, 'hco': 0, 'lipidos': 0, 'proteinas': 0, 'azucar': 0} for dia in range(1, 6)}
+
     if request.method == 'POST':
         data = request.form.to_dict()
         id_paciente = data.get('id_paciente')
-        
-        # Extraer los platillos e ingredientes de cada día y comida
-        menu_data = {}
-<<<<<<< HEAD
         menus_data = []
-        
+
         for dia in range(1, 6):
             for comida in ['desayuno', 'colacion1', 'almuerzo', 'colacion2', 'cena']:
-                platillo_key = f'{comida}_platillo_{dia}'
-                ingredientes_key = f'{comida}_ingredientes_{dia}'
-                platillo = data.get(platillo_key)
-=======
-        for dia in range(1, 6):
-            for comida in ['desayuno', 'colacion1', 'almuerzo', 'colacion2', 'cena']:
-                platillo_key = f'platillo_{comida}_dia{dia}'
-                ingredientes_key = f'ingredientes_{comida}_dia{dia}'
-                menu_data[platillo_key] = data.get(platillo_key)
->>>>>>> b7121ceec5f5e3d51551c066f99053f4be35e05a
+                platillo = data.get(f'{comida}_platillo_{dia}')
                 ingredientes = []
+
                 for i in range(1, 11):
-                    ingrediente = data.get(f'{comida}_ingredientes_{dia}_{i}')
+                    ingrediente_nombre = data.get(f'{comida}_ingredientes_{dia}_{i}')
                     cantidad = data.get(f'{comida}_cantidad_{dia}_{i}')
-                    if ingrediente and cantidad:
-                        ingredientes.append(f'{cantidad} {ingrediente}')
-<<<<<<< HEAD
-                ingredientes_comb = ', '.join(ingredientes)
+                    if ingrediente_nombre and cantidad:
+                        try:
+                            cantidad = float(cantidad)
+                        except ValueError:
+                            continue
+                        
+                        ingredientes.append(f'{cantidad} {ingrediente_nombre}')
+
+                        with get_db_connection() as conn:
+                            cursor = conn.cursor()
+                            cursor.execute('SELECT kcal, hco, lipidos, proteinas, azucar FROM ingredientes WHERE alimento = ?', (ingrediente_nombre,))
+                            ingrediente_nutricion = cursor.fetchone()
+                        
+                        if ingrediente_nutricion:
+                            daily_totals[dia]['kcal'] += ingrediente_nutricion[0] * cantidad
+                            daily_totals[dia]['hco'] += ingrediente_nutricion[1] * cantidad
+                            daily_totals[dia]['lipidos'] += ingrediente_nutricion[2] * cantidad
+                            daily_totals[dia]['proteinas'] += ingrediente_nutricion[3] * cantidad
+                            daily_totals[dia]['azucar'] += ingrediente_nutricion[4] * cantidad
                 
+                ingredientes_comb = ', '.join(ingredientes)
                 menus_data.append((id_paciente, dia, comida, platillo, ingredientes_comb))
         
-        # Calcular totales
-        total_proteinas = data.get('total_proteinas')
-        total_lipidos = data.get('total_lipidos')
-        total_kcal = data.get('total_kcal')
-        total_azucar = data.get('total_azucar')
-        
+        total_proteinas = sum(daily_totals[dia]['proteinas'] for dia in daily_totals)
+        total_lipidos = sum(daily_totals[dia]['lipidos'] for dia in daily_totals)
+        total_kcal = sum(daily_totals[dia]['kcal'] for dia in daily_totals)
+        total_azucar = sum(daily_totals[dia]['azucar'] for dia in daily_totals)
+
         try:
-            conn = get_db_connection()
-            cursor = conn.cursor()
-            
-            for menu in menus_data:
+            with get_db_connection() as conn:
+                cursor = conn.cursor()
+                for menu in menus_data:
+                    cursor.execute('''
+                        INSERT INTO menus (id_paciente, dia, comida, platillo, ingredientes)
+                        VALUES (?, ?, ?, ?, ?)
+                    ''', menu)
+                
                 cursor.execute('''
-                    INSERT INTO menus (id_paciente, dia, comida, platillo, ingredientes)
+                    INSERT INTO menus_totales (id_paciente, total_proteinas, total_lipidos, total_kcal, total_azucar)
                     VALUES (?, ?, ?, ?, ?)
-                ''', menu)
-            
-            cursor.execute('''
-                INSERT INTO menus_totales (id_paciente, total_proteinas, total_lipidos, total_kcal, total_azucar)
-                VALUES (?, ?, ?, ?, ?)
-            ''', (id_paciente, total_proteinas, total_lipidos, total_kcal, total_azucar))
-            
-            conn.commit()
-            conn.close()
+                ''', (id_paciente, total_proteinas, total_lipidos, total_kcal, total_azucar))
+                
+                conn.commit()
             flash('Menú creado exitosamente.')
         except Exception as e:
             flash(f'Error al crear el menú: {e}')
-        return redirect(url_for('crear_menu'))
-    
-    # Obtener la lista de pacientes e ingredientes para el formulario
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    
-    cursor.execute('SELECT id_paciente, nombres, primer_apellido, segundo_apellido FROM pacientes')
-    pacientes = cursor.fetchall()
-    
-    cursor.execute('SELECT alimento, grupo, unidad, gramos, kcal, hco, lipidos, proteinas, azucar FROM ingredientes')
-    ingredients = cursor.fetchall()
-    
-    conn.close()
-    
-    return render_template('nutricion/crear_menu.html', pacientes=pacientes, ingredients=ingredients)
-=======
-                menu_data[ingredientes_key] = ', '.join(ingredientes)
         
-        # Construir la consulta SQL
-        columns = ', '.join(menu_data.keys())
-        placeholders = ', '.join(['?'] * len(menu_data))
-        query = f'INSERT INTO menus (id_paciente, {columns}) VALUES (?, {placeholders})'
-        values = [id_paciente] + list(menu_data.values())
->>>>>>> b7121ceec5f5e3d51551c066f99053f4be35e05a
+        return redirect(url_for('crear_menu'))
 
-        # Ejecutar la consulta
-        try:
-            execute_query(query, values)
-            flash('Menú creado exitosamente.')
-        except Exception as e:
-            flash(f'Error al crear el menú: {e}')
-        return redirect(url_for('menu'))
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute('SELECT id_paciente, nombres, primer_apellido, segundo_apellido FROM pacientes')
+        pacientes = cursor.fetchall()
+        
+        cursor.execute('SELECT alimento, grupo, unidad, gramos FROM ingredientes')
+        ingredients = cursor.fetchall()
+    
+    ingredients_data = [{'alimento': ing[0], 'grupo': ing[1], 'unidad': ing[2], 'gramos': ing[3]} for ing in ingredients]
 
-    # Obtener la lista de pacientes e ingredientes para el formulario
-    pacientes = get_db_connection().execute('SELECT id_paciente, nombres, primer_apellido, segundo_apellido FROM pacientes').fetchall()
-    ingredients = get_db_connection().execute('SELECT * FROM ingredientes').fetchall()
-    return render_template('nutricion/menu.html', pacientes=pacientes, ingredients=ingredients)
+    return render_template('nutricion/crear_menu.html', pacientes=pacientes, ingredients=ingredients, ingredients_data=ingredients_data, daily_totals=daily_totals)
+
 if __name__ == '__main__':
     app.run(debug=True)
