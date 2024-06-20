@@ -451,11 +451,6 @@ def registro_antecedentes_familiares():
         pacientes = cursor.fetchall()
 
     return render_template('nutricion/registro_antecedentes_familiares.html', pacientes=pacientes)
-@app.route('/expediente')
-@login_required
-def expediente():
-    area = session.get('area')
-    return render_template(f'{area}/expediente.html')
 
 @app.route('/registro_antecedentes_personales', methods=['GET', 'POST'])
 @login_required
@@ -862,6 +857,7 @@ def crear_menu():
             'hco': 0,
             'azucar': 0
         }
+        menu = {}
 
         for dia in range(1, 6):
             for comida in ['desayuno', 'colacion1', 'almuerzo', 'colacion2', 'cena']:
@@ -890,18 +886,31 @@ def crear_menu():
                             totals['hco'] += ingredient_data['hco'] * float(cantidad)
                             totals['azucar'] += ingredient_data['azucar'] * float(cantidad)
 
-                # Almacenar el platillo y sus ingredientes en la base de datos
-                conn.execute('INSERT INTO menus (id_paciente, dia, comida, platillo, ingredientes, cantidades) VALUES (?, ?, ?, ?, ?, ?)',
-                             (id_paciente, dia, comida, platillo, ','.join(ingredientes), ','.join(map(str, cantidades))))
+                # Almacenar el platillo en el diccionario del menú
+                menu[f'{comida}_dia{dia}'] = ','.join(ingredientes)
 
-        # Almacenar los totales diarios en la base de datos
-        conn.execute('INSERT INTO menus_totales (id_paciente, total_proteinas, total_lipidos, total_kcal, total_hco, total_azucar) VALUES (?, ?, ?, ?, ?, ?)',
-                     (id_paciente, totals['proteinas'], totals['lipidos'], totals['kcal'], totals['hco'], totals['azucar']))
+        # Almacenar el menú de 5 días y los totales de nutrientes en la base de datos
+        conn.execute('''
+            INSERT INTO menus_semanales (id_paciente, desayuno_dia1, colacion1_dia1, almuerzo_dia1, colacion2_dia1, cena_dia1,
+                                         desayuno_dia2, colacion1_dia2, almuerzo_dia2, colacion2_dia2, cena_dia2,
+                                         desayuno_dia3, colacion1_dia3, almuerzo_dia3, colacion2_dia3, cena_dia3,
+                                         desayuno_dia4, colacion1_dia4, almuerzo_dia4, colacion2_dia4, cena_dia4,
+                                         desayuno_dia5, colacion1_dia5, almuerzo_dia5, colacion2_dia5, cena_dia5,
+                                         total_proteinas, total_lipidos, total_kcal, total_hco, total_azucar)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            id_paciente, menu['desayuno_dia1'], menu['colacion1_dia1'], menu['almuerzo_dia1'], menu['colacion2_dia1'], menu['cena_dia1'],
+            menu['desayuno_dia2'], menu['colacion1_dia2'], menu['almuerzo_dia2'], menu['colacion2_dia2'], menu['cena_dia2'],
+            menu['desayuno_dia3'], menu['colacion1_dia3'], menu['almuerzo_dia3'], menu['colacion2_dia3'], menu['cena_dia3'],
+            menu['desayuno_dia4'], menu['colacion1_dia4'], menu['almuerzo_dia4'], menu['colacion2_dia4'], menu['cena_dia4'],
+            menu['desayuno_dia5'], menu['colacion1_dia5'], menu['almuerzo_dia5'], menu['colacion2_dia5'], menu['cena_dia5'],
+            totals['proteinas'], totals['lipidos'], totals['kcal'], totals['hco'], totals['azucar']
+        ))
+
         conn.commit()
         conn.close()
         return redirect(url_for('crear_menu'))
 
     return render_template('nutricion/crear_menu.html', pacientes=pacientes, ingredients=ingredients)
-
 if __name__ == '__main__':
     app.run(debug=True)

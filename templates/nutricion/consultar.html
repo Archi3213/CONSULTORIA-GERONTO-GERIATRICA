@@ -16,7 +16,8 @@
         <a href="/agendar_cita">Agendar Cita</a>
         <a href="/historial_citas">Historial de Citas</a>
         <a href="/directorio_pacientes">Directorio Pacientes</a>
-        <a href="/expediente">Expediente</a>
+        <a href="/buscar_paciente">Expediente</a>
+        <a href="/crear_menu"> Creacion de menus </a>
         </div>
     <br>      <br>   </br></br>
     <h1>Consulta de Pacientes</h1>
@@ -51,14 +52,9 @@
             <th>Escolaridad</th>
             <th>Ocupación</th>
             <th>Estado Civil</th>
-        
             <th>Servicio de Salud</th>
-           
             <th>Turno</th>
             <th>Género</th>
-            <th>Peso (kg)</th>
-            <th>Altura (cm)</th>
-            <th>IMC</th>
             <th>Fecha de Registro</th>
             <th>Registrado Por</th>
         </tr>
@@ -74,9 +70,6 @@
             <td>{{ paciente[9] }}</td>
             <td>{{ paciente[11] }}</td>
             <td>{{ paciente[12] }}</td>
-            <td>{{ paciente[13] }}</td>
-            <td>{{ paciente[14] }}</td>
-            <td>{{ '%.2f' % paciente[15] }}</td>
             <td>{{ paciente[16] }}</td>
             <td>{{ paciente[17] }}</td>
 

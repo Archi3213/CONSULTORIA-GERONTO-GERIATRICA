@@ -7,13 +7,6 @@
     <title>Detalles del Paciente</title>
     <style>
         /* Agrega estilos CSS aquí para mejorar el diseño */
-       
-        .section {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
         .print-button {
             display: block;
             width: 200px;
@@ -45,9 +38,10 @@
                 border: none;
             }
 
-            .print-button {
+            .print-button, .navbar, .button {
                 display: none;
             }}
+            
     </style>
 </head>
 <body>
@@ -59,7 +53,8 @@
         <a href="/agendar_cita">Agendar Cita</a>
         <a href="/historial_citas">Historial de Citas</a>
         <a href="/directorio_pacientes">Directorio Pacientes</a>
-        <a href="/expediente">Expediente</a>
+        <a href="/buscar_paciente">Expediente</a>
+        <a href="/crear_menu"> Creacion de menus </a>
     </div>
 </body>
 <body>
@@ -165,9 +160,12 @@
                     <td><strong>Otras:</strong></td>
                     <td>{{ antecedentes_familiares.otras }}</td>
                 </tr>
+              
             </table>
+            <a href="/registro_antecedentes_familiares" class="button">Actualizar datos</a>
             {% else %}
-                <p>No hay datos de antecedentes familiares.</p>
+                <p>No hay datos de antecedentes familiares. Para registrarlos:</p>
+                <a href="/registro_antecedentes_familiares" class="button">Antecedentes Familiares</a>
             {% endif %}
         </div>
 
@@ -217,14 +215,13 @@
                     <td>{{ antecedentes_personales_nutricion.observaciones }}</td>
                 </tr>
             </table>
+            <a href="/registro_antecedentes_personales"class="button"> Actualizar datos</a>
             {% else %}
                 <p>No hay datos de antecedentes personales.</p>
+                <a href="/registro_antecedentes_personales"class="button"> Actualizar datos</a>
             {% endif %}
         </div>
 
-
-
-        
               <!-- Evaluaciones clinica -->
               <div class="section">
                 <h2>Evaluación Clínica</h2>
@@ -259,8 +256,10 @@
                             <td>{{ evaluacion_clinica.observacion }}</td>
                         </tr>
                     </table>
+                    <a href="/evaluacion_clinica"class="button">Actualizar datos</a>
                 {% else %}
                     <p>No hay datos de evaluación clínica.</p>
+                    <a href="/evaluacion_clinica"class="button">Actualizar datos</a>
                 {% endif %}
             </div>
                     <!-- Evaluaciones dieteica -->
@@ -324,8 +323,12 @@
                     </tr>
                 </table>
                 <p>Observaciones: {{ registro_dietetico.observaciones }}</p>
+                <p>_____________________</p>
+                <a href="/evaluacion_dietetica"class="button">Actualizar datos</a>
             {% else %}
                 <p>No hay datos de registro dietético.</p>
+                <a href="/evaluacion_dietetica"class="button">Actualizar datos</a>
+
             {% endif %}
         </div>
         
@@ -406,10 +409,14 @@
                         {% endfor %}
                     </tbody>
                     </table>
+                    <a href="/evaluacion_antropometrica"class="button">Nuevo registro antropometrica</a>
+
                 {% else %}
                     </tbody>
                     </table>
                     <p>No hay datos de evaluación antropométrica.</p>
+                    <a href="/evaluacion_antropometrica"class="button">Nuevo registro antropometrica</a>
+
                 {% endif %}
             </div>
         </div>
@@ -453,19 +460,26 @@
                 {% endfor %}
                 </tbody>
             </table>
+            <a href="/evaluacion_bioquimica"class="button">Nueva evaluacion Bioquimica</a>
+
         </div>
     {% else %}
         <p>No hay datos de evaluación bioquímica.</p>
+        <a href="/evaluacion_bioquimica"class="button">Nueva evaluacion Bioquimica</a>
+
     {% endif %}
         
     
         {% else %}
             <p>No se encontró el paciente.</p>
+            <a href="/buscar_paciente"class="button">Buscar de nuevo</a>
+
         {% endif %}
         
         <!-- Botón para imprimir en PDF -->
-        <button class="print-button" onclick="window.print()">Imprimir PDF</button>
     </div>
+    <button class="print-button" onclick="window.print()">Imprimir/guardar PDF</button>
+
 </body>
 </html>
 

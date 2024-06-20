@@ -297,5 +297,41 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS menus (
     FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
 )''')
 
+cursor.execute('''CREATE TABLE IF NOT EXISTS menus_semanales (
+    id_menu INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_paciente INTEGER NOT NULL,
+    desayuno_dia1 TEXT,
+    colacion1_dia1 TEXT,
+    almuerzo_dia1 TEXT,
+    colacion2_dia1 TEXT,
+    cena_dia1 TEXT,
+    desayuno_dia2 TEXT,
+    colacion1_dia2 TEXT,
+    almuerzo_dia2 TEXT,
+    colacion2_dia2 TEXT,
+    cena_dia2 TEXT,
+    desayuno_dia3 TEXT,
+    colacion1_dia3 TEXT,
+    almuerzo_dia3 TEXT,
+    colacion2_dia3 TEXT,
+    cena_dia3 TEXT,
+    desayuno_dia4 TEXT,
+    colacion1_dia4 TEXT,
+    almuerzo_dia4 TEXT,
+    colacion2_dia4 TEXT,
+    cena_dia4 TEXT,
+    desayuno_dia5 TEXT,
+    colacion1_dia5 TEXT,
+    almuerzo_dia5 TEXT,
+    colacion2_dia5 TEXT,
+    cena_dia5 TEXT,
+    total_proteinas REAL,
+    total_lipidos REAL,
+    total_kcal REAL,
+    total_hco REAL,
+    total_azucar REAL,
+    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
+)''')
+
 conexion.commit()
 cursor.close()

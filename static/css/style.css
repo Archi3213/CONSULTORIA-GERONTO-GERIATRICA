@@ -794,60 +794,6 @@ table tr:nth-child(even) {
     }
 }
 
-/* Print styles */
-@media print {
-    .detalles_paciente {
-        width: 100%;
-        padding: 0;
-        box-shadow: none;
-        background-color: white;
-    }
-
-    .detalles_paciente .section {
-        page-break-inside: avoid; /* Prevents sections from being split across pages */
-    }
-
-    .detalles_paciente table {
-        width: 100%;
-        font-size: 10px; /* Adjusts font size for printing */
-    }
-
-    .detalles_paciente table th, 
-    .detalles_paciente table td {
-        padding: 4px; /* Adjusts padding for printing */
-    }
-
-    .detalles_paciente .print-button {
-        display: none; /* Hides the print button when printing */
-    }
-    .section {
-        max-width: 100%;
-        padding: 0;
-        box-shadow: none;
-        background-color: white;
-    }
-
-    .info-group {
-        page-break-inside: avoid;
-    }
-    .info-table td {
-        border: none;
-        padding: 4px;
-    }
-    .info-group p, .horizontal-table th, .horizontal-table td {
-        border: none;
-        padding: 4px;
-    }
-
-    .horizontal-table {
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    .horizontal-table th, .horizontal-table td {
-        border: 1px solid black;
-    }
-}
 .info-table {
     width: 100%;
     border-collapse: collapse;

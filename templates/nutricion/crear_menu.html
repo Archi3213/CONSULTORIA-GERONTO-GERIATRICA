@@ -13,6 +13,30 @@
         .totals-container div {
             margin-bottom: 10px;
         }
+        @media print {
+            @page {
+                size: A4; /* Ajusta el tamaño de la página según sea necesario */
+                margin: 10mm; /* Margen reducido para aprovechar el espacio */
+            }
+            body {
+                font-size: 12px; /* Ajusta el tamaño de la fuente para caber en una página */
+            }
+            .navbar, .print-button {
+                display: none;
+            }
+            .ingredient-row input, .ingredient-row span {
+                display: none;
+            }
+            .ingredient-row {
+                display: none;
+            }
+            .menu-column {
+                break-inside: avoid;
+            }
+            .menu-column h2 {
+                margin-top: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -24,7 +48,8 @@
         <a href="/agendar_cita">Agendar Cita</a>
         <a href="/historial_citas">Historial de Citas</a>
         <a href="/directorio_pacientes">Directorio Pacientes</a>
-        <a href="/expediente">Expediente</a>
+        <a href="/buscar_paciente">Expediente</a>
+        <a href="/crear_menu"> Creacion de menus </a>
     </div>
     <h1>Crear Menú</h1>
     <form method="POST">
@@ -89,7 +114,8 @@
         <br>
         <button type="submit">Crear Menú</button>
     </form>
-    
+    <button class="print-button" onclick="preparePrint()">Imprimir PDF</button>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const quantityInputs = document.querySelectorAll('.ingredient-row input[type="number"]');
@@ -138,40 +164,70 @@
                         const totalProteinasItem = proteinas * quantity;
                         const totalAzucarItem = azucar * quantity;
     
-                        infoSpan.textContent = `Grupo: ${group}, Unidad: ${unit}, Gramos: ${totalGrams.toFixed(2)}`;
+                        infoSpan.textContent = `Grupo: ${group}, Unidad: ${unit}, Gramos: ${totalGrams.toFixed(2)}, Kcal: ${totalKcalItem.toFixed(2)}, HCO: ${totalHcoItem.toFixed(2)}, Lípidos: ${totalLipidosItem.toFixed(2)}, Proteínas: ${totalProteinasItem.toFixed(2)}, Azúcar: ${totalAzucarItem.toFixed(2)}`;
     
-                        updateDayTotals(element.closest('.menu-column'), totalKcalItem, totalHcoItem, totalLipidosItem, totalProteinasItem, totalAzucarItem);
+                        updateTotals();
                         break;
                     }
                 }
             }
         }
     
-        function updateDayTotals(dayColumn, kcal, hco, lipidos, proteinas, azucar) {
-            const totalsDiv = dayColumn.querySelector('.totals-container');
-            const totalProteinasSpan = totalsDiv.querySelector('.total_proteinas');
-            const totalLipidosSpan = totalsDiv.querySelector('.total_lipidos');
-            const totalKcalSpan = totalsDiv.querySelector('.total_kcal');
-            const totalHcoSpan = totalsDiv.querySelector('.total_hco');
-            const totalAzucarSpan = totalsDiv.querySelector('.total_azucar');
+        function updateTotals() {
+            const dayColumns = document.querySelectorAll('.menu-column');
+            let totalProteinas = 0;
+            let totalLipidos = 0;
+            let totalKcal = 0;
+            let totalHco = 0;
+            let totalAzucar = 0;
     
-            let totalKcal = parseFloat(totalKcalSpan.textContent) || 0;
-            let totalHco = parseFloat(totalHcoSpan.textContent) || 0;
-            let totalLipidos = parseFloat(totalLipidosSpan.textContent) || 0;
-            let totalProteinas = parseFloat(totalProteinasSpan.textContent) || 0;
-            let totalAzucar = parseFloat(totalAzucarSpan.textContent) || 0;
+            dayColumns.forEach(column => {
+                const ingredientRows = column.querySelectorAll('.ingredient-row');
+                let dayProteinas = 0;
+                let dayLipidos = 0;
+                let dayKcal = 0;
+                let dayHco = 0;
+                let dayAzucar = 0;
     
-            totalKcal += kcal;
-            totalHco += hco;
-            totalLipidos += lipidos;
-            totalProteinas += proteinas;
-            totalAzucar += azucar;
+                ingredientRows.forEach(row => {
+                    const infoSpan = row.querySelector('.ingredient-info');
+                    const infoText = infoSpan.textContent;
     
-            totalKcalSpan.textContent = totalKcal.toFixed(2);
-            totalHcoSpan.textContent = totalHco.toFixed(2);
-            totalLipidosSpan.textContent = totalLipidos.toFixed(2);
-            totalProteinasSpan.textContent = totalProteinas.toFixed(2);
-            totalAzucarSpan.textContent = totalAzucar.toFixed(2);
+                    const proteinasMatch = infoText.match(/Proteínas: ([0-9.]+)g/);
+                    const lipidosMatch = infoText.match(/Lípidos: ([0-9.]+)g/);
+                    const kcalMatch = infoText.match(/Kcal: ([0-9.]+)/);
+                    const hcoMatch = infoText.match(/HCO: ([0-9.]+)g/);
+                    const azucarMatch = infoText.match(/Azúcar: ([0-9.]+)g/);
+    
+                    if (proteinasMatch) dayProteinas += parseFloat(proteinasMatch[1]);
+                    if (lipidosMatch) dayLipidos += parseFloat(lipidosMatch[1]);
+                    if (kcalMatch) dayKcal += parseFloat(kcalMatch[1]);
+                    if (hcoMatch) dayHco += parseFloat(hcoMatch[1]);
+                    if (azucarMatch) dayAzucar += parseFloat(azucarMatch[1]);
+                });
+    
+                column.querySelector('.total_proteinas').textContent = dayProteinas.toFixed(2);
+                column.querySelector('.total_lipidos').textContent = dayLipidos.toFixed(2);
+                column.querySelector('.total_kcal').textContent = dayKcal.toFixed(2);
+                column.querySelector('.total_hco').textContent = dayHco.toFixed(2);
+                column.querySelector('.total_azucar').textContent = dayAzucar.toFixed(2);
+    
+                totalProteinas += dayProteinas;
+                totalLipidos += dayLipidos;
+                totalKcal += dayKcal;
+                totalHco += dayHco;
+                totalAzucar += dayAzucar;
+            });
+    
+            document.getElementById('total_proteinas').value = totalProteinas.toFixed(2);
+            document.getElementById('total_lipidos').value = totalLipidos.toFixed(2);
+            document.getElementById('total_kcal').value = totalKcal.toFixed(2);
+            document.getElementById('total_hco').value = totalHco.toFixed(2);
+            document.getElementById('total_azucar').value = totalAzucar.toFixed(2);
+        }
+    
+        function preparePrint() {
+            window.print();
         }
     </script>
 </body>
