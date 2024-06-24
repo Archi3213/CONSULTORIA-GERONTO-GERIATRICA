@@ -70,11 +70,11 @@
                 <td>{{ cita['observaciones'] }}</td>
                 <td>
                     <form action="/actualizar_estado" method="POST">
-                        <input type="hidden" name="id_cita" value="{{ cita['id'] }}">
+                        <input type="hidden" name="id_cita" value="{{ cita[0] }}">
                         <select name="estado">
-                            <option value="Pendiente" {% if cita['estado'] == 'Pendiente' %}selected{% endif %}>Pendiente</option>
-                            <option value="Atendida" {% if cita['estado'] == 'Atendida' %}selected{% endif %}>Atendida</option>
-                            <option value="Cancelada" {% if cita['estado'] == 'Cancelada' %}selected{% endif %}>Cancelada</option>
+                            <option value="Pendiente" {% if cita[5] == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                            <option value="Atendida" {% if cita[5] == 'Atendida' %}selected{% endif %}>Atendida</option>
+                            <option value="Cancelada" {% if cita[5] == 'Cancelada' %}selected{% endif %}>Cancelada</option>
                         </select>
                         <input type="submit" value="Actualizar">
                     </form>

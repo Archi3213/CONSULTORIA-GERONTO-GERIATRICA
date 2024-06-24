@@ -1,47 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-   
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="icon" type="image/png" href="static/css/Imagen/_44109a07-adb5-4db9-90c0-8bac1621533a-removebg-preview.png">
     <title>Detalles del Paciente</title>
     <style>
-        /* Agrega estilos CSS aquí para mejorar el diseño */
-        .print-button {
-            display: block;
-            width: 200px;
-            margin: 20px auto;
-            padding: 10px;
-            text-align: center;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-
-            .detalles_paciente, .detalles_paciente * {
-                visibility: visible;
-            }
-
-            .detalles_paciente {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
+           @media print {
+            body {
                 margin: 0;
                 padding: 0;
-                border: none;
             }
-
-            .print-button, .navbar, .button {
+            .navbar {
                 display: none;
-            }}
-            
+            }
+            .print-container {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                page-break-before: always;
+            }
+            .print-container img, .print-container video, .print-container object {
+                max-width: 100%;
+                height: auto;
+            }
+        }
     </style>
 </head>
 <body>
@@ -54,10 +38,9 @@
         <a href="/historial_citas">Historial de Citas</a>
         <a href="/directorio_pacientes">Directorio Pacientes</a>
         <a href="/buscar_paciente">Expediente</a>
-        <a href="/crear_menu"> Creacion de menus </a>
+        <a href="/crear_menu">Creación de menús</a>
     </div>
-</body>
-<body>
+    
     <div class="detalles_paciente">
         <h1>Detalles del Paciente</h1>
         {% if paciente %}
@@ -105,7 +88,7 @@
                 <label>Altura:</label> <span>{{ paciente.altura }} cm</span>
             </div>
             <div class="info-group">
-                <label>IMC:</label> <span>{{  '%.2f' %paciente.imc }}</span>
+                <label>IMC:</label> <span>{{ '%.2f' % paciente.imc }}</span>
             </div>
             <div class="info-group">
                 <label>Fecha de Registro:</label> <span>{{ paciente.fecha_registro }}</span>
@@ -160,7 +143,6 @@
                     <td><strong>Otras:</strong></td>
                     <td>{{ antecedentes_familiares.otras }}</td>
                 </tr>
-              
             </table>
             <a href="/registro_antecedentes_familiares" class="button">Actualizar datos</a>
             {% else %}
@@ -215,54 +197,55 @@
                     <td>{{ antecedentes_personales_nutricion.observaciones }}</td>
                 </tr>
             </table>
-            <a href="/registro_antecedentes_personales"class="button"> Actualizar datos</a>
+            <a href="/registro_antecedentes_personales" class="button">Actualizar datos</a>
             {% else %}
                 <p>No hay datos de antecedentes personales.</p>
-                <a href="/registro_antecedentes_personales"class="button"> Actualizar datos</a>
+                <a href="/registro_antecedentes_personales" class="button">Actualizar datos</a>
             {% endif %}
         </div>
 
-              <!-- Evaluaciones clinica -->
-              <div class="section">
-                <h2>Evaluación Clínica</h2>
-                {% if evaluacion_clinica %}
-                    <table class="evaluation-table">
-                        <tr>
-                            <th>Piel</th>
-                            <td>{{ evaluacion_clinica.piel }}</td>
-                        </tr>
-                        <tr>
-                            <th>Ojos</th>
-                            <td>{{ evaluacion_clinica.ojos }}</td>
-                        </tr>
-                        <tr>
-                            <th>Uñas</th>
-                            <td>{{ evaluacion_clinica.unas }}</td>
-                        </tr>
-                        <tr>
-                            <th>Cabello</th>
-                            <td>{{ evaluacion_clinica.cabello }}</td>
-                        </tr>
-                        <tr>
-                            <th>Boca</th>
-                            <td>{{ evaluacion_clinica.boca }}</td>
-                        </tr>
-                        <tr>
-                            <th>Dientes</th>
-                            <td>{{ evaluacion_clinica.dientes }}</td>
-                        </tr>
-                        <tr>
-                            <th>Observación</th>
-                            <td>{{ evaluacion_clinica.observacion }}</td>
-                        </tr>
-                    </table>
-                    <a href="/evaluacion_clinica"class="button">Actualizar datos</a>
-                {% else %}
-                    <p>No hay datos de evaluación clínica.</p>
-                    <a href="/evaluacion_clinica"class="button">Actualizar datos</a>
-                {% endif %}
-            </div>
-                    <!-- Evaluaciones dieteica -->
+        <!-- Evaluación Clínica -->
+        <div class="section">
+            <h2>Evaluación Clínica</h2>
+            {% if evaluacion_clinica %}
+                <table class="evaluation-table">
+                    <tr>
+                        <th>Piel</th>
+                        <td>{{ evaluacion_clinica.piel }}</td>
+                    </tr>
+                    <tr>
+                        <th>Ojos</th>
+                        <td>{{ evaluacion_clinica.ojos }}</td>
+                    </tr>
+                    <tr>
+                        <th>Uñas</th>
+                        <td>{{ evaluacion_clinica.unas }}</td>
+                    </tr>
+                    <tr>
+                        <th>Cabello</th>
+                        <td>{{ evaluacion_clinica.cabello }}</td>
+                    </tr>
+                    <tr>
+                        <th>Boca</th>
+                        <td>{{ evaluacion_clinica.boca }}</td>
+                    </tr>
+                    <tr>
+                        <th>Dientes</th>
+                        <td>{{ evaluacion_clinica.dientes }}</td>
+                    </tr>
+                    <tr>
+                        <th>Observación</th>
+                        <td>{{ evaluacion_clinica.observacion }}</td>
+                    </tr>
+                </table>
+                <a href="/evaluacion_clinica" class="button">Actualizar datos</a>
+            {% else %}
+                <p>No hay datos de evaluación clínica.</p>
+                <a href="/evaluacion_clinica" class="button">Actualizar datos</a>
+            {% endif %}
+        </div>
+
+        <!-- Registro Dietético -->
         <div class="section">
             <h2>Registro Dietético</h2>
             {% if registro_dietetico %}
@@ -270,25 +253,35 @@
                     <p>¿Quién da la orientación?: {{ registro_dietetico.quien_orientacion }}</p>
                 </div>
                 <div class="info-group">
-                    <p>Intolerancia a Alimentos: {{ registro_dietetico.intolerancia_alimento }}</p></div>
-                    <div class="info-group">
-                    <p>Alergia Alimentaria: {{ registro_dietetico.alergia_alimentaria }}</p></div>
-                    <div class="info-group">
-                    <p>Consumo de Agua: {{ registro_dietetico.consumo_agua }} L</p></div>
-                    <div class="info-group">
-                    <p>Disminución del Apetito: {{ registro_dietetico.disminucion_apetito }}</p></div>
-                    <div class="info-group">
-                    <p>Motivo del Apetito: {{ registro_dietetico.motivo_apetito }}</p></div>
-                    <div class="info-group">
-                    <p>Preferencia de Alimentos: {{ registro_dietetico.preferencia_alimentos }}</p></div>
-                    <div class="info-group">
-                    <p>Desagradables: {{ registro_dietetico.desagradables_alimentos }}</p></div>
-                    <div class="info-group">
-                    <p>Dinero Semanal: {{ registro_dietetico.dinero_semanal }} pesos</p></div>
-                    <div class="info-group">
-                    <p>Número de Personas en Casa: {{ registro_dietetico.num_personas }}</p></div>
-                    <div class="info-group">
-                    <p>¿Quién prepara los alimentos?: {{ registro_dietetico.quien_prepara }}</p></div>
+                    <p>Intolerancia a Alimentos: {{ registro_dietetico.intolerancia_alimento }}</p>
+                </div>
+                <div class="info-group">
+                    <p>Alergia Alimentaria: {{ registro_dietetico.alergia_alimentaria }}</p>
+                </div>
+                <div class="info-group">
+                    <p>Consumo de Agua: {{ registro_dietetico.consumo_agua }} L</p>
+                </div>
+                <div class="info-group">
+                    <p>Disminución del Apetito: {{ registro_dietetico.disminucion_apetito }}</p>
+                </div>
+                <div class="info-group">
+                    <p>Motivo del Apetito: {{ registro_dietetico.motivo_apetito }}</p>
+                </div>
+                <div class="info-group">
+                    <p>Preferencia de Alimentos: {{ registro_dietetico.preferencia_alimentos }}</p>
+                </div>
+                <div class="info-group">
+                    <p>Desagradables: {{ registro_dietetico.desagradables_alimentos }}</p>
+                </div>
+                <div class="info-group">
+                    <p>Dinero Semanal: {{ registro_dietetico.dinero_semanal }} pesos</p>
+                </div>
+                <div class="info-group">
+                    <p>Número de Personas en Casa: {{ registro_dietetico.num_personas }}</p>
+                </div>
+                <div class="info-group">
+                    <p>¿Quién prepara los alimentos?: {{ registro_dietetico.quien_prepara }}</p>
+                </div>
                 
                 <h3>Detalles de las Comidas</h3>
                 <table class="horizontal-table">
@@ -324,14 +317,13 @@
                 </table>
                 <p>Observaciones: {{ registro_dietetico.observaciones }}</p>
                 <p>_____________________</p>
-                <a href="/evaluacion_dietetica"class="button">Actualizar datos</a>
+                <a href="/evaluacion_dietetica" class="button">Actualizar datos</a>
             {% else %}
                 <p>No hay datos de registro dietético.</p>
-                <a href="/evaluacion_dietetica"class="button">Actualizar datos</a>
-
+                <a href="/evaluacion_dietetica" class="button">Actualizar datos</a>
             {% endif %}
         </div>
-        
+
         <!-- Citas -->
         <div class="section">
             <h2>Citas de Nutrición</h2>
@@ -363,6 +355,7 @@
             {% endif %}
         </div>
 
+        <!-- Evaluación Antropométrica -->
         <div class="section">
             <h2>Evaluación Antropométrica</h2>
             <div class="table">
@@ -409,77 +402,112 @@
                         {% endfor %}
                     </tbody>
                     </table>
-                    <a href="/evaluacion_antropometrica"class="button">Nuevo registro antropometrica</a>
-
+                    <a href="/evaluacion_antropometrica" class="button">Nuevo registro antropometrico</a>
                 {% else %}
                     </tbody>
                     </table>
                     <p>No hay datos de evaluación antropométrica.</p>
-                    <a href="/evaluacion_antropometrica"class="button">Nuevo registro antropometrica</a>
-
+                    <a href="/evaluacion_antropometrica" class="button">Nuevo registro antropometrico</a>
                 {% endif %}
             </div>
         </div>
-<div class="section">
-    <h2>Evaluación Bioquímica</h2>
-    {% if evaluacion_bioquimica %}
-        <div class="table">
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>Fecha HB/HTO</th>
-                        <th>Fecha Col/Trig</th>
-                        <th>Fecha Gluca</th>
-                        <th>HB</th>
-                        <th>HTO</th>
-                        <th>Colesterol</th>
-                        <th>Triglicéridos</th>
-                        <th>Glucosa</th>
-                        <th>Urea</th>
-                        <th>Creatinina</th>
-                        <th>Ácido Úrico</th>
-                        <th>Otros</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for eval_bio in evaluacion_bioquimica %}
-                    <tr>
-                        <td>{{ eval_bio.fecha_hb_hto }}</td>
-                        <td>{{ eval_bio.fecha_col_trig }}</td>
-                        <td>{{ eval_bio.fecha_guca }}</td>
-                        <td>{{ eval_bio.hb }}</td>
-                        <td>{{ eval_bio.hto }}</td>
-                        <td>{{ eval_bio.colesterol }}</td>
-                        <td>{{ eval_bio.trigliceridos }}</td>
-                        <td>{{ eval_bio.glucosa }}</td>
-                        <td>{{ eval_bio.urea }}</td>
-                        <td>{{ eval_bio.creatinina }}</td>
-                        <td>{{ eval_bio.acido_urico }}</td>
-                        <td>{{ eval_bio.otros }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            <a href="/evaluacion_bioquimica"class="button">Nueva evaluacion Bioquimica</a>
 
+        <!-- Evaluación Bioquímica -->
+        <div class="section">
+            <h2>Evaluación Bioquímica</h2>
+            {% if evaluacion_bioquimica %}
+                <div class="table">
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>Fecha HB/HTO</th>
+                                <th>Fecha Col/Trig</th>
+                                <th>Fecha Gluca</th>
+                                <th>HB</th>
+                                <th>HTO</th>
+                                <th>Colesterol</th>
+                                <th>Triglicéridos</th>
+                                <th>Glucosa</th>
+                                <th>Urea</th>
+                                <th>Creatinina</th>
+                                <th>Ácido Úrico</th>
+                                <th>Otros</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for eval_bio in evaluacion_bioquimica %}
+                            <tr>
+                                <td>{{ eval_bio.fecha_hb_hto }}</td>
+                                <td>{{ eval_bio.fecha_col_trig }}</td>
+                                <td>{{ eval_bio.fecha_guca }}</td>
+                                <td>{{ eval_bio.hb }}</td>
+                                <td>{{ eval_bio.hto }}</td>
+                                <td>{{ eval_bio.colesterol }}</td>
+                                <td>{{ eval_bio.trigliceridos }}</td>
+                                <td>{{ eval_bio.glucosa }}</td>
+                                <td>{{ eval_bio.urea }}</td>
+                                <td>{{ eval_bio.creatinina }}</td>
+                                <td>{{ eval_bio.acido_urico }}</td>
+                                <td>{{ eval_bio.otros }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <a href="/evaluacion_bioquimica" class="button">Nueva evaluación Bioquímica</a>
+                </div>
+            {% else %}
+                <p>No hay datos de evaluación bioquímica.</p>
+                <a href="/evaluacion_bioquimica" class="button">Nueva evaluación Bioquímica</a>
+            {% endif %}
         </div>
-    {% else %}
-        <p>No hay datos de evaluación bioquímica.</p>
-        <a href="/evaluacion_bioquimica"class="button">Nueva evaluacion Bioquimica</a>
 
-    {% endif %}
-        
-    
         {% else %}
             <p>No se encontró el paciente.</p>
-            <a href="/buscar_paciente"class="button">Buscar de nuevo</a>
-
+            <a href="/buscar_paciente" class="button">Buscar de nuevo</a>
         {% endif %}
-        
-        <!-- Botón para imprimir en PDF -->
     </div>
-    <button class="print-button" onclick="window.print()">Imprimir/guardar PDF</button>
+    
+    <button id="printButton">Imprimir Página</button>
 
+    <script>
+        (function() {
+            document.addEventListener('DOMContentLoaded', function() {
+                var navbar = document.querySelector('.navbar');
+                var printButton = document.getElementById('printButton');
+
+                if (!navbar || !printButton) return;
+
+                printButton.addEventListener('click', function() {
+                    imprimirPagina();
+                });
+
+                function imprimirPagina() {
+                    try {
+                        // Ocultar la barra de navegación al imprimir
+                        navbar.classList.add('hidden-print');
+
+                        // Imprimir la página
+                        window.print();
+                    } catch (error) {
+                        console.error('Error al intentar imprimir:', error);
+                    } finally {
+                        // Mostrar la barra de navegación nuevamente después de imprimir
+                        if (window.matchMedia) {
+                            var mediaQueryList = window.matchMedia('print');
+                            mediaQueryList.addListener(function(mql) {
+                                if (!mql.matches) {
+                                    navbar.classList.remove('hidden-print');
+                                }
+                            });
+                        } else {
+                            window.onafterprint = function() {
+                                navbar.classList.remove('hidden-print');
+                            };
+                        }
+                    }
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
-

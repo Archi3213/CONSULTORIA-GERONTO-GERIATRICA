@@ -67,7 +67,7 @@ label {
 }
 
 .navbar + h1, .navbar + .filter-container {
-    margin-top: 20px; /* Ajusta este valor según la cantidad de espacio que desees */
+    margin-top: 60px; /* Ajusta este valor según la cantidad de espacio que desees */
 }
 .button2 {
     display: inline-block;
@@ -103,24 +103,14 @@ label {
     background-color: #333;
     display: flex;
     justify-content: center;
-    padding: 25px 20;
+    padding: 25px 20;  
+    margin: 20 5px;
     position: fixed;
+    width: 100%;
     top: 0;
     left: 0;
-    width: 100%;
     z-index: 1000;
-}
-@media only screen and (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        align-items: center;
-    }
 
-    .navbar a {
-        margin: 25px 10px;
-        text-align: center;
-        width: 100%;
-    }
 }
 
 .navbar a {
@@ -407,7 +397,6 @@ th, td {
     border-bottom: 1px solid #ddd;
     transition: background-color 0.3s;
 }
-
 th {
     background-color: #333;
     color: #ffffff;
@@ -772,27 +761,6 @@ table tr:nth-child(even) {
 }
 
 /* Responsive styles */
-@media (max-width: 768px) {
-    .detalles_paciente {
-        padding: 10px;
-    }
-    
-    .detalles_paciente h1 {
-        font-size: 24px;
-    }
-    
-    .detalles_paciente h2 {
-        font-size: 20px;
-    }
-
-    .detalles_paciente p {
-        font-size: 14px;
-    }
-
-    .detalles_paciente .print-button {
-        font-size: 14px;
-    }
-}
 
 .info-table {
     width: 100%;
@@ -915,4 +883,8 @@ input[type="text"], input[type="number"], datalist {
     margin-top: 10px;
     font-weight: bold;
     color: #333;
+}
+.content {
+    margin-top: 220px; /* Para evitar que el contenido quede detrás de la navbar */
+    padding: 20px;
 }

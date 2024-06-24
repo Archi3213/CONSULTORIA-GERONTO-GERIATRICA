@@ -20,54 +20,102 @@
     </div>
     <h2>Evaluación Bioquímica</h2>
     <form method="POST" action="/evaluacion_bioquimica">
-  
-        <table border="1" style="width: 50%;">
-            <!-- Parte superior de la tabla -->
-            <tr>
-            </tr>
-            <td colspan="18">      <label for="id_paciente">Selecciona un paciente:</label>
-                <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
-                <datalist id="pacientes_list">
-                    {% for paciente in pacientes %}
-                    <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
-                    {% endfor %}
-                </datalist>
-                <label></strong></td>
-            <tr>
-                <td colspan="4"><label for="fecha_hb_hto">Fecha de Hb y Hto: <input type="date" id="fecha_hb_hto" name="fecha_hb_hto"> </label></td>
-                
-                <td colspan="4"><label for="fecha_col_trig">Fecha de Colesterol y Triglicéridos: <input type="date" id="fecha_col_trig" name="fecha_col_trig"></label></td>
-               
-                <td colspan="10"><label for="fecha_guca">Fecha de Glucosa, Urea, Creatinina y Acido Urico: <input type="date" id="fecha_guca" name="fecha_guca"></label></td>
-              
-            </tr>
-            <!-- Parte inferior de la tabla -->
-            <tr>
-                <td colspan="18"><strong>Resultados de Análisis</strong></td>
-            </tr>
-            <tr>
-                <td><label for="hb">Hb (g/dL):</label></td>
-                <td><input type="number" id="hb" name="hb" min="0" step="0.1"></td>
-                <td><label for="hto">Hto (%):</label></td>
-                <td><input type="number" id="hto" name="hto" min="0" step="0.1"></td>
-                <td><label for="colesterol">Colesterol (mg/dL):</label></td>
-                <td><input type="number" id="colesterol" name="colesterol" min="0" step="0.1"></td>
-                <td><label for="trigliceridos">Triglicéridos (mg/dL):</label></td>
-                <td><input type="number" id="trigliceridos" name="trigliceridos" min="0" step="0.1"></td>
-                <td><label for="glucosa">Glucosa (mg/dL):</label></td>
-                <td><input type="number" id="glucosa" name="glucosa" min="0" step="0.1"></td>
-                <td><label for="urea">Urea (mg/dL):</label></td>
-                <td><input type="number" id="urea" name="urea" min="0" step="0.1"></td>
-                <td><label for="creatinina">Creatinina (mg/dL):</label></td>
-                <td><input type="number" id="creatinina" name="creatinina" min="0" step="0.1"></td>
-                <td><label for="acido_urico">Ácido Úrico (mg/dL):</label></td>
-                <td><input type="number" id="acido_urico" name="acido_urico" min="0" step="0.1"></td>
-                <td><label for="otros">Otros:</label></td>
-                <td><input type="text" id="otros" name="otros"></td>
-            </tr>
-        </table>
-
-        <input type="submit" value="Enviar">
+        <div class="detalles_paciente">
+        <div class="section">
+            <h2>Evaluación Bioquímica</h2>
+            {% if evaluacion_bioquimica %}
+                <div class="table">
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>Fecha HB/HTO</th>
+                                <th>Fecha Col/Trig</th>
+                                <th>Fecha Gluca</th>
+                                <th>HB</th>
+                                <th>HTO</th>
+                                <th>Colesterol</th>
+                                <th>Triglicéridos</th>
+                                <th>Glucosa</th>
+                                <th>Urea</th>
+                                <th>Creatinina</th>
+                                <th>Ácido Úrico</th>
+                                <th>Otros</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for eval_bio in evaluacion_bioquimica %}
+                            <tr>
+                                <td>{{ eval_bio.fecha_hb_hto }}</td>
+                                <td>{{ eval_bio.fecha_col_trig }}</td>
+                                <td>{{ eval_bio.fecha_guca }}</td>
+                                <td>{{ eval_bio.hb }}</td>
+                                <td>{{ eval_bio.hto }}</td>
+                                <td>{{ eval_bio.colesterol }}</td>
+                                <td>{{ eval_bio.trigliceridos }}</td>
+                                <td>{{ eval_bio.glucosa }}</td>
+                                <td>{{ eval_bio.urea }}</td>
+                                <td>{{ eval_bio.creatinina }}</td>
+                                <td>{{ eval_bio.acido_urico }}</td>
+                                <td>{{ eval_bio.otros }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        
+            <form method="POST" action="{{ url_for('evaluacion_bioquimica') }}">
+                <table border="1" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th colspan="9">
+                                <label for="id_paciente">Selecciona un paciente:</label>
+                                <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
+                                <datalist id="pacientes_list">
+                                    {% for paciente in pacientes %}
+                                        <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
+                                    {% endfor %}
+                                </datalist>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th colspan="2">Fecha de Hb y Hto</th>
+                            <th colspan="2">Fecha de Colesterol y Triglicéridos</th>
+                            <th colspan="5">Fecha de Glucosa, Urea, Creatinina y Ácido Úrico</th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><input type="date" id="fecha_hb_hto" name="fecha_hb_hto"></td>
+                            <td colspan="2"><input type="date" id="fecha_col_trig" name="fecha_col_trig"></td>
+                            <td colspan="5"><input type="date" id="fecha_guca" name="fecha_guca"></td>
+                        </tr>
+                        <tr>
+                            <th>Hb (g/dL)</th>
+                            <th>Hto (%)</th>
+                            <th>Colesterol (mg/dL)</th>
+                            <th>Triglicéridos (mg/dL)</th>
+                            <th>Glucosa (mg/dL)</th>
+                            <th>Urea (mg/dL)</th>
+                            <th>Creatinina (mg/dL)</th>
+                            <th>Ácido Úrico (mg/dL)</th>
+                            <th>Otros</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="number" id="hb" name="hb" min="0" step="0.1"></td>
+                            <td><input type="number" id="hto" name="hto" min="0" step="0.1"></td>
+                            <td><input type="number" id="colesterol" name="colesterol" min="0" step="0.1"></td>
+                            <td><input type="number" id="trigliceridos" name="trigliceridos" min="0" step="0.1"></td>
+                            <td><input type="number" id="glucosa" name="glucosa" min="0" step="0.1"></td>
+                            <td><input type="number" id="urea" name="urea" min="0" step="0.1"></td>
+                            <td><input type="number" id="creatinina" name="creatinina" min="0" step="0.1"></td>
+                            <td><input type="number" id="acido_urico" name="acido_urico" min="0" step="0.1"></td>
+                            <td><input type="text" id="otros" name="otros"></td>
+                        </tr>
+                    </tbody>
+                </table>
+        <input type="submit" class=button value="Enviar">
+            </div>
     </form>
 </body>
 </html>

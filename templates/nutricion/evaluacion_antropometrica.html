@@ -17,73 +17,79 @@
         <a href="/buscar_paciente">Expediente</a>
         <a href="/crear_menu"> Creacion de menus </a>
     </div>
-    <form action="/evaluacion_antropometrica" method="POST">
-        <br></br>
-
-        <br></br>
-
+    <div class="detalles_paciente">
+    <div class="section">
         <h1>Evaluación Antropométrica</h1>
-        <div class="table"> 
-            <br></br>
-                <tr>
-                    <td><label for="id_paciente">Selecciona un paciente:</label></td>
-                    <td>
-                        <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
-                        <datalist id="pacientes_list">
-                            {% for paciente in pacientes %}
-                            <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
-                            {% endfor %}
-                        </datalist>
-                    </td>
-                </tr>            
-            <br> </br>
-            <h3>Registros Antropométricos</h3>
-            <div class="table">
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Peso (kg)</th>
-                            <th>% de Grasa</th>
-                            <th>Músculo (%/Kg)</th>
-                            <th>Grasa Visceral</th>
-                            <th>C. Cintura</th>
-                            <th>C. Cadera</th>
-                            <th>CM B C.</th>
-                            <th>Pantorrilla</th>
-                            <th>Presión Arterial</th>
-                            <th>G. Capilar (mg/dL)</th>
-                            <th>Diagnóstico Antropométrico</th>
-                            <th>Tipo de ayuda</th>
-                            <th>Observaciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><input type="date" id="fecha" name="fecha"min="0"></td>
-                            <td><input type="number" id="peso" name="peso"min="0"></td>
-                            <td><input type="number" id="grasa" name="grasa"min="0"></td>
-                            <td><input type="number" id="musculo" name="musculo"min="0"></td>
-                            <td><input type="number" id="grasa_visceral" name="grasa_visceral"min="0"></td>
-                            <td><input type="number" id="cintura" name="cintura"min="0"></td>
-                            <td><input type="number" id="cadera" name="cadera"min="0"></td>
-                            <td><input type="number" id="cm_bc" name="cm_bc"min="0"></td>
-                            <td><input type="number" id="pantorrilla" name="pantorrilla"min="0"></td>
-                            <td><input type="text" id="presion_arterial" name="presion_arterial"min="0"></td>
-                            <td><input type="number" id="g_capilar" name="g_capilar"min="0"></td>
-                            <td><input type="text" id="diagnostico_antropometrico" name="diagnostico_antropometrico"min="0"></td>
-                            <td>  <select id="plan_alimentacion" name="plan_alimentacion">
-                            <option value="Plan de Alimentacion"> Plan de alimentación</option>
-                            <option value="Orientacion alimentaria">Orientacion alimentaria</option>
-                             </select>
-                    </td>
-                            <td><textarea id="observaciones" name="observaciones"></textarea></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <input type="submit" value="Guardar">
-            </div>
-        </div>
-    </form>
+        <form method="POST" action="{{ url_for('evaluacion_antropometrica') }}">
+            <table border="1" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th colspan="11">
+                            <label for="id_paciente">Selecciona un paciente:</label>
+                            <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
+                            <datalist id="pacientes_list">
+                                {% for paciente in pacientes %}
+                                    <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
+                                {% endfor %}
+                            </datalist>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="11">Registros Antropométricos</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Fecha</th>
+                            <td colspan="2"><input type="date" id="fecha" name="fecha" min="0"></td>
+                            <th colspan="7"></th>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>Peso (kg)</th>
+                        <th>% de Grasa</th>
+                        <th>Músculo (%/Kg)</th>
+                        <th>Grasa Visceral</th>
+                        <th>C. Cintura</th>
+                        <th>C. Cadera</th>
+                        <th>CM B C.</th>
+                        <th>Pantorrilla</th>
+                        <th>Presión Arterial</th>
+                        <th>G. Capilar (mg/dL)</th>
+                        <th>Diagnóstico Antropométrico</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="number" id="peso" name="peso" min="0"></td>
+                        <td><input type="number" id="grasa" name="grasa" min="0"></td>
+                        <td><input type="number" id="musculo" name="musculo" min="0"></td>
+                        <td><input type="number" id="grasa_visceral" name="grasa_visceral" min="0"></td>
+                        <td><input type="number" id="cintura" name="cintura" min="0"></td>
+                        <td><input type="number" id="cadera" name="cadera" min="0"></td>
+                        <td><input type="number" id="cm_bc" name="cm_bc" min="0"></td>
+                        <td><input type="number" id="pantorrilla" name="pantorrilla" min="0"></td>
+                        <td><input type="text" id="presion_arterial" name="presion_arterial" min="0"></td>
+                        <td><input type="number" id="g_capilar" name="g_capilar" min="0"></td>
+                        <td><input type="text" id="diagnostico_antropometrico" name="diagnostico_antropometrico" min="0"></td>
+                     
+                    </tr>
+                    <tr>
+                        <th colspan="2">Observaciones</th>
+                            <td colspan="9"><textarea id="observaciones" name="observaciones"></textarea></td>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Tipo de ayuda</th>
+                        <td colspan="9">
+                            <select id="plan_alimentacion" name="plan_alimentacion">
+                                <option value="Plan de Alimentacion">Plan de alimentación</option>
+                                <option value="Orientacion alimentaria">Orientación alimentaria</option>
+                            </select>
+                        </td>                        </th>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="submit" class="button">Guardar</button>
+        </form>
+    </div></div>
 </body>
 </html>
