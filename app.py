@@ -530,7 +530,9 @@ def evaluacion_clinica():
 @app.route('/evaluacion_dietetica', methods=['GET', 'POST'])
 @login_required
 def evaluacion_dietetica():
+    area = session.get('area')
     if request.method == 'POST':
+        id_paciente = request.form['id_paciente']
         form_fields = [
             'id_paciente', 'quien_orientacion', 'intolerancia_alimento', 'alergia_alimentaria', 'consumo_agua',
             'disminucion_apetito', 'motivo_apetito', 'preferencia_alimentos', 'desagradables_alimentos', 
@@ -581,7 +583,7 @@ def evaluacion_dietetica():
                 flash(f"Error en la base de datos: {e}", "danger")
                 return redirect(url_for('evaluacion_dietetica'))
 
-        return redirect(url_for('registro_exitoso'))
+        return redirect(url_for('detalles_paciente', id_paciente=id_paciente, area=area))
 
     try:
         with get_db_connection() as connection:
@@ -597,6 +599,7 @@ def evaluacion_dietetica():
 @app.route('/evaluacion_antropometrica', methods=['GET', 'POST'])
 @login_required
 def evaluacion_antropometrica():
+    area = session.get('area')
     if request.method == 'POST':
         id_paciente = request.form['id_paciente']
         fecha = request.form['fecha']
@@ -636,7 +639,7 @@ def evaluacion_antropometrica():
                     diagnostico_antropometrico, plan_alimentacion, observaciones
                 ))
             connection.commit()
-        return redirect(url_for('registro_exitoso'))
+        return redirect(url_for('detalles_paciente', id_paciente=id_paciente, area=area))
 
     with get_db_connection() as connection:
         cursor = connection.cursor()
@@ -649,6 +652,7 @@ def evaluacion_antropometrica():
 @app.route('/evaluacion_bioquimica', methods=['GET', 'POST'])
 @login_required
 def evaluacion_bioquimica():
+    area = session.get('area')
     if request.method == 'POST':
         id_paciente = request.form['id_paciente']
         fecha_hb_hto = request.form['fecha_hb_hto']
@@ -674,7 +678,7 @@ def evaluacion_bioquimica():
                     trigliceridos, glucosa, urea, creatinina, acido_urico, otros
                 ))
             connection.commit()
-        return redirect(url_for('detalles_paciente', id_paciente=id_paciente))
+        return redirect(url_for('detalles_paciente', id_paciente=id_paciente, area=area))
     
     with get_db_connection() as connection:
             cursor = connection.cursor()

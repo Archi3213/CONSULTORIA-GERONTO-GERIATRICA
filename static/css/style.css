@@ -606,23 +606,20 @@ strong {
 }
 table {
     width: 100%;
-    margin: 0 auto;
+    margin: 0 auto 10px;
     border: 2px solid #000000;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     max-width: 100%;
     border-collapse: collapse;
-    margin-bottom: 10px;
     background-color: #fff;
     opacity: 1;
     animation: fadeIn 0.5s ease-in-out;
     transition: opacity 0.5s ease-in-out;
-    text-size-adjust: 10%;
-   /*table-layout: fixed;*/
+    text-size-adjust: 100%; /* Ajustado para que respete el tamaño de texto del navegador */
 }
 
-/* Aplicar estilos a las celdas de la tabla */
 table th,
 table td {
     padding: 10px;
@@ -630,18 +627,16 @@ table td {
     text-align: left;
 }
 
-/* Estilo para la primera fila (encabezados) */
 table th {
-    background-color: #023300;
+    background-color: #058f00;
     font-weight: bold;
+    color: #fff; /* Agregado para mejorar el contraste y legibilidad */
 }
 
-/* Estilo para filas impares */
 table tr:nth-child(odd) {
     background-color: #f9f9f9;
 }
 
-/* Estilo para filas pares */
 table tr:nth-child(even) {
     background-color: #eaeaea;
 }
@@ -692,56 +687,76 @@ table tr:nth-child(even) {
     color: #444;
 }
 
-/* Table styles */
-.detalles_paciente .table {
-    overflow-x: auto;
-    margin-top: 10px;
+/* General styles for printing */
+@media print {
+    body {
+        margin: 0;
+        padding: 0;
+        background: none;
+    }
+    
+    .navbar, .button {
+        display: none;
+    }
+    .detalles_paciente .table {
+        overflow: visible;
+        margin-top: 10px;
+    }
+    
+    .detalles_paciente table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        table-layout: fixed; /* Ensures the table is fixed width */
+    }
+    
+    .detalles_paciente table th, 
+    .detalles_paciente table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+        word-wrap: break-word; /* Ensures long text will wrap within the cell */
+    }
+    
+    .detalles_paciente table th {
+        background-color: #f2f2f2;
+        color: #333;
+    }
+    
+    .detalles_paciente .table {
+        overflow: visible;
+        margin-top: 10px;
+    }
 }
 
-.detalles_paciente table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
+/* Screen styles */
+@media screen {
+    .detalles_paciente .table {
+        overflow-x: auto;
+        margin-top: 10px;
+    }
+    
+    .detalles_paciente table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        table-layout: fixed; /* Ensures the table is fixed width */
+    }
+    
+    .detalles_paciente table th, 
+    .detalles_paciente table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+        word-wrap: break-word; /* Ensures long text will wrap within the cell */
+    }
+    
+    .detalles_paciente table th {
+        background-color: #f2f2f2;
+        color: #333;
+    }
 }
 
-.detalles_paciente table th, 
-.detalles_paciente table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
-
-.detalles_paciente table th {
-    background-color: #f2f2f2;
-    color: #333;
-}
-
-.detalles_paciente .table {
-    overflow-x: auto;
-    margin-top: 10px;
-}
-
-.detalles_paciente table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-    table-layout: fixed; /* Ensures the table is fixed width */
-}
-
-.detalles_paciente table th, 
-.detalles_paciente table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-    word-wrap: break-word; /* Ensures long text will wrap within the cell */
-}
-
-.detalles_paciente table th {
-    background-color: #f2f2f2;
-    color: #333;
-}
-
-/* Print button styles */
 .detalles_paciente .print-button {
     display: block;
     width: 100%;

@@ -6,27 +6,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="icon" type="image/png" href="static/css/Imagen/_44109a07-adb5-4db9-90c0-8bac1621533a-removebg-preview.png">
     <title>Detalles del Paciente</title>
-    <style>
-           @media print {
-            body {
-                margin: 0;
-                padding: 0;
-            }
-            .navbar {
-                display: none;
-            }
-            .print-container {
-                width: 100%;
-                height: 100%;
-                overflow: hidden;
-                page-break-before: always;
-            }
-            .print-container img, .print-container video, .print-container object {
-                max-width: 100%;
-                height: auto;
-            }
-        }
-    </style>
 </head>
 <body>
     <div class="navbar">
@@ -315,6 +294,7 @@
                         </td>
                     </tr>
                 </table>
+                
                 <p>Observaciones: {{ registro_dietetico.observaciones }}</p>
                 <p>_____________________</p>
                 <a href="/evaluacion_dietetica" class="button">Actualizar datos</a>
@@ -459,6 +439,8 @@
                 <p>No hay datos de evaluación bioquímica.</p>
                 <a href="/evaluacion_bioquimica" class="button">Nueva evaluación Bioquímica</a>
             {% endif %}
+            <button id="printButton" class="button">Imprimir Página</button>
+
         </div>
 
         {% else %}
@@ -467,7 +449,6 @@
         {% endif %}
     </div>
     
-    <button id="printButton">Imprimir Página</button>
 
     <script>
         (function() {
