@@ -855,8 +855,15 @@ def execute_query(query, values):
     cursor.execute(query, values)
     conn.commit()
     conn.close()
+
+@app.route('/estadisticas')
+@login_required
+def estadisticas():
+    return render_template('coordinacion/estadisticas.html')
+
 #menu creacion
 @app.route('/crear_menu', methods=['GET', 'POST'])
+@login_required
 def crear_menu():
     conn = get_db_connection()
     pacientes = conn.execute('SELECT id_paciente, nombreS, primer_apellido, segundo_apellido FROM pacientes').fetchall()

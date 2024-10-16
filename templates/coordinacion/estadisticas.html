@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <title>Registro Exitoso</title>
+   
+    <title>Expedientes</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style_est.css') }}">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='css/Imagen/estadistica_logo.png') }}">
 
 
 </head>
+
 <body>
-    <div class="navbar">
+    <div class="navbar" id="navbar">
         <a href="/">Inicio</a>
         <a href="/registro">Registro</a>
         <a href="/consultar">Registro de consultas</a>
@@ -16,14 +19,16 @@
         <a href="/agendar_cita">Agendar Cita</a>
         <a href="/historial_citas">Historial de Citas</a>
         <a href="/directorio_pacientes">Directorio Pacientes</a>
-        <a href="/expediente">Expediente</a>
+        <a href="/buscar_paciente">Expediente</a>
+        <a href="/crear_menu"> Creacion de menus </a>
+        <a href="/estadisticas">  Estadisticas </a>
         </div>
-        <div class="container">
-            <div class="content">
-                <h1>¡Registro Exitoso!</h1>
-                <p>El paciente se ha registrado correctamente con el siguiente ID:</p>
-                <h2><strong></strong> {{ id_paciente }}</h2>
-            </div>
-        </div>
+    <br>      <br> <br>      <br> 
+    <div class="content_exp">
+        
+        <a href="/estadisticas_registro" class="button2">Estadisticas de registro</a>
+        <a href="/estadisticas_nutricion"class="button2">Estadisticas nutricion</a>
+    </div>
 </body>
+
 </html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia de salud</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/png" href="static\css\Imagen\fisio_logo.png">
+
+</head>
+<body>
+      <div class="navbar">
+        <a href="/">Inicio</a>
+        <a href="/registro">Registro</a>
+        <a href="/consultar">Registro de consultas</a>
+        <a href="/agenda">Calendario</a>
+        <a href="/agendar_cita">Agendar Cita</a>
+        <a href="/historial_citas">Historial de Citas</a>
+        <a href="/directorio_pacientes">Directorio Pacientes</a>
+        <a href="/buscar_paciente">Expediente</a>
+        <a href="/crear_menu"> Creacion de menus </a>
+        </div>
+<head>
+</head>
+<body>
+    <div class="container1">  
+        <fieldset>
+    <h1>Formulario de Evaluación Clínica</h1>
+    <form action="/evaluacion_clinica" method="POST">
+        <label for="id_paciente">Selecciona un paciente:</label>
+        <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
+        <datalist id="pacientes_list">
+            {% for paciente in pacientes %}
+            <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
+            {% endfor %}
+        </datalist><br><br>
+        <h2>Signos</h2>
+        <label for="piel">Piel:</label>
+        <textarea type="text" id="piel" name="piel"rows="4" required></textarea><br><br>
+
+        <label for="ojos">Ojos:</label>
+        <textarea type="text" id="ojos" name="ojos"rows="4" required></textarea>
+
+        <label for="uñas">Uñas:</label>
+        <textarea type="text" id="uñas" name="uñas"rows="4" required></textarea>
+
+        <label for="cabello">Cabello:</label>
+        <textarea type="text" id="cabello" name="cabello"rows="4" required></textarea>
+
+        <label for="boca">Boca:</label>
+        <textarea type="text" id="boca" name="boca"rows="4" required></textarea>
+
+        <label for="dientes">Dientes:</label>
+        <textarea type="text" id="dientes" name="dientes" rows="4" required></textarea>
+
+        <label for="observacion">Observación:</label><br>
+        <textarea id="observacion" name="observacion" rows="4" cols="50"></textarea>
+
+        <input type="submit" value="Guardar"> 
+</fieldset>
+    </div>
+</body>
+</html>
