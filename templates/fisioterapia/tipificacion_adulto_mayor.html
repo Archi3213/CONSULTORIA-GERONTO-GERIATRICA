@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylef.css') }}">
+    <link rel="icon" type="image/png" href="static\css\Imagen\fisio_logo.png">
+    <title>Tipificación del adulto mayor</title>
+</head>
+<div class="navbar">
+    <a href="/">Inicio</a>
+    <a href="/registro">Registro</a>
+    <a href="/consultar">Registro de consultas</a>
+    <a href="/agenda">Calendario</a>
+    <a href="/agendar_cita">Agendar Cita</a>
+    <a href="/historial_citas">Historial de Citas</a>
+    <a href="/directorio_pacientes">Directorio Pacientes</a>
+    <a href="/buscar_paciente">Expediente</a>
+    </div>
+    <div class="container1"> 
+        <h1>Tipificación del Adulto Mayor</h3>
+    <form action=""{{ url_for('tipificacion_adulto_mayor') }} method="POST">
+        <label for="id_paciente">Selecciona un paciente:</label>
+        <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
+        <datalist id="pacientes_list">
+            {% for paciente in pacientes %}
+            <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
+            {% endfor %}
+        </datalist><br><br>
+
+    
+    
+    <label for="vejez">Vejez:</label>
+    <select type="text" name="vejez" id="vejez">
+        <option value="joven viejo">Joven viejo</option>
+        <option value="viejo-viejo">Viejo-viejo</option>
+        <option value="viejo-más viejo">Viejo-más viejo</option>
+    </select>
+
+    <label for="envejecimiento">Envejecimiento:</label>
+    <select type="text" name="envejecimiento" id="envejecimiento">
+        <option value="normal">Normal</option>
+        <option value="patológico">Patológico</option>
+        <option value="funcional">Funcional</option>
+        <option value="saludable">Saludable</option>
+        <option value="discapacitado">Discapacitado</option>
+        <option value="minusvalía">Minusvalía</option>
+    </select>
+
+    <label for="adulto_mayor">Adulto Mayor:</label>
+    <select type="text" name="adulto_mayor" id="adulto_mayor">
+        <option value="maduro">Maduro</option>
+        <option value="blindado">Blindado</option>
+        <option value="casero">Casero</option>
+        <option value="descontento">Descontento</option>
+        <option value="dependiente">Dependiente</option>
+        <option value="auto fóbico">Auto fóbico</option>
+    </select>
+
+    <label for="indice_comorbilidad_mortalidad">Índice de Comorbilidad y Mortalidad:</label>
+    <input type="text" id="indice_comorbilidad_mortalidad" name="indice_comorbilidad_mortalidad">
+
+    <label for="capacidad_fisica_funcional_total">Capacidad Física Funcional Total:</label>
+    <input type="text" id="capacidad_fisica_funcional_total" name="capacidad_fisica_funcional_total">
+
+    <h3>Movilidad Articular</h3>
+    
+    <label for="movilidad_miembros_superiores">Miembros Superiores:</label>
+    <input type="text" id="movilidad_miembros_superiores" name="movilidad_miembros_superiores">
+
+    <label for="movilidad_miembros_inferiores">Miembros Inferiores:</label>
+    <input type="text" id="movilidad_miembros_inferiores" name="movilidad_miembros_inferiores">
+
+    <label for="movilidad_tronco">Tronco:</label>
+    <input type="text" id="movilidad_tronco" name="movilidad_tronco">
+
+    <button type="submit">Guardar</button>
+</div>
+</form>

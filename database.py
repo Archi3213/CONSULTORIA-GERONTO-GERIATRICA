@@ -333,5 +333,43 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS menus_semanales (
     FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
 )''')
 
+cursor.execute('''CREATE TABLE IF NOT EXISTS historia_salud_paciente (
+    id_paciente TEXT PRIMARY KEY,
+    enfermedades TEXT,
+    antecedentes_heredofamiliares TEXT,
+    terapeutica TEXT,
+    traumas TEXT,
+    cirugias TEXT,
+    alergias TEXT,
+    toxicomanias TEXT,
+    sueno TEXT,
+    estado_nutricional TEXT,
+    perdidas TEXT,
+    perdidas_funcionales TEXT,
+    ansiedad TEXT,
+    depresion TEXT,
+    personalidad TEXT,
+    otro_psicologico TEXT,
+    redes_apoyo TEXT,
+    nivel_socioeconomico TEXT,
+    actividad_economica TEXT,
+    actividad_ocio TEXT,
+    rol_social TEXT,
+    red_familiar TEXT,
+    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
+)''')
+cursor.execute('''CREATE TABLE IF NOT EXISTS tipificacion_adulto_mayor (
+    id_paciente TEXT PRIMARY KEY,
+    vejez TEXT,
+    envejecimiento TEXT,
+    adulto_mayor TEXT,
+    indice_comorbilidad_mortalidad TEXT,
+    capacidad_fisica_funcional_total TEXT,
+    movilidad_miembros_superiores TEXT,
+    movilidad_miembros_inferiores TEXT,
+    movilidad_tronco TEXT,
+    FOREIGN KEY (id_paciente) REFERENCES pacientes(id_paciente)
+)''');
+
 conexion.commit()
 cursor.close()

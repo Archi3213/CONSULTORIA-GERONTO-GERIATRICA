@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylef.css') }}">
+    <link rel="icon" type="image/png" href="static\css\Imagen\fisio_logo.png">
+    <title>Registro de Historia de Salud</title>
+</head>
+<div class="navbar">
+    <a href="/">Inicio</a>
+    <a href="/registro">Registro</a>
+    <a href="/consultar">Registro de consultas</a>
+    <a href="/agenda">Calendario</a>
+    <a href="/agendar_cita">Agendar Cita</a>
+    <a href="/historial_citas">Historial de Citas</a>
+    <a href="/directorio_pacientes">Directorio Pacientes</a>
+    <a href="/buscar_paciente">Expediente</a>
+    </div>
+<body>
+  
+    <div class="container1">
+        <h1>Registro de Historia de Salud</h1>
+    <form action="{{ url_for('registro_historia_salud') }}" method="POST">
+            <label for="id_paciente">Selecciona un paciente:</label>
+            <input type="text" id="id_paciente" name="id_paciente" list="pacientes_list" required>
+            <datalist id="pacientes_list">
+                {% for paciente in pacientes %}
+                <option value="{{ paciente[0] }}">{{ paciente[1] }} {{ paciente[2] }} {{ paciente[3] }}</option>
+                {% endfor %}
+            </datalist><br><br>
+    
+
+        <!-- Sección Biológica -->
+        <h2>Biológico</h2>
+        <label for="enfermedades">Enfermedades:</label><br>
+        <input type="text" id="enfermedades" name="enfermedades"><br><br>
+
+        <label for="antecedentes_heredofamiliares">Antecedentes heredofamiliares:</label><br>
+        <input type="text" id="antecedentes_heredofamiliares" name="antecedentes_heredofamiliares"><br><br>
+
+        <label for="terapeutica">Terapéutica:</label><br>
+        <input type="text" id="terapeutica" name="terapeutica"><br><br>
+
+        <label for="traumas">Traumas:</label><br>
+        <input type="text" id="traumas" name="traumas"><br><br>
+
+        <label for="cirugias">Cirugías:</label><br>
+        <input type="text" id="cirugias" name="cirugias"><br><br>
+
+        <label for="alergias">Alergias:</label><br>
+        <input type="text" id="alergias" name="alergias"><br><br>
+
+        <label for="toxicomanias">Toxicomanías:</label><br>
+        <input type="text" id="toxicomanias" name="toxicomanias"><br><br>
+
+        <label for="sueno">Sueño:</label><br>
+        <input type="text" id="sueno" name="sueno"><br><br>
+
+        <label for="estado_nutricional">Estado nutricional:</label><br>
+        <input type="text" id="estado_nutricional" name="estado_nutricional"><br><br>
+
+        <!-- Sección Psicológica -->
+        <h2>Psicológico</h2>
+        <label for="perdidas">Pérdidas:</label><br>
+        <input type="text" id="perdidas" name="perdidas"><br><br>
+
+        <label for="perdidas_funcionales">Pérdidas funcionales:</label><br>
+        <input type="text" id="perdidas_funcionales" name="perdidas_funcionales"><br><br>
+
+        <label for="ansiedad">Ansiedad:</label><br>
+        <input type="text" id="ansiedad" name="ansiedad"><br><br>
+
+        <label for="depresion">Depresión:</label><br>
+        <input type="text" id="depresion" name="depresion"><br><br>
+
+        <label for="personalidad">Personalidad:</label><br>
+        <input type="text" id="personalidad" name="personalidad"><br><br>
+
+        <label for="otro_psicologico">Otro (Psicológico):</label><br>
+        <input type="text" id="otro_psicologico" name="otro_psicologico"><br><br>
+
+        <!-- Sección Sociocultural -->
+        <h2>Sociocultural</h2>
+        <label for="redes_apoyo">Redes de apoyo:</label><br>
+        <input type="text" id="redes_apoyo" name="redes_apoyo"><br><br>
+
+        <label for="nivel_socioeconomico">Nivel socioeconómico:</label><br>
+        <input type="text" id="nivel_socioeconomico" name="nivel_socioeconomico"><br><br>
+
+        <label for="actividad_economica">Actividad económica:</label><br>
+        <input type="text" id="actividad_economica" name="actividad_economica"><br><br>
+
+        <label for="actividad_ocio">Actividad de ocio/tiempo libre:</label><br>
+        <input type="text" id="actividad_ocio" name="actividad_ocio"><br><br>
+
+        <!-- Campos adicionales -->
+        <h2>Campos adicionales</h2>
+        <label for="rol_social">Rol social:</label><br>
+        <input type="text" id="rol_social" name="rol_social"><br><br>
+
+        <label for="red_familiar">Red familiar:</label><br>
+        <input type="text" id="red_familiar" name="red_familiar"><br><br>
+
+        <input type="submit" value="Registrar historia de salud">
+    </form>
+</div>
+</body>
+</html>

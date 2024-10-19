@@ -119,344 +119,158 @@
                 <label>Registrado por:</label> <span>{{ paciente.registrado_por }}</span>
             </div>
         </div>
-        
-        <!-- Antecedentes Familiares -->
-        <div class="section">
-            <h2>Antecedentes Familiares</h2>
-            {% if antecedentes_familiares %}
-            <table class="info-table">
-                <tr>
-                    <td><strong>Diabetes Mellitus:</strong></td>
-                    <td>{{ antecedentes_familiares.diabetes_mellitus_familiar }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Dislipidemias:</strong></td>
-                    <td>{{ antecedentes_familiares.dislipidemias_familiar }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Sobrepeso/Obesidad:</strong></td>
-                    <td>{{ antecedentes_familiares.sobrepeso_obesidad_familiar }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Cáncer:</strong></td>
-                    <td>{{ antecedentes_familiares.cancer_tipo_familiar }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Hipertensión:</strong></td>
-                    <td>{{ antecedentes_familiares.hipertension_familiar }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Cardiopatías:</strong></td>
-                    <td>{{ antecedentes_familiares.cardiopatias_familiar }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Litiasis:</strong></td>
-                    <td>{{ antecedentes_familiares.litiasis_familiar }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Artritis:</strong></td>
-                    <td>{{ antecedentes_familiares.artritis_familiar }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Asma:</strong></td>
-                    <td>{{ antecedentes_familiares.asma_familiar }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Otras:</strong></td>
-                    <td>{{ antecedentes_familiares.otras }}</td>
-                </tr>
-            </table>
-            {% else %}
-                <p>No hay datos de antecedentes familiares.</p>
-            {% endif %}
-        </div>
 
-        <!-- Antecedentes Personales -->
-        <div class="section">
-            <h2>Antecedentes Personales</h2>
-            {% if antecedentes_personales_nutricion %}
-            <table class="info-table">
-                <tr>
-                    <td><strong>Padecimiento Actual:</strong></td>
-                    <td>{{ antecedentes_personales_nutricion.padecimiento_actual }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Medicamento:</strong></td>
-                    <td>{{ antecedentes_personales_nutricion.medicamento }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Discapacidad:</strong></td>
-                    <td>{{ antecedentes_personales_nutricion.discapacidad }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Cirugía:</strong></td>
-                    <td>{{ antecedentes_personales_nutricion.cirugia }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Alergias:</strong></td>
-                    <td>{{ antecedentes_personales_nutricion.alergias }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Consumo de Alcohol:</strong></td>
-                    <td>{{ antecedentes_personales_nutricion.consumo_alcohol }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Tabaco:</strong></td>
-                    <td>{{ antecedentes_personales_nutricion.tabaco }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Suplementos:</strong></td>
-                    <td>{{ antecedentes_personales_nutricion.suplementos }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Cafeína:</strong></td>
-                    <td>{{ antecedentes_personales_nutricion.cafeina }}</td>
-                </tr>
-                <tr>
-                    <td><strong>Observaciones:</strong></td>
-                    <td>{{ antecedentes_personales_nutricion.observaciones }}</td>
-                </tr>
-            </table>
-            {% else %}
-                <p>No hay datos de antecedentes personales.</p>
-            {% endif %}
-        </div>
-
-
-
-        
-              <!-- Evaluaciones clinica -->
-              <div class="section">
-                <h2>Evaluación Clínica</h2>
-                {% if evaluacion_clinica %}
-                    <table class="evaluation-table">
-                        <tr>
-                            <th>Piel</th>
-                            <td>{{ evaluacion_clinica.piel }}</td>
-                        </tr>
-                        <tr>
-                            <th>Ojos</th>
-                            <td>{{ evaluacion_clinica.ojos }}</td>
-                        </tr>
-                        <tr>
-                            <th>Uñas</th>
-                            <td>{{ evaluacion_clinica.unas }}</td>
-                        </tr>
-                        <tr>
-                            <th>Cabello</th>
-                            <td>{{ evaluacion_clinica.cabello }}</td>
-                        </tr>
-                        <tr>
-                            <th>Boca</th>
-                            <td>{{ evaluacion_clinica.boca }}</td>
-                        </tr>
-                        <tr>
-                            <th>Dientes</th>
-                            <td>{{ evaluacion_clinica.dientes }}</td>
-                        </tr>
-                        <tr>
-                            <th>Observación</th>
-                            <td>{{ evaluacion_clinica.observacion }}</td>
-                        </tr>
-                    </table>
-                {% else %}
-                    <p>No hay datos de evaluación clínica.</p>
-                {% endif %}
-            </div>
-                    <!-- Evaluaciones dieteica -->
-        <div class="section">
-            <h2>Registro Dietético</h2>
-            {% if registro_dietetico %}
-                <div class="info-group">
-                    <p>¿Quién da la orientación?: {{ registro_dietetico.quien_orientacion }}</p>
-                </div>
-                <div class="info-group">
-                    <p>Intolerancia a Alimentos: {{ registro_dietetico.intolerancia_alimento }}</p></div>
-                    <div class="info-group">
-                    <p>Alergia Alimentaria: {{ registro_dietetico.alergia_alimentaria }}</p></div>
-                    <div class="info-group">
-                    <p>Consumo de Agua: {{ registro_dietetico.consumo_agua }} L</p></div>
-                    <div class="info-group">
-                    <p>Disminución del Apetito: {{ registro_dietetico.disminucion_apetito }}</p></div>
-                    <div class="info-group">
-                    <p>Motivo del Apetito: {{ registro_dietetico.motivo_apetito }}</p></div>
-                    <div class="info-group">
-                    <p>Preferencia de Alimentos: {{ registro_dietetico.preferencia_alimentos }}</p></div>
-                    <div class="info-group">
-                    <p>Desagradables: {{ registro_dietetico.desagradables_alimentos }}</p></div>
-                    <div class="info-group">
-                    <p>Dinero Semanal: {{ registro_dietetico.dinero_semanal }} pesos</p></div>
-                    <div class="info-group">
-                    <p>Número de Personas en Casa: {{ registro_dietetico.num_personas }}</p></div>
-                    <div class="info-group">
-                    <p>¿Quién prepara los alimentos?: {{ registro_dietetico.quien_prepara }}</p></div>
-                
-                <h3>Detalles de las Comidas</h3>
-                <table class="horizontal-table">
-                    <tr>
-                        <th>Desayuno</th>
-                        <th>Colación 1</th>
-                        <th>Almuerzo</th>
-                        <th>Colación 2</th>
-                        <th>Cena</th>
-                    </tr>
-                    <tr>
-                        <td>
-                            Lugar: {{ registro_dietetico.desayuno_lugar }}<br>
-                            Horario: {{ registro_dietetico.desayuno_horario }}
-                        </td>
-                        <td>
-                            Lugar: {{ registro_dietetico.colacion1_lugar }}<br>
-                            Horario: {{ registro_dietetico.colacion1_horario }}
-                        </td>
-                        <td>
-                            Lugar: {{ registro_dietetico.almuerzo_lugar }}<br>
-                            Horario: {{ registro_dietetico.almuerzo_horario }}
-                        </td>
-                        <td>
-                            Lugar: {{ registro_dietetico.colacion2_lugar }}<br>
-                            Horario: {{ registro_dietetico.colacion2_horario }}
-                        </td>
-                        <td>
-                            Lugar: {{ registro_dietetico.cena_lugar }}<br>
-                            Horario: {{ registro_dietetico.cena_horario }}
-                        </td>
-                    </tr>
-                </table>
-                <p>Observaciones: {{ registro_dietetico.observaciones }}</p>
-            {% else %}
-                <p>No hay datos de registro dietético.</p>
-            {% endif %}
-        </div>
-        
-        <!-- Citas -->
-        <div class="section">
-            <h2>Citas</h2>
-            {% if citas %}
-                <div class="table">
-                    <table border="1">
-                        <thead>
-                            <tr>
-                                <th>Fecha Consulta</th>
-                                <th>Hora Consulta</th>
-                                <th>Observaciones</th>
-                                <th>Estado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% for citas in citas %}
-                            <tr>
-                                <td>{{ citas.fecha_consulta }}</td>
-                                <td>{{ citas.hora_consulta }}</td>
-                                <td>{{ citas.observaciones }}</td>
-                                <td>{{ citas.estado }}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            {% else %}
-                <p>No hay citas registradas.</p>
-            {% endif %}
-        </div>
-        <div class="section">
-            <h2>Evaluación Antropométrica</h2>
-            <div class="table">
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Peso (kg)</th>
-                            <th>IMC</th>
-                            <th>% de Grasa</th>
-                            <th>Músculo (%/Kg)</th>
-                            <th>Grasa Visceral</th>
-                            <th>C. Cintura</th>
-                            <th>C. Cadera</th>
-                            <th>CM B C.</th>
-                            <th>Pantorrilla</th>
-                            <th>Presión Arterial</th>
-                            <th>G. Capilar (mg/dL)</th>
-                            <th>Diagnóstico Antropométrico</th>
-                            <th>Tipo de ayuda</th>
-                            <th>Observaciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% if evaluacion_antropometrica %}
-                        {% for eval_ant in evaluacion_antropometrica %}
-                            <tr>
-                                <td>{{ eval_ant.fecha }}</td>
-                                <td>{{ eval_ant.peso }}</td>
-                                <td>{{ eval_ant.imc }}</td>
-                                <td>{{ eval_ant.grasa }}</td>
-                                <td>{{ eval_ant.musculo }}</td>
-                                <td>{{ eval_ant.grasa_visceral }}</td>
-                                <td>{{ eval_ant.cintura }}</td>
-                                <td>{{ eval_ant.cadera }}</td>
-                                <td>{{ eval_ant.cm_bc }}</td>
-                                <td>{{ eval_ant.pantorrilla }}</td>
-                                <td>{{ eval_ant.presion_arterial }}</td>
-                                <td>{{ eval_ant.g_capilar }}</td>
-                                <td>{{ eval_ant.diagnostico_antropometrico }}</td>
-                                <td>{{ eval_ant.plan_alimentacion }}</td>
-                                <td>{{ eval_ant.observaciones }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                    </table>
-                {% else %}
-                    </tbody>
-                    </table>
-                    <p>No hay datos de evaluación antropométrica.</p>
-                {% endif %}
-            </div>
-        </div>
+        <!-- Historia de Salud -->
 <div class="section">
-    <h2>Evaluación Bioquímica</h2>
-    {% if evaluacion_bioquimica %}
-        <div class="table">
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>Fecha HB/HTO</th>
-                        <th>Fecha Col/Trig</th>
-                        <th>Fecha Gluca</th>
-                        <th>HB</th>
-                        <th>HTO</th>
-                        <th>Colesterol</th>
-                        <th>Triglicéridos</th>
-                        <th>Glucosa</th>
-                        <th>Urea</th>
-                        <th>Creatinina</th>
-                        <th>Ácido Úrico</th>
-                        <th>Otros</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for eval_bio in evaluacion_bioquimica %}
-                    <tr>
-                        <td>{{ eval_bio.fecha_hb_hto }}</td>
-                        <td>{{ eval_bio.fecha_col_trig }}</td>
-                        <td>{{ eval_bio.fecha_guca }}</td>
-                        <td>{{ eval_bio.hb }}</td>
-                        <td>{{ eval_bio.hto }}</td>
-                        <td>{{ eval_bio.colesterol }}</td>
-                        <td>{{ eval_bio.trigliceridos }}</td>
-                        <td>{{ eval_bio.glucosa }}</td>
-                        <td>{{ eval_bio.urea }}</td>
-                        <td>{{ eval_bio.creatinina }}</td>
-                        <td>{{ eval_bio.acido_urico }}</td>
-                        <td>{{ eval_bio.otros }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+    <h2>Historia de Salud</h2>
+    {% if historia_salud %}
+    <table class="info-table">
+        <!-- Sección Biológica -->
+        <tr>
+            <td><strong>Enfermedades:</strong></td>
+            <td>{{ historia_salud.enfermedades }}</td>
+        </tr>
+        <tr>
+            <td><strong>Antecedentes Heredofamiliares:</strong></td>
+            <td>{{ historia_salud.antecedentes_heredofamiliares }}</td>
+        </tr>
+        <tr>
+            <td><strong>Terapéutica:</strong></td>
+            <td>{{ historia_salud.terapeutica }}</td>
+        </tr>
+        <tr>
+            <td><strong>Traumas:</strong></td>
+            <td>{{ historia_salud.traumas }}</td>
+        </tr>
+        <tr>
+            <td><strong>Cirugías:</strong></td>
+            <td>{{ historia_salud.cirugias }}</td>
+        </tr>
+        <tr>
+            <td><strong>Alergias:</strong></td>
+            <td>{{ historia_salud.alergias }}</td>
+        </tr>
+        <tr>
+            <td><strong>Toxicomanías:</strong></td>
+            <td>{{ historia_salud.toxicomanias }}</td>
+        </tr>
+        <tr>
+            <td><strong>Sueño:</strong></td>
+            <td>{{ historia_salud.sueno }}</td>
+        </tr>
+        <tr>
+            <td><strong>Estado Nutricional:</strong></td>
+            <td>{{ historia_salud.estado_nutricional }}</td>
+        </tr>
+
+        <!-- Sección Psicológica -->
+        <tr>
+            <td><strong>Pérdidas:</strong></td>
+            <td>{{ historia_salud.perdidas }}</td>
+        </tr>
+        <tr>
+            <td><strong>Pérdidas Funcionales:</strong></td>
+            <td>{{ historia_salud.perdidas_funcionales }}</td>
+        </tr>
+        <tr>
+            <td><strong>Ansiedad:</strong></td>
+            <td>{{ historia_salud.ansiedad }}</td>
+        </tr>
+        <tr>
+            <td><strong>Depresión:</strong></td>
+            <td>{{ historia_salud.depresion }}</td>
+        </tr>
+        <tr>
+            <td><strong>Personalidad:</strong></td>
+            <td>{{ historia_salud.personalidad }}</td>
+        </tr>
+        <tr>
+            <td><strong>Otro (Psicológico):</strong></td>
+            <td>{{ historia_salud.otro_psicologico }}</td>
+        </tr>
+
+        <!-- Sección Sociocultural -->
+        <tr>
+            <td><strong>Redes de Apoyo:</strong></td>
+            <td>{{ historia_salud.redes_apoyo }}</td>
+        </tr>
+        <tr>
+            <td><strong>Nivel Socioeconómico:</strong></td>
+            <td>{{ historia_salud.nivel_socioeconomico }}</td>
+        </tr>
+        <tr>
+            <td><strong>Actividad Económica:</strong></td>
+            <td>{{ historia_salud.actividad_economica }}</td>
+        </tr>
+        <tr>
+            <td><strong>Actividad de Ocio/Tiempo Libre:</strong></td>
+            <td>{{ historia_salud.actividad_ocio }}</td>
+        </tr>
+
+        <!-- Campos adicionales -->
+        <tr>
+            <td><strong>Rol Social:</strong></td>
+            <td>{{ historia_salud.rol_social }}</td>
+        </tr>
+        <tr>
+            <td><strong>Red Familiar:</strong></td>
+            <td>{{ historia_salud.red_familiar }}</td>
+        </tr>
+    </table>
+    <a href="/registro_historia_salud" class="button">Actualizar datos</a>
     {% else %}
-        <p>No hay datos de evaluación bioquímica.</p>
+        <p>No hay datos de historia de salud.</p>
+        <a href="/registro_historia_salud" class="button">Registrar datos</a>
     {% endif %}
-        
+</div>
+     <!-- Tipificación del Adulto Mayor -->
+<div class="section">
+    <h2>Tipificación del Adulto Mayor</h2>
+    {% if tipificacion %}
+    <table class="info-table">
+        <tr>
+            <td><strong>Vejez:</strong></td>
+            <td>{{ tipificacion.vejez }}</td>
+        </tr>
+        <tr>
+            <td><strong>Envejecimiento:</strong></td>
+            <td>{{ tipificacion.envejecimiento }}</td>
+        </tr>
+        <tr>
+            <td><strong>Adulto Mayor:</strong></td>
+            <td>{{ tipificacion.adulto_mayor }}</td>
+        </tr>
+        <tr>
+            <td><strong>Índice de Comorbilidad y Mortalidad:</strong></td>
+            <td>{{ tipificacion.indice_comorbilidad_mortalidad }}</td>
+        </tr>
+        <tr>
+            <td><strong>Capacidad Física Funcional Total:</strong></td>
+            <td>{{ tipificacion.capacidad_fisica_funcional_total }}</td>
+        </tr>
+        <tr>
+            <th colspan="2"><strong>Movilidad Articular</strong></th>
+        </tr>
+        <tr>
+            <td><strong>Miembros Superiores:</strong></td>
+            <td>{{ tipificacion.movilidad_miembros_superiores }}</td>
+        </tr>
+        <tr>
+            <td><strong>Miembros Inferiores:</strong></td>
+            <td>{{ tipificacion.movilidad_miembros_inferiores }}</td>
+        </tr>
+        <tr>
+            <td><strong>Tronco:</strong></td>
+            <td>{{ tipificacion.movilidad_tronco }}</td>
+        </tr>
+    </table>
+    <a href="/tipificacion_adulto_mayor" class="button">Actualizar Tipificación</a>
+    {% else %}
+    <p>No hay datos de tipificación del adulto mayor disponibles.</p>
+    <a href="/tipificacion_adulto_mayor" class="button">Añadir Tipificación</a>
+    {% endif %}
+</div>
+  
     
         {% else %}
             <p>No se encontró el paciente.</p>
